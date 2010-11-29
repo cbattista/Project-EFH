@@ -1,0 +1,35 @@
+ html,body{
+                margin: 0;
+                padding: 0;
+                background: black;
+				color: white;
+				text-align:center;
+				}
+
+#playground{
+	text-align:left;
+	margin: 0px auto;
+	width: 450px;
+	height:565px;
+	background-image: url("images/satDefBG.png");
+	
+}
+
+#city{
+	position: absolute;
+	bottom: 0px;
+	right:450px;
+	z-index: 100;
+}
+#mysteryBox{
+	z-index: 1;
+	position: absolute;
+	right: 450px;
+	
+}
+#binoculars{
+	position:absolute;
+	right:450px;
+	z-index: 5;
+}
+
