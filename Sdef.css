@@ -1,17 +1,17 @@
  html,body{
-                margin: 0;
-                padding: 0;
-                background: black;
-				color: white;
-				text-align:center;
-				}
+	margin: 0;
+	padding: 0;
+	background: black;
+	color: white;
+	text-align:center;
+}
 
 #playground{
 	text-align:left;
 	margin: 0px auto;
 	width: 450px;
 	height:565px;
-	background-image: url("images/satDefBG.png");
+	background-image: url("images/SatDef/satDefBG.png");
 	
 }
 

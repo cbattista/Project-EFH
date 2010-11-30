@@ -1,0 +1,14 @@
+html,body{
+	background: green;
+	margin: 0;
+	padding: 0;
+	color: black;
+	text-align:center;
+}
+#jungle{
+	text-align:left;
+	margin: 0px auto;
+	width: 526px;
+	height:400px;
+	background-image: url("images/Animal_Feeder/Jungle1.png");
+	}

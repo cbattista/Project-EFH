@@ -5,12 +5,16 @@
 <script type = "text/javascript" src = "Jquery.js"> </script>
 <script type = "text/javascript" src = "timer.js"></script>
 <script type = "text/javascript">
+
+var timeInc = 5;
 $(document).ready(function(){
 	$.timer(40,function(timer){
 	var position = $("#mysteryBox").position()
-	position.top = position.top + 1;
+	position.top = position.top + timeInc;
 	var positionString = position.top + "px";
 	$("#mysteryBox").css("top", positionString);
+	if (position.top > 565){
+	timer.stop();}
 	});
 });
 </script>
@@ -21,11 +25,11 @@ $(document).ready(function(){
 <h1> Satellite Defender </h1>
 
 <div id = "playground">
-	<div id = "mysteryBox"> <img src = "images/mysteryBox.png" /></div>
+	<div id = "mysteryBox"> <img src = "images/SatDef/mysteryBox.png" /></div>
 	
-	<div id = "binoculars" ><img src = "images/binocular.png" /></div>
+	<div id = "binoculars" ><img src = "images/SatDef/binocular.png" /></div>
 	
-	<div id = "city" ><img src = "images/city.png" /></div>
+	<div id = "city" ><img src = "images/SatDef/city.png" /></div>
 
 </div>
 
