@@ -10,13 +10,15 @@ var timeInc = 5;
 $(document).ready(function(){
 	
 	//setting of game variables - eventually should be retrieved from the database
-	trial = 1;
+	trial = 0;
 	stimList = [0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0];
 	stimFile = ["bombBox.png", "aidBox.png"];
 	subject = new Subject();
+	currentTime = new Date();
+	trialStart = currentTime.getTime();
 
 	//start things off
-	stim = stimList[0];
+	stim = stimList[trial];
 	
 	$.timer(40,function(timer){
 		
@@ -27,19 +29,39 @@ $(document).ready(function(){
 
 		if (position.top > 565){
 			position.top = 0;
-			hitGround();}
+			hitGround();
+			timer.reset(40);}
 	});
 
+	
+	
 	function hitGround() {
-		timer.stop();
+		//package hits ground, determine whether it's a good or bad outcome, logs event
+		trial = trial + 1;
 		if (stim == 0) {
 			Subject.inputData(trial, "outcome", "TN");
 		}
 		else {
 			Subject.inputData(trial, "outcome", "N");
 		}
+		Subject.inputData(trial, "RT", 0);
+		
 	}
 
+	function detonate() {
+		//user destroys package
+		RT = currentTime.getTime() - trialStart;
+		trial = trial + 1;
+		Subject.inputData(trial, "RT", RT);
+		if (stim == 0) {
+			Subject.inputData(trial, "outcome", "P");
+		}
+		else {
+			Subject.inputData(trial, "outcome", "FP");
+		}
+		
+	}
+	
 });
 
 </script>
