@@ -8,15 +8,15 @@
 
 var timeInc = 5;
 $(document).ready(function(){
+
+	currentTime = new Date();
+	subject = new Subject();
 	
 	//setting of game variables - eventually should be retrieved from the database
 	trial = 0;
 	stimList = [0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0];
 	stimFile = ["bombBox.png", "aidBox.png"];
-	subject = new Subject();
-	currentTime = new Date();
 	trialStart = currentTime.getTime();
-
 	//start things off
 	stim = stimList[trial];
 	
@@ -27,6 +27,9 @@ $(document).ready(function(){
 		var positionString = position.top + "px";
 		$("#mysteryBox").css("top", positionString);
 
+		//need to check and see if the the package is in the binoculars
+		//if ((position.top >= 100) and (position.top <= 200 )) { change picture}
+		
 		if (position.top > 565){
 			position.top = 0;
 			hitGround();
@@ -46,29 +49,54 @@ $(document).ready(function(){
 	
 	function hitGround() {
 		//package hits ground, determine whether it's a good or bad outcome, logs event
-		trial = trial + 1;
 		if (stim == 0) {
-			Subject.inputData(trial, "outcome", "TN");
+			subject.inputData(trial, "outcome", "TN");
 		}
 		else {
-			Subject.inputData(trial, "outcome", "N");
+			subject.inputData(trial, "outcome", "N");
 		}
-		Subject.inputData(trial, "RT", 0);
+		subject.inputData(trial, "RT", 0);
 		
+		advance();
+
 	}
 
 	function detonate() {
 		//user destroys package
 		RT = currentTime.getTime() - trialStart;
-		trial = trial + 1;
-		Subject.inputData(trial, "RT", RT);
+		subject.inputData(trial, "RT", RT);
 		if (stim == 0) {
-			Subject.inputData(trial, "outcome", "P");
+			subject.inputData(trial, "outcome", "P");
 		}
 		else {
-			Subject.inputData(trial, "outcome", "FP");
+			subject.inputData(trial, "outcome", "FP");
 		}
 		
+		advance();
+		
+	}
+
+	function advance() {
+		trial = trial + 1;
+		if (trial <= stimList.length) {
+			stim = stimList[trial];
+			subject.inputData(trial, "stim", stim);
+			subject.inputData(trial, "stimFile", stimFile[stim]);
+		}
+		else {
+			alert('Level Complete');
+			nextLevel();
+		}
+	}
+	
+	function nextLevel() {
+		//stuff for making a new stimList etc...
+		//setting of game variables - eventually should be retrieved from the database
+		trial = 0;
+		stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
+		stimFile = ["bombBox.png", "aidBox.png"];
+		//start things off
+		stim = stimList[trial];
 	}
 	
 });
