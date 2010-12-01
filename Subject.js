@@ -1,4 +1,4 @@
-function Subject(id=666, game="satDef") {
+function Subject(id, game) {
 	//function to handle the collection of subject data
 	this.id = id;
 	this.data = "";

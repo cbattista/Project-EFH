@@ -4,13 +4,67 @@
 
 <script type = "text/javascript" src = "Jquery.js"> </script>
 <script type = "text/javascript" src = "timer.js"></script>
+<script type = "text/javascript" src = "Subject.js"></script>
 <script type = "text/javascript">
 
 var timeInc = 5;
+
+function hitGround() {
+	//package hits ground, determine whether it's a good or bad outcome, logs event
+	if (stim == 0) {
+		subject.inputData(trial, "outcome", "TN");
+	}
+	else {
+		subject.inputData(trial, "outcome", "N");
+	}
+	subject.inputData(trial, "RT", 0);
+	
+	advance();
+
+}
+
+function detonate() {
+	//user destroys package
+	RT = currentTime.getTime() - trialStart;
+	subject.inputData(trial, "RT", RT);
+	if (stim == 0) {
+		subject.inputData(trial, "outcome", "P");
+	}
+	else {
+		subject.inputData(trial, "outcome", "FP");
+	}
+	
+	advance();
+	
+}
+
+function advance() {
+	trial = trial + 1;
+	if (trial <= stimList.length) {
+		stim = stimList[trial];
+		subject.inputData(trial, "stim", stim);
+		subject.inputData(trial, "stimFile", stimFile[stim]);
+	}
+	else {
+		alert('Level Complete');
+		nextLevel();
+	}
+}
+
+function nextLevel() {
+	//stuff for making a new stimList etc...
+	//setting of game variables - eventually should be retrieved from the database
+	trial = 0;
+	stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
+	stimFile = ["bombBox.png", "aidBox.png"];
+	//start things off
+	stim = stimList[trial];
+}
+
 $(document).ready(function(){
 
 	currentTime = new Date();
-	subject = new Subject();
+	subject = new Subject(666, "satDef");
 	
 	//setting of game variables - eventually should be retrieved from the database
 	trial = 0;
@@ -37,7 +91,6 @@ $(document).ready(function(){
 			
 	});
 
-	
 	$.bind('keypress', 
 		function(event) {
 			//probably should make this button specific at some point
@@ -45,60 +98,7 @@ $(document).ready(function(){
 				detonate();
 			//}
 		}
-	);
-	
-	function hitGround() {
-		//package hits ground, determine whether it's a good or bad outcome, logs event
-		if (stim == 0) {
-			subject.inputData(trial, "outcome", "TN");
-		}
-		else {
-			subject.inputData(trial, "outcome", "N");
-		}
-		subject.inputData(trial, "RT", 0);
-		
-		advance();
-
-	}
-
-	function detonate() {
-		//user destroys package
-		RT = currentTime.getTime() - trialStart;
-		subject.inputData(trial, "RT", RT);
-		if (stim == 0) {
-			subject.inputData(trial, "outcome", "P");
-		}
-		else {
-			subject.inputData(trial, "outcome", "FP");
-		}
-		
-		advance();
-		
-	}
-
-	function advance() {
-		trial = trial + 1;
-		if (trial <= stimList.length) {
-			stim = stimList[trial];
-			subject.inputData(trial, "stim", stim);
-			subject.inputData(trial, "stimFile", stimFile[stim]);
-		}
-		else {
-			alert('Level Complete');
-			nextLevel();
-		}
-	}
-	
-	function nextLevel() {
-		//stuff for making a new stimList etc...
-		//setting of game variables - eventually should be retrieved from the database
-		trial = 0;
-		stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
-		stimFile = ["bombBox.png", "aidBox.png"];
-		//start things off
-		stim = stimList[trial];
-	}
-	
+	);	
 });
 
 </script>
