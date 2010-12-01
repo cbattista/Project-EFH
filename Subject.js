@@ -1,9 +1,13 @@
-function Subject(id=666) {
+function Subject(id=666, game="satDef") {
 	//function to handle the collection of subject data
 	this.id = id;
 	this.data = "";
-	this.table = "satDef_results";
+	this.game = game;
 	this.homebase = "inputData.php";
+	
+	function startGame(){
+		//make an entry in the begin game table
+	}
 	
 	function inputData(trial, value, score){
 		//add a snippet of data to the client side store
@@ -13,7 +17,7 @@ function Subject(id=666) {
 	
 	function sendData(trial, value, score)  {
 		//send the client side data store to the home base and clear the client store (if successful)
-		senddata = {table: this.table, sid: this.id, data: this.data, time: timestamp};
+		senddata = {table: this.game + ".results", sid: this.id, data: this.data, time: timestamp};
 		$.post(this.homebase, senddata, 
 		function(data){
 			if (data == "success") {

@@ -8,15 +8,40 @@
 
 var timeInc = 5;
 $(document).ready(function(){
+	
+	//setting of game variables - eventually should be retrieved from the database
+	trial = 1;
+	stimList = [0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0];
+	stimFile = ["bombBox.png", "aidBox.png"];
+	subject = new Subject();
+
+	//start things off
+	stim = stimList[0];
+	
 	$.timer(40,function(timer){
-	var position = $("#mysteryBox").position()
-	position.top = position.top + timeInc;
-	var positionString = position.top + "px";
-	$("#mysteryBox").css("top", positionString);
-	if (position.top > 565){
-	timer.stop();}
+		
+		var position = $("#mysteryBox").position()
+		position.top = position.top + timeInc;
+		var positionString = position.top + "px";
+		$("#mysteryBox").css("top", positionString);
+
+		if (position.top > 565){
+			position.top = 0;
+			hitGround();}
 	});
+
+	function hitGround() {
+		timer.stop();
+		if (stim == 0) {
+			Subject.inputData(trial, "outcome", "TN");
+		}
+		else {
+			Subject.inputData(trial, "outcome", "N");
+		}
+	}
+
 });
+
 </script>
 
 </head>

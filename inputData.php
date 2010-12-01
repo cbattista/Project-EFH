@@ -5,7 +5,7 @@
 if(isset($_GET['sid'])) { 
 	$sid = $_GET['sid'];
 	$data = $_GET['data'];	
-	$date = $_GET['date'];
+	$time = $_GET['time'];
 	$table = $_GET['table'];
 	
 	$data = explode($data, "\n");
@@ -16,7 +16,7 @@ if(isset($_GET['sid'])) {
 		$score = $line[2];
 	}
 	
-	$query = sprintf("INSERT INTO % VALUES (%s, %s, %s, %s, %s)", $table, $sid, $trial, $value, $score, $date);
+	$query = sprintf("INSERT INTO % VALUES (%s, %s, %s, %s, %s)", $table, $sid, $trial, $value, $score, $time);
 	
 	$result = mysql_query(query);
 	
