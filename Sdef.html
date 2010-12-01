@@ -31,9 +31,18 @@ $(document).ready(function(){
 			position.top = 0;
 			hitGround();
 			timer.reset(40);}
+			
 	});
 
 	
+	$.bind('keypress', 
+		function(event) {
+			//probably should make this button specific at some point
+			//if (event.which == "SPACE") {
+				detonate();
+			//}
+		}
+	);
 	
 	function hitGround() {
 		//package hits ground, determine whether it's a good or bad outcome, logs event
