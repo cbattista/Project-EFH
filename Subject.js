@@ -11,7 +11,7 @@ function Subject(sid, game) {
 	
 	this.inputData = function(trial, value, score){
 		//add a snippet of data to the client side store
-		this.data = this.data + trial + "\t" + value + "\t" + score + "\n";
+		this.data = this.data + trial + "," + value + "," + score + "|";
 		this.data = this.data.split();
 	}
 	
