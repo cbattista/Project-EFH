@@ -25,6 +25,8 @@
 
 var timeInc = 5;
 var boxpos = 0;
+var detonated = 0;
+var burnout = 10;
 
 function hitGround() {
 	//package hits ground, determine whether it's a good or bad outcome, logs event
@@ -36,14 +38,16 @@ function hitGround() {
 	}
 	subject.inputData(trial, "RT", 0);
 	
-	advance();
-
 }
 
 function detonate() {
+	detonated = 1;
 	//user destroys package
 	RT = currentTime.getTime() - trialStart;
 	subject.inputData(trial, "RT", RT);
+
+	$('#mysteryBox').html("<img src = \"images/SatDef/explosion.png\"/>")
+
 	if (stim == 0) {
 		subject.inputData(trial, "outcome", "P");
 	}
@@ -51,11 +55,10 @@ function detonate() {
 		subject.inputData(trial, "outcome", "FP");
 	}
 	
-	advance();
-	
 }
 
-function advance() {
+function nextTrial() {
+	$('#mysteryBox').html("<img src = \"images/SatDef/mysteryBox.png\"/>")
 	trial = trial + 1;
 	if (trial <= stimList.length) {
 		stim = stimList[trial];
@@ -67,6 +70,10 @@ function advance() {
 		subject.sendData();
 		nextLevel();
 	}
+	
+	setBox(0);
+	
+	advance = 0;
 }
 
 function nextLevel() {
@@ -110,13 +117,24 @@ $(document).ready(function(){
 		
 		//need to check and see if the the package is in the binoculars
 		//if ((position.top >= 100) and (position.top <= 200 )) { change picture}
+
+
 		var position = $("#mysteryBox").position()
 		
 		if (position.top > 600){
 			hitGround();
-			setBox(0);
+			nextTrial();
 		}
-			
+		
+		if (detonated==1) {
+			burnout = burnout - 1;
+			if (burnout < 0 ) {
+				nextTrial();
+				burnout = 10;
+				detonated = 0;
+			}
+		}
+		
 	});
 
 	$("#playground").click(
@@ -124,7 +142,6 @@ $(document).ready(function(){
 			event.preventDefault();
 			//probably should make this button specific at some point
 			detonate();
-			setBox(0);
 			//}
 		}
 	);	
