@@ -5,6 +5,22 @@
 <script type = "text/javascript" src = "Jquery.js"> </script>
 <script type = "text/javascript" src = "timer.js"></script>
 <script type = "text/javascript" src = "Subject.js"></script>
+</head>
+
+<body>
+
+<h1> Satellite Defender </h1>
+
+<div id = "playground">
+
+	<div id = "mysteryBox"> <img src = "images/SatDef/mysteryBox.png" /></div>
+	
+	<div id = "binoculars" ><img src = "images/SatDef/binocular.png" /></div>
+	
+	<div id = "city" ><img src = "images/SatDef/city.png" /></div>
+
+</div>
+
 <script type = "text/javascript">
 
 var timeInc = 5;
@@ -46,7 +62,7 @@ function advance() {
 		subject.inputData(trial, "stimFile", stimFile[stim]);
 	}
 	else {
-		alert('Level Complete');
+		//alert('Level Complete');
 		subject.sendData();
 		nextLevel();
 	}
@@ -62,8 +78,21 @@ function nextLevel() {
 	stim = stimList[trial];
 }
 
-$(document).ready(function(){
+function setBox(h) {
+	var positionString = h + "px";
+	$("#mysteryBox").css("top", positionString);
+}
 
+function incrementBox(h) {
+	box = $("#mysteryBox");
+	var position = box.position()
+	position.top = position.top + timeInc;
+	var positionString = position.top + "px";
+	box.css("top", positionString);
+}
+
+$(document).ready(function(){
+	//$('#target').toggle();
 	currentTime = new Date();
 	subject = new Subject(666, "satDef");
 	
@@ -77,46 +106,33 @@ $(document).ready(function(){
 	
 	$.timer(40,function(timer){
 		
-		var position = $("#mysteryBox").position()
-		position.top = position.top + timeInc;
-		var positionString = position.top + "px";
-		$("#mysteryBox").css("top", positionString);
-
+		incrementBox(timeInc);
+		
 		//need to check and see if the the package is in the binoculars
 		//if ((position.top >= 100) and (position.top <= 200 )) { change picture}
+		var position = $("#mysteryBox").position()
 		
 		if (position.top > 565){
-			position.top = 0;
 			hitGround();
+			setBox(0);
 		}
 			
 	});
 
-	$.bind('keypress', 
+	$("#playground").click(
 		function(event) {
+			event.preventDefault();
 			//probably should make this button specific at some point
-			//if (event.which == "SPACE") {
-				detonate();
+			detonate();
+			setBox(0);
 			//}
 		}
 	);	
+	
 });
 
 </script>
 
-</head>
-
-<body>
-<h1> Satellite Defender </h1>
-
-<div id = "playground">
-	<div id = "mysteryBox"> <img src = "images/SatDef/mysteryBox.png" /></div>
-	
-	<div id = "binoculars" ><img src = "images/SatDef/binocular.png" /></div>
-	
-	<div id = "city" ><img src = "images/SatDef/city.png" /></div>
-
-</div>
 
 </body>
 </html>

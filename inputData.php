@@ -2,10 +2,16 @@
 
 //inputData.php
 
+$uname="tbattist_EFH";
+$pw="executive";
+$database="tbattist_EFH";
+
+mysql_connect(localhost, $uname, $pw);
+mysql_select_db($database);
+
 if(isset($_GET['sid'])) { 
 	$sid = $_GET['sid'];
 	$data = $_GET['data'];	
-	$time = $_GET['time'];
 	$table = $_GET['table'];
 	
 	$data = explode($data, "\n");
@@ -19,19 +25,17 @@ if(isset($_GET['sid'])) {
 		
 		$result = mysql_query(query);
 		
-		if ($result) {
+		if ($result) 
 			echo "success";
-		}
-		else {
+		
+		else 
 			echo "fail";
-		}	
+			
 	}
 
 } 
-else {
+else 
 	echo "fail";
-}
+
 
 ?>
-
-

@@ -1,6 +1,6 @@
 function Subject(sid, game) {
 	//function to handle the collection of subject data
-	this.sid = id;
+	this.sid = sid;
 	this.data = "";
 	this.game = game;
 	this.homebase = "inputData.php";
@@ -9,15 +9,15 @@ function Subject(sid, game) {
 		//make an entry in the begin game table
 	}
 	
-	function inputData(trial, value, score){
+	this.inputData = function(trial, value, score){
 		//add a snippet of data to the client side store
-		this.data = this.data + "\n" + trial + "\t" + value + "\t" + score;
-		this.data = trim(this.data);
+		this.data = this.data + trial + "\t" + value + "\t" + score + "\n";
+		this.data = this.data.split();
 	}
 	
-	function sendData()  {
+	this.sendData = function()  {
 		//send the client side data store to the home base and clear the client store (if successful)
-		senddata = {table: this.game + "_results", sid: this.sid, data: this.data, time: timestamp};
+		senddata = {table: this.game + "_results", sid: this.sid, data: this.data};
 		$.post(this.homebase, senddata, 
 		function(data){
 			if (data == "success") {
