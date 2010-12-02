@@ -47,6 +47,7 @@ function advance() {
 	}
 	else {
 		alert('Level Complete');
+		subject.sendData();
 		nextLevel();
 	}
 }
@@ -87,7 +88,7 @@ $(document).ready(function(){
 		if (position.top > 565){
 			position.top = 0;
 			hitGround();
-			timer.reset(40);}
+		}
 			
 	});
 

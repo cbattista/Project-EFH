@@ -14,18 +14,19 @@ if(isset($_GET['sid'])) {
 		$trial = $line[0];
 		$value = $line[1];
 		$score = $line[2];
-	}
 	
-	$query = sprintf("INSERT INTO % VALUES (%s, %s, %s, %s, %s)", $table, $sid, $trial, $value, $score, $time);
-	
-	$result = mysql_query(query);
-	
-	if ($result) {
-		echo "success";
+		$query = sprintf("INSERT INTO %s VALUES (%s, %s, %s, %s)", $table, $sid, $trial, $value, $score);
+		
+		$result = mysql_query(query);
+		
+		if ($result) {
+			echo "success";
+		}
+		else {
+			echo "fail";
+		}	
 	}
-	else {
-		echo "fail";
-	}
+
 } 
 else {
 	echo "fail";
