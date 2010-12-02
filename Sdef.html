@@ -9,7 +9,7 @@
 
 <body>
 
-<h1> Satellite Defender </h1>
+<h1> Satellite Defender - Click to make stuff a splode</h1>
 
 <div id = "playground">
 
@@ -27,14 +27,22 @@ var timeInc = 5;
 var boxpos = 0;
 var detonated = 0;
 var burnout = 10;
+var landing = 10;
+var landed = 0;
 
 function hitGround() {
+	landed = 1;
+	landing = 10;
+	
 	//package hits ground, determine whether it's a good or bad outcome, logs event
 	if (stim == 0) {
 		subject.inputData(trial, "outcome", "TN");
+		$('#city').html("<img src = \"images/SatDef/explosion.png\"/><img src = \"images/SatDef/city.png\"/><img src = \"images/SatDef/explosion.png\"/>");
+		//alert('BOOM!');
 	}
 	else {
 		subject.inputData(trial, "outcome", "N");
+		//alert('yay');
 	}
 	subject.inputData(trial, "RT", 0);
 	
@@ -59,6 +67,8 @@ function detonate() {
 
 function nextTrial() {
 	$('#mysteryBox').html("<img src = \"images/SatDef/mysteryBox.png\"/>")
+	$('#city').html("<img src = \"images/SatDef/city.png\"/>");
+
 	trial = trial + 1;
 	if (trial <= stimList.length) {
 		stim = stimList[trial];
@@ -72,8 +82,6 @@ function nextTrial() {
 	}
 	
 	setBox(0);
-	
-	advance = 0;
 }
 
 function nextLevel() {
@@ -134,16 +142,8 @@ $(document).ready(function(){
 				$("#mysteryBox").html(html);			
 			}
 		}
-		
-		
-		if (position.top > 600){
-			hitGround();
-			nextTrial();
-		}
-		
-		
-		
-		if (detonated==1) {
+				
+		else  {
 			burnout = burnout - 1;
 			if (burnout < 0 ) {
 				nextTrial();
@@ -151,6 +151,21 @@ $(document).ready(function(){
 				detonated = 0;
 			}
 		}
+		
+		if (landed == 0) {
+			if (position.top > 500){
+				landed= 1;
+				hitGround();
+			}
+		}
+		else {
+			landing = landing - 1;
+			if (landing < 0) {
+				nextTrial();
+				landing = 10;
+				landed = 0;
+			}
+		}		
 		
 	});
 
