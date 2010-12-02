@@ -16,20 +16,20 @@
 }
 
 #city{
-	position: absolute;
-	bottom: 0px;
-	right:450px;
-	z-index: 100;
+	top: 215px;
+	text-align: center;
+	position: relative;
+	z-index: 4;
 }
 #mysteryBox{
+	top: 0px;
 	z-index: 1;
-	position: absolute;
-	right: 450px;
-	
+	text-align: center;
+	position: relative;	
 }
 #binoculars{
-	position:absolute;
-	right:450px;
+	position:relative;
+	text-align: center;
 	z-index: 5;
 }
 

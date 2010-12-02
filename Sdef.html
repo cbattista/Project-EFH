@@ -13,7 +13,7 @@
 
 <div id = "playground">
 
-	<div id = "mysteryBox"> <img src = "images/SatDef/mysteryBox.png" /></div>
+	<div id = "mysteryBox"> <img src = "images/SatDef/mysteryBox.png"/></div>
 	
 	<div id = "binoculars" ><img src = "images/SatDef/binocular.png" /></div>
 	
@@ -24,6 +24,7 @@
 <script type = "text/javascript">
 
 var timeInc = 5;
+var boxpos = 0;
 
 function hitGround() {
 	//package hits ground, determine whether it's a good or bad outcome, logs event
@@ -79,16 +80,14 @@ function nextLevel() {
 }
 
 function setBox(h) {
-	var positionString = h + "px";
-	$("#mysteryBox").css("top", positionString);
+	boxpos = h;
+	h = h + "px";
+	$("#mysteryBox").css("top", h);
 }
 
 function incrementBox(h) {
-	box = $("#mysteryBox");
-	var position = box.position()
-	position.top = position.top + timeInc;
-	var positionString = position.top + "px";
-	box.css("top", positionString);
+	boxpos = boxpos + h;
+	$("#mysteryBox").css("top", boxpos);
 }
 
 $(document).ready(function(){
@@ -102,6 +101,7 @@ $(document).ready(function(){
 	stimFile = ["bombBox.png", "aidBox.png"];
 	trialStart = currentTime.getTime();
 	//start things off
+	
 	stim = stimList[trial];
 	
 	$.timer(40,function(timer){
@@ -112,7 +112,7 @@ $(document).ready(function(){
 		//if ((position.top >= 100) and (position.top <= 200 )) { change picture}
 		var position = $("#mysteryBox").position()
 		
-		if (position.top > 565){
+		if (position.top > 600){
 			hitGround();
 			setBox(0);
 		}
