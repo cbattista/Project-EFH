@@ -121,10 +121,27 @@ $(document).ready(function(){
 
 		var position = $("#mysteryBox").position()
 		
+		
+		if (detonated == 0) {
+			if (position.top > 90) {
+				html = "<img src = \"images/SatDef/" + stimFile[stim]  + "\"/>";
+				$("#mysteryBox").html(html);			
+
+			}
+
+			if (position.top > 250) {
+				html = "<img src = \"images/SatDef/mysteryBox.png\"/>";
+				$("#mysteryBox").html(html);			
+			}
+		}
+		
+		
 		if (position.top > 600){
 			hitGround();
 			nextTrial();
 		}
+		
+		
 		
 		if (detonated==1) {
 			burnout = burnout - 1;
