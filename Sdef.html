@@ -81,6 +81,7 @@ function nextLevel() {
 	//stuff for making a new stimList etc...
 	//setting of game variables - eventually should be retrieved from the database
 	trial = 0;
+	level = level + 1;
 	stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
 	stimFile = ["bombBox.png", "aidBox.png"];
 	//start things off
@@ -116,6 +117,7 @@ $(document).ready(function(){
 	landed = 0;
 	
 	//setting of game variables - eventually should be retrieved from the database
+	level = 0;
 	trial = 0;
 	stimList = [0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0];
 	stimFile = ["bombBox.png", "aidBox.png"];
