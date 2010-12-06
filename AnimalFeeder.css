@@ -6,9 +6,36 @@ html,body{
 	text-align:center;
 }
 #jungle{
-	text-align:left;
+	text-align:center;
 	margin: 0px auto;
 	width: 526px;
 	height:400px;
 	background-image: url("images/Animal_Feeder/Jungle1.png");
+	z-index: 1;
 	}
+
+#lion {
+
+	text-align:center;
+	top: 150px;
+	position:relative;
+	left: 75px;
+	z-index: 10;
+}
+
+#zebra {
+
+	text-align: center;
+	position: relative;
+	z-index: 10;
+	top: -20px;
+	right: 60px;
+}
+
+#steak{
+
+	position: relative;
+	top: -400px;
+	right: 200px;
+	
+}

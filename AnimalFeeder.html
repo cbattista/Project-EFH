@@ -1,11 +1,56 @@
 <html>
+
 <head>
 <link href = "AnimalFeeder.css" rel = "stylesheet" type = "text/css"></link>
 <script type = "text/javascript" src = "Jquery.js"> </script>
+<script type = "text/javascript" src = "moveObject.js"></script>
+<script type = "text/javascript" src = "timer.js"></script>
 </head>
+
 <body>
 <h1> Animal Feeder </h1>
-<div id = "jungle">
+
+<div id = "jungle"> 
+	<div id = "lion"><img src = "images/Animal_Feeder/lion.png" /></div>
+	<div id = "zebra"><img src = "images/Animal_Feeder/zebra.png" /></div>
+	<div id= "steak"><img src = "images/Animal_Feeder/steak.png" /></div>
 </div>
+
+<script type = "text/javascript">
+
+//Functions
+$(document).ready(function(){
+
+	$.timer(40,function(timer){
+		
+		moveObject(5,"#steak");
+		var pos = $("#steak").position();
+		var topPos = pos.top;
+		if ( topPos > 600){
+		
+			moveObject(0,"#steak");
+		}
+		
+	});
+
+});
+//This function wil set the position of the steak
+
+
+
+
+
+</script>
+
+
+
+
+
+
 </body>
+
+
+
+
+
 </html>

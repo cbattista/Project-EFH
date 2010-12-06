@@ -6,6 +6,7 @@
 <script type = "text/javascript" src = "Jquery.js"> </script>
 <script type = "text/javascript" src = "timer.js"></script>
 <script type = "text/javascript" src = "Subject.js"></script>
+<script type = "text/javascript" src = "moveObject.js"></script>
 </head>
 
 <body>
@@ -78,7 +79,7 @@ function nextTrial() {
 	trial = trial + 1;
 	
 	if (trial <= stimList.length) { //Trial lasts until we run out of bombs/care packages to drop
-		//Send to the server which object was sent to the user to be 'delt' with
+		//Send to the server which object was sent to the user to be 'delt' with (bomb or care-package)
 		stim = stimList[trial];
 		subject.inputData(trial, "stim", stim);
 		subject.inputData(trial, "stimFile", stimFile[stim]);
@@ -154,7 +155,8 @@ $(document).ready(function(){
 	
 	$.timer(40,function(timer){
 		
-		incrementBox(timeInc);
+		//incrementBox(timeInc);
+		moveObject(timeInc, "#mysteryBox");
 		
 		//need to check and see if the the package is in the binoculars
 		//if ((position.top >= 100) and (position.top <= 200 )) { change picture}
