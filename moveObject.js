@@ -11,7 +11,7 @@ function setPosition(h,id){
 }
 
 //THis function will actually change the position of the object
-//For some reason it makes the box move reallllyy fast
+//For some reason it makes the box move reallllyy fast AND speed doesnt seem to depend on h
 function moveObject(h,id){
 	
 	var position = $(id).position();
