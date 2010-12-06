@@ -14,8 +14,8 @@ function setPosition(h,id){
 //For some reason it makes the box move reallllyy fast AND speed doesnt seem to depend on h
 function moveObject(h,id){
 	
-	var position = $(id).position();
-	var objPos = position.top + h;
+	var position = $(id).offset();
+	var objPos = position[0] + h;
 	$(id).css("top",objPos);
 	
 }
