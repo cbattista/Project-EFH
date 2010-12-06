@@ -24,7 +24,7 @@ function Subject(sid, game) {
 	
 	this.inputLevelData = function(level, score, time){
 		//add a snippet of game data
-		this.leveldata = this.leveldata + level + "," + score "," + time + "|";
+		this.leveldata = this.leveldata + level + "," + score +"," + time + "|";
 	}
 	
 	this.sendLevelData = function() {

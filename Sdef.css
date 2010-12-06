@@ -15,21 +15,24 @@
 	
 }
 
+#mysteryBox{
+	top: 0px;
+	text-align: center;
+	position: relative;	
+	z-index: 1;
+}
+
 #city{
 	top: 215px;
 	text-align: center;
 	position: relative;
 	z-index: 4;
 }
-#mysteryBox{
-	top: 0px;
-	z-index: 1;
-	text-align: center;
-	position: relative;	
-}
+
 #binoculars{
-	position:relative;
+	top: 20px;
 	text-align: center;
+	position:relative;
 	z-index: 5;
 }
 

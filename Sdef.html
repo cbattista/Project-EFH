@@ -1,7 +1,8 @@
 <html>
 <head>
-<link href = "Sdef.css" rel="stylesheet" type = "text/css"> </link>
 
+<! Import external scripts >
+<link href = "Sdef.css" rel="stylesheet" type = "text/css"> </link>
 <script type = "text/javascript" src = "Jquery.js"> </script>
 <script type = "text/javascript" src = "timer.js"></script>
 <script type = "text/javascript" src = "Subject.js"></script>
@@ -11,6 +12,7 @@
 
 <h1> Satellite Defender - Click to make stuff explode</h1>
 
+<! Import images, order is in terms of layering>
 <div id = "playground">
 
 	<div id = "mysteryBox"> <img src = "images/SatDef/mysteryBox.png"/></div>
@@ -21,49 +23,62 @@
 
 </div>
 
+<! Now for the java script....>
 <script type = "text/javascript">
 
+//This function will determine what happens when an object hits the ground
 function hitGround() {
 	landed = 1;
+	
+	//Countdown for the animation loop
 	landing = 10;
 	
-	//package hits ground, determine whether it's a good or bad outcome, logs event
-	if (stim == 0) {
-		subject.inputData(trial, "outcome", "TN");
-		$('#city').html("<img src = \"images/SatDef/explosion.png\"/><img src = \"images/SatDef/city.png\"/><img src = \"images/SatDef/explosion.png\"/>");
+	//package hits ground, determine whether it's a good or bad outcome, logs event and set fire to the city
+	if (stim == 0) { //If the bomb hits the ground do this...
+		subject.inputData(trial, "outcome", "TN");//TN = true negative
+		$('#city').html("<img src = \"images/SatDef/explosion.png\" /><img src = \"images/SatDef/city.png\" /><img src = \"images/SatDef/explosion.png\" />");
 		//alert('BOOM!');
 	}
-	else {
-		subject.inputData(trial, "outcome", "N");
+	else { //If a carepackage hits the ground do this...
+		subject.inputData(trial, "outcome", "N");//N = Negative (Why negative? because no action was taken, its a  "good negative")
 		//alert('YAY');
 	}
-	subject.inputData(trial, "RT", 0);
+	subject.inputData(trial, "RT", 0);//RT = Reaction Time, 0 indicates no action was taken
 	
 }
 
+// This function determines what happens when the user destroys an object
 function detonate() {
+	
 	detonated = 1;
+	
 	//user destroys package
-	RT = currentTime.getTime() - trialStart;
+	RT = currentTime.getTime() - trialStart;//Reaction time algorithm
 	subject.inputData(trial, "RT", RT);
 
-	$('#mysteryBox').html("<img src = \"images/SatDef/explosion.png\"/>")
+	$('#mysteryBox').html("<img src = \"images/SatDef/explosion.png\" />") 
 
-	if (stim == 0) {
-		subject.inputData(trial, "outcome", "P");
+	if (stim == 0) { //If the user destroys a bomb do this...
+		subject.inputData(trial, "outcome", "P");//P = Positive
 	}
-	else {
-		subject.inputData(trial, "outcome", "FP");
+	else { //If a user destroys a care package do this
+		subject.inputData(trial, "outcome", "FP");//FP = False Positive
 	}
 	
 }
 
+//Function to initiate the next trial. Each package dropped is a trial, or opportunity for the user to 'prove' him/herself
 function nextTrial() {
-	$('#mysteryBox').html("<img src = \"images/SatDef/mysteryBox.png\"/>")
-	$('#city').html("<img src = \"images/SatDef/city.png\"/>");
 
+	//Revert playground back to its original state
+	$('#mysteryBox').html("<img src = \"images/SatDef/mysteryBox.png\" />") 
+	$('#city').html("<img src = \"images/SatDef/city.png\" />");
+	
+	//Increment trial number each time this function is called
 	trial = trial + 1;
-	if (trial <= stimList.length) {
+	
+	if (trial <= stimList.length) { //Trial lasts until we run out of bombs/care packages to drop
+		//Send to the server which object was sent to the user to be 'delt' with
 		stim = stimList[trial];
 		subject.inputData(trial, "stim", stim);
 		subject.inputData(trial, "stimFile", stimFile[stim]);
@@ -86,7 +101,7 @@ function nextLevel() {
 	stimFile = ["bombBox.png", "aidBox.png"];
 	//start things off
 	stim = stimList[trial];
-	subject.inputLevelData(level, score, currentTime.getTime());
+	//subject.inputLevelData(level, score, currentTime.getTime());
 	subject.sendLevelData();
 }
 
@@ -101,20 +116,31 @@ function incrementBox(h) {
 	$("#mysteryBox").css("top", boxpos);
 }
 
+//Main Program
 $(document).ready(function(){
+
+	//Set position of binoculars in the playground
+	binocHeightTop = 0;
+	$("#binoculars").css("top",binocHeightTop);
+	binocHeightBottom = binocHeightTop + 160; //160 is determined by the dimensions of the bincoulars
+	
 	currentTime = new Date();
 	subject = new Subject(666, "satDef");
 	
-	timeInc = 5;
-	boxpos = 0;
+	timeInc = 5; //The rate at which objects drop
+	boxpos = 0; //Initial box position
 
 	//decision states for whether the package has been a exploded
 	detonated = 0;
-	burnout = 10;
+	
+	burnMax = 10;//How long explosion animation lasts
+	burnout = burnMax; 
 
 	//decision states for whether the package has landed
-	landing = 10;
 	landed = 0;
+	landingMax = 10 //How long the landing animation lasts
+	landing = landingMax;
+	
 	
 	//setting of game variables - eventually should be retrieved from the database
 	level = 0;
@@ -138,13 +164,13 @@ $(document).ready(function(){
 		
 		
 		if (detonated == 0) {
-			if (position.top > 90) {
+			if (position.top > binocHeightTop) {
 				html = "<img src = \"images/SatDef/" + stimFile[stim]  + "\"/>";
 				$("#mysteryBox").html(html);			
 
 			}
 
-			if (position.top > 250) {
+			if (position.top > binocHeightBottom) {
 				html = "<img src = \"images/SatDef/mysteryBox.png\"/>";
 				$("#mysteryBox").html(html);			
 			}
@@ -154,7 +180,7 @@ $(document).ready(function(){
 			burnout = burnout - 1;
 			if (burnout < 0 ) {
 				nextTrial();
-				burnout = 10;
+				burnout = burnMax;
 				detonated = 0;
 			}
 		}
@@ -169,7 +195,7 @@ $(document).ready(function(){
 			landing = landing - 1;
 			if (landing < 0) {
 				nextTrial();
-				landing = 10;
+				landing = landingMax;
 				landed = 0;
 			}
 		}		
