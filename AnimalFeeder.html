@@ -5,6 +5,7 @@
 <script type = "text/javascript" src = "Jquery.js"> </script>
 <script type = "text/javascript" src = "moveObject.js"></script>
 <script type = "text/javascript" src = "timer.js"></script>
+<script type = "text/javascript" src = "Subject.js"></script>
 </head>
 
 <body>
@@ -19,20 +20,60 @@
 <script type = "text/javascript">
 
 //Functions
+
+function nextLevel() {
+	//stuff for making a new stimList etc...
+	//setting of game variables - eventually should be retrieved from the database
+	trial = 0;
+	level = level + 1;
+	stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
+	stimFile = ["steak.png", "banana.png"];
+	//start things off
+	stim = stimList[trial];
+	//subject.inputLevelData(level, score, currentTime.getTime());
+	subject.sendLevelData();
+
+function hitGround() {
+	landed = 1;
+	
+	//Countdown for the animation loop
+	landing = 10;
+	
+	//package hits ground, determine whether it's a good or bad outcome, logs event and set fire to the city
+	if (stim == 0) { //Food hits the ground
+		subject.inputData(trial, "outcome", "TN");//TN = true negative
+		
+		if (//If a steak hits the ground do this, if a banana hits the ground do this. 
+		$('#steak').html("<img src = \"images/
+		//alert('BOOM!');
+	}
+	
+	subject.inputData(trial, "RT", 0);//RT = Reaction Time, 0 indicates no action was taken
+	
+}
+function setObj(h,iD) {
+	boxpos = h;
+	h = h + "px";
+	$(iD).css("top", h);
+}
+
+function moveObj(h,id) {
+	boxpos = boxpos + h;
+	$(id).css("top", boxpos);
+}
+
+
+
+//Main Program
 $(document).ready(function(){
 
-	$.timer(40,function(timer){
-		
-		moveObject(5,"#steak");
-		var pos = $("#steak").position();
-		var topPos = pos.top;
-		if ( topPos > 600){
-		
-			moveObject(0,"#steak");
-		}
-		
+	setObj(0,"#steak");
+	
+$.timer(40,function(timer){
+	
+	moveObj(1,"#steak");
+	
 	});
-
 });
 //This function wil set the position of the steak
 

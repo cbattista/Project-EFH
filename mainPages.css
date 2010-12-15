@@ -1,0 +1,35 @@
+body,html{
+	background-color:#d0e4fe;
+}
+h1{
+	text-align:center;
+	color:#ee3442;
+	position: relative;
+	top:30px;
+}
+#login{
+	position:relative;
+	top: 300px;
+	text-align:center;
+	z-index:4;	
+}
+a {
+}
+#gamelist{
+	position:relative;
+	top:50px;
+	text-align:center;
+	color:green;
+}
+#playStats{
+	position:relative;
+	text-align:center;
+	top:200px;
+}
+#userBrain{
+	position:relative;
+	display: block;
+	margin-left:auto;
+	margin-right:auto;
+	
+}
