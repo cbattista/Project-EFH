@@ -34,8 +34,14 @@ html,body{
 
 #steak{
 
-	position: relative;
-	top: -400px;
-	right: 200px;
+	position: absolute;
+	z-index = 20;
 	
+}
+
+#paddle{
+
+	position: relative;
+	top: -300px;
+	z-index: 10;
 }

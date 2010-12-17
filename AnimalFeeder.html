@@ -3,7 +3,6 @@
 <head>
 <link href = "AnimalFeeder.css" rel = "stylesheet" type = "text/css"></link>
 <script type = "text/javascript" src = "Jquery.js"> </script>
-<script type = "text/javascript" src = "moveObject.js"></script>
 <script type = "text/javascript" src = "timer.js"></script>
 <script type = "text/javascript" src = "Subject.js"></script>
 </head>
@@ -15,40 +14,20 @@
 	<div id = "lion"><img src = "images/Animal_Feeder/lion.png" /></div>
 	<div id = "zebra"><img src = "images/Animal_Feeder/zebra.png" /></div>
 	<div id= "steak"><img src = "images/Animal_Feeder/steak.png" /></div>
+	<div id = "paddle"><img src = "images/Animal_Feeder/paddle1.png" /></div>
 </div>
 
 <script type = "text/javascript">
 
 //Functions
 
-function nextLevel() {
-	//stuff for making a new stimList etc...
-	//setting of game variables - eventually should be retrieved from the database
-	trial = 0;
-	level = level + 1;
-	stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
-	stimFile = ["steak.png", "banana.png"];
-	//start things off
-	stim = stimList[trial];
-	//subject.inputLevelData(level, score, currentTime.getTime());
-	subject.sendLevelData();
-
-function hitGround() {
-	landed = 1;
-	
-	//Countdown for the animation loop
-	landing = 10;
-	
-	//package hits ground, determine whether it's a good or bad outcome, logs event and set fire to the city
-	if (stim == 0) { //Food hits the ground
-		subject.inputData(trial, "outcome", "TN");//TN = true negative
-		
-		if (//If a steak hits the ground do this, if a banana hits the ground do this. 
-		$('#steak').html("<img src = \"images/
-		//alert('BOOM!');
+function movePaddle(){
+	if(stim == 0){//If lions cage is chosen
+		$("#paddle").html("<img src = \"images/Animal_Feeder/paddle1.png\" />");
 	}
-	
-	subject.inputData(trial, "RT", 0);//RT = Reaction Time, 0 indicates no action was taken
+	else {
+	$("#paddle").html("<img src = \"images/Animal_Feeder/paddle2.png\" />");
+	}
 	
 }
 function setObj(h,iD) {
@@ -59,7 +38,8 @@ function setObj(h,iD) {
 
 function moveObj(h,id) {
 	boxpos = boxpos + h;
-	$(id).css("top", boxpos);
+	newPos = boxpos + "px"
+	$(id).css("top", newPos);
 }
 
 
@@ -68,11 +48,13 @@ function moveObj(h,id) {
 $(document).ready(function(){
 
 	setObj(0,"#steak");
-	
 $.timer(40,function(timer){
-	
 	moveObj(1,"#steak");
 	
+	});
+	
+$(document).keypress(function(event) {
+	alert('YOU PRESSED A BUTTON');
 	});
 });
 //This function wil set the position of the steak
