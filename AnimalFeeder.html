@@ -9,7 +9,6 @@
 
 <body>
 <h1> Animal Feeder </h1>
-
 <div id = "jungle"> 
 	<div id = "lion"><img src = "images/Animal_Feeder/lion.png" /></div>
 	<div id = "zebra"><img src = "images/Animal_Feeder/zebra.png" /></div>
@@ -25,7 +24,7 @@ function movePaddle(){
 	if(stim == 0){//If lions cage is chosen
 		$("#paddle").html("<img src = \"images/Animal_Feeder/paddle1.png\" />");
 	}
-	else {
+	else if (stim == 1){
 	$("#paddle").html("<img src = \"images/Animal_Feeder/paddle2.png\" />");
 	}
 	
@@ -54,7 +53,16 @@ $.timer(40,function(timer){
 	});
 	
 $(document).keypress(function(event) {
-	alert('YOU PRESSED A BUTTON');
+	if (event.keyCode == '37'){
+	stim = 0;
+	movePaddle();
+		
+	}
+	else if(event.keyCode == '39'){
+		stim =1;
+		movePaddle();
+			}
+		
 	});
 });
 //This function wil set the position of the steak
@@ -64,16 +72,5 @@ $(document).keypress(function(event) {
 
 
 </script>
-
-
-
-
-
-
 </body>
-
-
-
-
-
 </html>
