@@ -5,13 +5,22 @@ html,body{
 	color: black;
 	text-align:center;
 }
+
+h1{
+	color:#ee0a33;
+	font-size: 40;
+}
+
+#links{
+	text-align: left;
+	color:red;
+}
 #jungle{
 	text-align:center;
 	margin: 0px auto;
 	width: 526px;
 	height:400px;
 	background-image: url("images/Animal_Feeder/Jungle1.png");
-	z-index: 1;
 	}
 
 #lion {
@@ -35,7 +44,7 @@ html,body{
 #steak{
 
 	position: absolute;
-	z-index = 20;
+	z-index: 20;
 	
 }
 
