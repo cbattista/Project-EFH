@@ -9,3 +9,5 @@ function nextLevel(stimFile, stimList) {
 	stim = stimList[trial];
 	//subject.inputLevelData(level, score, currentTime.getTime());
 	subject.sendLevelData();
+	}
+	

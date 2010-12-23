@@ -38,7 +38,7 @@ function nextTrial(vertPos,horPos) {
 	
 	//Increment trial number each time this function is called
 	trial = trial + 1;
-	if (trial <= stimList.length) { //Trial lasts until we run out of bombs/care packages to drop
+	if (trial <= stimList.length) { //Trial lasts until we run out of fruit 
 		//Send to the server which object was sent to the user to be 'delt' with (steak or banana)
 		stim = stimList[trial];
 		subject.inputData(trial, "stim", stim);
