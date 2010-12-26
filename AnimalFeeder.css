@@ -29,17 +29,15 @@ h1{
 	top:100px;
 }
 
-#lion {
+#animal1 {
 
-	text-align:center;
-	top: 150px;
+	top: 40px;
 	position:relative;
-	left: 75px;
+	left: 120px;
 	z-index: 10;
 }
-#zebra {
+#animal2 {
 
-	text-align: center;
 	position: relative;
 	z-index: 10;
 	top: -20px;
@@ -47,13 +45,15 @@ h1{
 }
 #paddle{
 
-	position: relative;
-	top: -300px;
+	position: absolute;
+	top: 140px;
+	right: 570px;
 	z-index: 10;
 }
 #food{
 
 	position: absolute;
+	right: 800px;
 	z-index: 20;
 	
 }

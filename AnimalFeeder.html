@@ -1,11 +1,11 @@
 <html>
 
+
 <head>
 <link href = "AnimalFeeder.css" rel = "stylesheet" type = "text/css"></link>
 <script type = "text/javascript" src = "Jquery.js"> </script>
 <script type = "text/javascript" src = "timer.js"></script>
 <script type = "text/javascript" src = "Subject.js"></script>
-<script type = "text/javascript" src = "nextLevel.js"></script>
 </head>
 
 <body>
@@ -16,29 +16,50 @@
 </div>
 
 <div id = "jungle"> 
-	<div id = "lion"><img src = "images/Animal_Feeder/lion.png" /></div>
-	<div id = "zebra"><img src = "images/Animal_Feeder/zebra.png" /></div>
+	<div id = "animal1"><img src = "images/Animal_Feeder/lion.png" /></div>
+	<div id = "animal2"><img src = "images/Animal_Feeder/zebra.png" /></div>
 	<div id = "conBelt"><img src = "images/Animal_Feeder/converyorBelt.png" /></div>
 	<div id = "paddle"><img src = "images/Animal_Feeder/paddle1.png" /></div>
-	<div id= "food"><img src = "images/Animal_Feeder/steak.png" /></div>
+	<div id = "food"><img src = "images/Animal_Feeder/steak.png" /></div>
 </div>
 
 <script type = "text/javascript">
 
 //Functions
 
+/* To keep in mind
+Lion = 1 and Zebra = 0
+steak = 1 and banana = 0 */
+
+function nextLevel() {
+	//stuff for making a new stimList etc...
+	
+	//setting of game variables - eventually should be retrieved from the database
+	trial = 0;
+	level = level + 1;
+	stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
+	animalList1 = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1];
+	animalList2 = [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0];
+	stimFile = ["steak.png", "banana.png"];
+	
+	//start things off
+	stim = stimList[trial];
+	animal1 = animalList1[trial];
+	animal2 = animalList2[trial];
+	
+	//subject.inputLevelData(level, score, currentTime.getTime());
+	subject.sendLevelData();
+}
 function nextTrial(vertPos,horPos) {
 
-	//Revert playground back to its original state
-	$("#lion").html("<img src = \"images/Animal_Feeder/lion.png\" />");
-	$("#zebra").html("<img src = \"images/Animal_Feeder/zebra.png\" />");
-	
+	//revert food back to its original position
 	setVertPos(vertPos,"#food");
 	setHorPos(horPos,"#food");
 	
 	//Increment trial number each time this function is called
 	trial = trial + 1;
-	if (trial <= stimList.length) { //Trial lasts until we run out of fruit 
+	
+	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
 		//Send to the server which object was sent to the user to be 'delt' with (steak or banana)
 		stim = stimList[trial];
 		subject.inputData(trial, "stim", stim);
@@ -55,24 +76,41 @@ function nextTrial(vertPos,horPos) {
 	//This function with govern the animation when the wrong food is givin
 function wrongFood(){
 	
-	if (key == 0 && stim == 0){ //stim ==0 means a banana is on the belt 
-	$("#lion").html("<img src = \"images/Animal_Feeder/madLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/madLion.png\" />");
-	subject.inputData(trial,"outcome","N");}
+	if (key == 0 && stim == 0 && animal1 == 1){ //stim ==0 means a banana is on the belt 
+		$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/madLion.png\" />");
+		subject.inputData(trial,"outcome","N");}
 	
-	else if(key == 1 && stim == 1){ //stim == 1 means a food is on the belt
-	$("#zebra").html("<img src = \"images/Animal_Feeder/madZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/madZebra.png\" />");
-	subject.inputData(trial,"outcome","N");}
+	else if (key == 0 && stim == 0 && animal2 == 1){ //stim ==0 means a banana is on the belt 
+		$("#animal2").html("<img src = \"images/Animal_Feeder/madLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/madLion.png\" />");
+		subject.inputData(trial,"outcome","N");}
+	
+	else if(key == 1 && stim == 1 && animal1 == 0){ //stim == 1 means a food is on the belt
+		$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/madZebra.png\" />");
+		subject.inputData(trial,"outcome","N");}
+	
+	else if(key == 1 && stim == 1 && animal2 == 0){ //stim == 1 means a food is on the belt
+		$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/madZebra.png\" />");
+		subject.inputData(trial,"outcome","N");}
 	
 }
 //This function will govern the animation when the right food is givin
 function rightFood(){
 	
-	if (key == 0 && stim ==1){
-		$("#lion").html("<img src = \"images/Animal_Feeder/happyLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/happyLion.png\" />");
+	if (key == 0 && stim ==1 && animal1 == 1){
+		$("#animal").html("<img src = \"images/Animal_Feeder/happyLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/happyLion.png\" />");
 		subject.inputData(trial,"outcome","P");}
 	
-	else if(key == 1 && stim == 0){
-		$("#zerbra").html("<img src = \"images/Animal_Feeder/happyZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/happyZebra.png\" />");
+	else if(key == 0 && stim == 0 && animal1 == 0){
+		$("#animal1").html("<img src = \"images/Animal_Feeder/happyZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/happyZebra.png\" />");
+		subject.inputData(trial,"outcome","P");}
+		
+	else if (key == 1 && stim ==1 && animal2 == 1){
+		$("#animal2").html("<img src = \"images/Animal_Feeder/happyLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/happyLion.png\" />");
+		subject.inputData(trial,"outcome","P");}
+	
+
+	else if(key == 1 && stim == 0 && animal2 == 0){
+		$("#animal2").html("<img src = \"images/Animal_Feeder/happyZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/happyZebra.png\" />");
 		subject.inputData(trial,"outcome","P");}
 	
 }
@@ -85,13 +123,18 @@ function noFood(maxVert,speed){
 		if(position.top < maxVert){
 			moveObjVert(speed,"#food");}
 		
-		if(position.top == maxVert){
+		else if(position.top == maxVert){
 			
-			$("#zebra").html("<img src = \"images/Animal_Feeder/madZebra/png\" />");
-			$("#lion").html("<img src = \"images/Animal_Feeder/madLion.png\" />");
+			if(animal1 == 1 && animal2 == 0){
+			$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
+			$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
+			
+			if(animal1 == 0 && animal2 == 1){
+			$("#animal1").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
+			$("#animal2").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
 			
 			if(stim == 0){
-				$("#food").html("<img src = \"images/Animal_Feeder/lion.png\" />");}
+				$("#food").html("<img src = \"images/Animal_Feeder/squashedBanana.png\" />");}
 			if(stim == 1){
 				$("#food").html("<img src == \"images/Animal_Feeder/squishedSteak.png\" />");}
 		}
@@ -139,9 +182,9 @@ $(document).ready(function(){
 	currentTime = new Date();
 	
 	//Set other Variables
-	maxVertPos = 100;
+	maxVertPos = 100;// How far down the conveyor belt food will go
 	maxFallPos = 450;//How far unchosen food will fall
-	landingMax = 20;
+	landingMax = 20; //How long the landing animation will last
 	landing = landingMax;
 	
 	//Set start positions of food
@@ -156,14 +199,20 @@ $(document).ready(function(){
 	level = 0;
 	trial = 0;
 	stimList = [0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0];
-	stimFile = ["bombBox.png", "aidBox.png"];
+	animalList1 = [0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1];
+	animalList2 = [1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0];
+	stimFile = ["steak.png", "banana.png"];
 	trialStart = currentTime.getTime();
 	
 	//Start things off
 	
+
 	stim = stimList[trial];
 
 $.timer(40,function(timer){
+		
+	animal1 = animalList1[trial];
+	animal2 = animalList2[trial];
 	
 	//Get current position
 	var position = $("#food").position();
@@ -172,8 +221,16 @@ $.timer(40,function(timer){
 	if (stim == 0){//banana
 		$("#food").html("<img src = \"images/Animal_Feeder/banana.png\" />");}
 	else if (stim == 1){//steak
-		$("#food").html("<img src = \"images/Animal_Feeder/steak.png\" />");
-	}
+		$("#food").html("<img src = \"images/Animal_Feeder/steak.png\" />");}
+		
+	//Decide which animals will be shown
+	if(animal1 == 1 && animal2 == 0){
+		$("#animal1").html("<img src = \"images/Animal_Feeder/lion.png\" />");
+		$("#animal2").html("<img src = \"images/Animal_Feeder/zebra.png\" />");}
+	
+	else if(animal1 == 0 && animal2 == 1){
+		$("#animal1").html("<img src = \"images/Animal_Feeder/zebra.png\" />");	
+		$("#animal2").html("<img src = \"images/Animal_Feeder/lion.png\" />");}
 		
 	//Move obj down the conveyor belt
 	if (position.top < maxVertPos){
@@ -182,10 +239,10 @@ $.timer(40,function(timer){
 	
 	//When it gets to the end of the belt, decide where the food item goes		
 	else if (position.top == maxVertPos && (key == 1 || key == 0)){
-			if(key == 1 && position.top == maxVertPos){
+			if(key == 1){
 				moveObjHor(-timeInc,"#food");
 				}
-			if(key == 0 && position.top == maxVertPos){
+			if(key == 0){
 				moveObjHor(timeInc,"#food");
 				}
 		}
