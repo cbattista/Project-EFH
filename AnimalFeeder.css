@@ -30,18 +30,18 @@ h1{
 }
 
 #animal1 {
-
-	top: 40px;
+	
 	position:relative;
-	left: 120px;
 	z-index: 10;
+	top: 130px;
+	right: -200px;
 }
 #animal2 {
 
 	position: relative;
 	z-index: 10;
-	top: -20px;
-	right: 60px;
+	top: 0px;
+	right: 130px;
 }
 #paddle{
 
