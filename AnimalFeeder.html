@@ -85,7 +85,7 @@ function onDelivery(){
 		$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/madLion.png\" />");
 		subject.inputData(trial,"outcome","N");}
 	
-	else if (decisionPoint == 1 && stim == 1 && animal1 == 0){ //stim == 1 means a food is on the belt
+	else if (decisionPoint == 1 && stim == 1 && animal1 == 0){ //stim == 1 means a steak is on the belt
 		$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/madZebra.png\" />");
 		subject.inputData(trial,"outcome","N");}
 	
@@ -219,7 +219,7 @@ $.timer(40,function(timer){
 	animal2 = animalList2[trial];
 	
 	//Get current position; take css info and cast as int so we can work with it
-	var posV = $("#food").position();
+	posV = $("#food").position();
 	positionV = posV.top;
 	
 	var positionH = $("#food").css("right");
@@ -294,7 +294,7 @@ $.timer(40,function(timer){
 		if(decisionPoint == 0){
 			noFood(maxFallPos, 19);
 			
-			if(positionV == maxFallPos){
+			if(positionV >= maxFallPos){
 				landing = landing - 1;
 		
 				if(landing == 0){
@@ -303,7 +303,6 @@ $.timer(40,function(timer){
 			}
 		}
 	}
-	
 });	
 	
 	//Set key to random number so we don't get warnings if user doesnt press a button
