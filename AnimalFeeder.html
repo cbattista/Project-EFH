@@ -56,7 +56,7 @@ function nextLevel() {
 }
 function nextTrial(vertPos,horPos) {
 
-	//revert food back to its original position
+	//Move food back to its original position
 	setVertPos(vertPos,"#food");
 	setHorPos(horPos,"#food");
 	
@@ -74,6 +74,7 @@ function nextTrial(vertPos,horPos) {
 		subject.sendData();
 		nextLevel(stimFile, stimList);
 	}
+	
 	key = 222; //default key value, used throughout program
 	decisionPoint == 0; //default decision state
 }
@@ -81,38 +82,57 @@ function nextTrial(vertPos,horPos) {
 	//This function with govern the animation when the food is delivered (name pending)
 function onDelivery(){
 	
-	if (decisionPoint == 1 && stim == 0 && animal1 == 1){ //stim ==0 means a banana is on the belt 
-		$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/madLion.png\" />");
-		subject.inputData(trial,"outcome","N");}
-	
-	else if (decisionPoint == 1 && stim == 1 && animal1 == 0){ //stim == 1 means a steak is on the belt
-		$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/madZebra.png\" />");
-		subject.inputData(trial,"outcome","N");}
-	
-	else if (decisionPoint == 1 && stim == 1 && animal1 == 1){
-		$("#animal").html("<img src = \"images/Animal_Feeder/happyLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/happyLion.png\" />");
-		subject.inputData(trial,"outcome","P");}
-	
-	else if (decisionPoint == 1 && stim == 0 && animal1 == 0){
-		$("#animal1").html("<img src = \"images/Animal_Feeder/happyZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/happyZebra.png\" />");
-		subject.inputData(trial,"outcome","P");}
-	
-	else if (decisionPoint == 2 && stim == 1 && animal1 == 1){
-		$("#animal").html("<img src = \"images/Animal_Feeder/happyLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/happyLion.png\" />");
-		subject.inputData(trial,"outcome","P");}
-	
-	else if (decisionPoint == 2 && stim == 0 && animal1 == 0){
-		$("#animal1").html("<img src = \"images/Animal_Feeder/happyZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/happyZebra.png\" />");
-		subject.inputData(trial,"outcome","P");}
-	else if (decisionPoint == 2 && stim == 0 && animal1 == 1){ 
-		$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" /><img src = \"images/Animal_Feeder/lion.png\" /><img src = \"images/Animal_Feeder/madLion.png\" />");
-		subject.inputData(trial,"outcome","N");}
-	
-	else if (decisionPoint == 2 && stim == 1 && animal1 == 0){
-		$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" /><img src = \"images/Animal_Feeder/zebra.png\" /><img src = \"images/Animal_Feeder/madZebra.png\" />");
-		subject.inputData(trial,"outcome","N");}
-}
+	if(decisionPoint == 1){//goes to animal 1
 		
+		if (stim == 0){//banana
+	
+			if (animal1 == 0){//zebra
+				$("#animal1").html("<img src = \"images/Animal_Feeder/happyZebra.png\" />");
+				subject.inputData(trial,"outcome","P");}
+					
+			if (animal1 == 1){ //lion
+				$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		}
+		
+		if (stim == 1){//steak
+	
+			if (animal1 == 0){ //zebra
+				$("#animal1").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		
+			if (animal1 == 1){//lion
+				$("#animal1").html("<img src = \"images/Animal_Feeder/happyLion.png\" />");
+				subject.inputData(trial,"outcome","P");}
+		}
+		
+	}
+	
+	if(decisionPoint == 2){//goes to animal2
+		 
+		 if(stim == 0){//banana
+		 
+			 if (animal2 == 0){//zebra
+				$("#animal2").html("<img src = \"images/Animal_Feeder/happyZebra.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			 
+			 if (animal2 == 1){ //lion
+				$("#animal2").html("<img src = \"images/Animal_Feeder/madLion.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		}
+		
+		if (stim == 1){//steak
+		 
+			 if (animal2 == 0){//zebra
+				$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
+				subject.inputData(trial,"outcome","N");}
+			 
+			 if (animal2 == 1){//lion
+				$("#animal2").html("<img src = \"images/Animal_Feeder/happyLion.png\" />");
+				subject.inputData(trial,"outcome","P");}
+		}		
+	}
+}
 
 //This function will govern the animal when no food is chosen, aka falls to the ground and splatters
 function noFood(maxVert,speed){
@@ -122,30 +142,31 @@ function noFood(maxVert,speed){
 		if(position.top < maxVert){
 			moveObjVert(speed,"#food");}
 		
-		else if(position.top == maxVert){
+		if(position.top >= maxVert){
 			
 			if(animal1 == 1 && animal2 == 0){
-			$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
-			$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
+				$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
+				$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
 			
 			if(animal1 == 0 && animal2 == 1){
-			$("#animal1").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
-			$("#animal2").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
+				$("#animal1").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
+				$("#animal2").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
 			
 			if(stim == 0){
 				$("#food").html("<img src = \"images/Animal_Feeder/squashedBanana.png\" />");}
+			
 			if(stim == 1){
 				$("#food").html("<img src == \"images/Animal_Feeder/squishedSteak.png\" />");}
 		}
 }
 
 function movePaddle(){
-	if(key == 0){	//If the lions cage is chosen
+	
+	if (key == 0){	
 		$("#paddle").html("<img src = \"images/Animal_Feeder/paddle1.png\" />");}
 
-	else if (key == 1){	//If the zerbras cage is chosen
+	if (key == 1){	
 		$("#paddle").html("<img src = \"images/Animal_Feeder/paddle2.png\" />");}
-	
 }
 
 //A set of functions for moving objects
@@ -154,8 +175,8 @@ function setVertPos(v,id) {
 	v = v + "px";
 	$(id).css("top", v);
 }
-//Move objects vertically. Negative v values move up, position move down
-function moveObjVert(v,id) {
+	
+function moveObjVert(v,id) {//Move objects vertically. Negative v values move up, position move down
 	boxVPos = boxVPos + v;
 	newVPos = boxVPos + "px";
 	$(id).css("top", newVPos);
@@ -165,14 +186,12 @@ function setHorPos(h,id){
 	h = h + "px";
 	$(id).css("right",h);
 }
-//Set direction of motion in horizonal dirction. Negative h makes the object move right. Positive the opposite.
-function moveObjHor(h,id){
+	
+function moveObjHor(h,id){//Set direction of motion in horizonal dirction. Negative h makes the object move right. Positive the opposite.
 	boxHPos = boxHPos + h;
 	newHPos = boxHPos + "px";
 	$(id).css("right",newHPos);
 }
-
-
 
 //Main Program
 $(document).ready(function(){
@@ -190,13 +209,16 @@ $(document).ready(function(){
 	
 	decisionPoint = 0;//State variable, changes when user decides what to do with the food
 	
-	
 	//Set start positions of food
 	foodHStart = 800;
 	foodVStart = 50;
 	
 	setVertPos(foodVStart,"#food");
 	setHorPos(foodHStart,"#food");
+	
+	//Set end positions for food
+	foodEnd1 = 380;
+	foodEnd2 = 300;
 	
 	//Set game Variables-which will be retrieved from the server
 	timeInc = 1;
@@ -211,7 +233,6 @@ $(document).ready(function(){
 	//Start things off
 	stim = stimList[trial];
 	
-
 $.timer(40,function(timer){
 	
 	//For some reason, i have to put these inside the timer function, doesn't work otherwise? Please explain in comments :)
@@ -219,11 +240,11 @@ $.timer(40,function(timer){
 	animal2 = animalList2[trial];
 	
 	//Get current position; take css info and cast as int so we can work with it
-	posV = $("#food").position();
+	var posV = $("#food").position();
 	positionV = posV.top;
 	
 	var positionH = $("#food").css("right");
-	posH = positionH.substr(0,3);
+	var posH = positionH.substr(0,3);
 	newposH = parseInt(posH);
 	
 	//Decide what comes next on the converyor belt
@@ -262,11 +283,13 @@ $.timer(40,function(timer){
 	//Phase 3: execute decision
 	else if (positionV >= maxVertPos){
 	
-		if(decisionPoint == 1 && positionV < 380){
-			moveObjVert(timeInc*3.2,"#food");
-			moveObjHor(timeInc*2,"#food");
+		if (decisionPoint == 1){
+			
+			if (positionV < foodEnd1){
+				moveObjVert(timeInc*3.2,"#food");
+				moveObjHor(timeInc*2,"#food");}
 				
-			if(positionV == 380){
+			if(positionV >= foodEnd1){
 				onDelivery();
 				landing = landing - 1;
 		
@@ -277,15 +300,17 @@ $.timer(40,function(timer){
 		}
 
 		
-		if(decisionPoint == 2 && positionV < 300){
-			moveObjVert(timeInc*3,"#food");
-			moveObjHor(-timeInc*2,"#food");
+		if (decisionPoint == 2){
 			
-			if(positionV == 300){
+			if (positionV < foodEnd2){
+				moveObjVert(timeInc*3,"#food");
+				moveObjHor(-timeInc*2,"#food");}
+			
+			if (positionV >= foodEnd2){
 				onDelivery();
 				landing = landing - 1;
 		
-				if(landing == 0){
+				if (landing == 0){
 					nextTrial(foodVStart,foodHStart);
 					landing = landingMax;}
 			}
@@ -304,7 +329,8 @@ $.timer(40,function(timer){
 		}
 	}
 });	
-	
+
+//Event function that moves the paddle
 	//Set key to random number so we don't get warnings if user doesnt press a button
 	key = 222;
 	
@@ -323,6 +349,7 @@ $.timer(40,function(timer){
 
 </script>
 <p>TO DO: 1)Add mad/happy lion/zebra pics <br> 2)Add squished food pics</p>
+<p id = "Instructions"> Instructions:<br/> Left and Right Arrows govern paddle movement<br/> Get the right food to the right animal<br/> Have Fun!!</p>
 </body>
 </html>
 

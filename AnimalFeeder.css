@@ -28,21 +28,21 @@ h1{
 	z-index:2;
 	top:100px;
 }
-
 #animal1 {
-	
-	position:relative;
-	z-index: 10;
-	top: 130px;
-	right: -200px;
-}
-#animal2 {
 
 	position: relative;
 	z-index: 10;
-	top: 0px;
+	top: 190px;
 	right: 130px;
 }
+#animal2 {
+	
+	position:relative;
+	z-index: 11;
+	top: -20px;
+	right: -200px;
+}
+
 #paddle{
 
 	position: absolute;
@@ -56,6 +56,14 @@ h1{
 	right: 800px;
 	z-index: 20;
 	
+}
+#Instructions{
+	position:absolute;
+	text-align: left;
+	color: #ed6a33;
+	font-size: 17;
+	top:100px;
+
 }
 
 
