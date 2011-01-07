@@ -28,22 +28,33 @@
 //Functions
 
 /* To keep in mind
-Lion: animalList == 1
-Zebra: animalList == 0
 
+Animal Key:
+
+Giraffe: animalList == 0
+Lion: animalList == 1
+Gorilla:: animalList == 2
+Wolf: animalList == 3
+
+Food Key:
+
+Corn : stim == 0 
 Steak: stim == 1
-Banana: stim == 0 
+Lettuce: stim == 2
+Drumstick: stim == 3
+
+
 */
 
 function nextLevel() {
 	//stuff for making a new stimList etc...
 	
-	//setting of game variables - eventually should be retrieved from the database
+	//settin\g of game variables - eventually should be retrieved from the database
 	trial = 0;
 	level = level + 1;
-	stimList = [1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1];
-	animalList1 = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1];
-	animalList2 = [0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0];
+	stimList = [1, 2, 1, 1, 0, 3, 0, 2, 0, 3, 2, 3];
+	animalList1 = [1, 0, 3, 2, 2, 2, 1, 3, 2, 1, 1, 1];
+	animalList2 = [0, 3, 0, 1, 3, 0, 2, 2, 2, 0, 1, 0];
 	stimFile = ["steak.png", "banana.png"];
 	
 	//start things off
@@ -82,82 +93,226 @@ function nextTrial(vertPos,horPos) {
 	//This function with govern the animation when the food is delivered (name pending)
 function onDelivery(){
 	
-	if(decisionPoint == 1){//goes to animal 1
+	if(decisionPoint == 1){  //goes to animal 1
 		
-		if (stim == 0){//banana
+		if (stim == 0){//Corn
 	
-			if (animal1 == 0){//zebra
-				$("#animal1").html("<img src = \"images/Animal_Feeder/happyZebra.png\" />");
+			if(animal1 == 0){//giraffe
+				$("#animal1").html("<img src = \"images/Animal_Feeder/giraffe_happy.png\" />");
 				subject.inputData(trial,"outcome","P");}
-					
+				
 			if (animal1 == 1){ //lion
-				$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" />");
+				$("#animal1").html("<img src = \"images/Animal_Feeder/lion_angry.png\" />");
 				subject.inputData(trial,"outcome","N");}
+			
+			if(animal1 == 2){ //Gorilla
+				$("#animal1").html("<img src = \"images/Animal_Feeder/gorilla_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal1 == 3){//wolf
+				$("#animal1").html("<img src = \"images/Animal_Feeder/wolf_angry.png\" />");
+				subject.inputData(trial,"outcome","N");}
+			
 		}
 		
 		if (stim == 1){//steak
 	
-			if (animal1 == 0){ //zebra
-				$("#animal1").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
-				subject.inputData(trial,"outcome","N");}
+			if(animal1 == 0){//giraffe
+				$("#animal1").html("<img src = \"images/Animal_Feeder/giraffe_angry.png\" />");
+				subject.inputData(trial,"outcome","P");}
 		
 			if (animal1 == 1){//lion
-				$("#animal1").html("<img src = \"images/Animal_Feeder/happyLion.png\" />");
+				$("#animal1").html("<img src = \"images/Animal_Feeder/lion_happy.png\" />");
 				subject.inputData(trial,"outcome","P");}
+				
+			if(animal1 == 2){ //Gorilla
+				$("#animal1").html("<img src = \"images/Animal_Feeder/gorilla_angry.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal1 == 3){//wolf
+				$("#animal1").html("<img src = \"images/Animal_Feeder/wolf_happy.png\" />");
+				subject.inputData(trial,"outcome","N");}
 		}
 		
+		if(stim == 2){//lettuce
+		
+			if(animal1 == 0){//giraffe
+				$("#animal1").html("<img src = \"images/Animal_Feeder/giraffe_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+				
+			if (animal1 == 1){ //lion
+				$("#animal1").html("<img src = \"images/Animal_Feeder/lion_angry.png\" />");
+				subject.inputData(trial,"outcome","N");}
+			
+			if(animal1 == 2){ //Gorilla
+				$("#animal1").html("<img src = \"images/Animal_Feeder/gorilla_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal1 == 3){//wolf
+				$("#animal1").html("<img src = \"images/Animal_Feeder/wolf_angry.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		}
+		
+		if(stim == 3){//Drumstick
+		
+			if(animal1 == 0){//giraffe
+				$("#animal1").html("<img src = \"images/Animal_Feeder/giraffe_angry.png\" />");
+				subject.inputData(trial,"outcome","P");}
+		
+			if (animal1 == 1){//lion
+				$("#animal1").html("<img src = \"images/Animal_Feeder/lion_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+				
+			if(animal1 == 2){ //Gorilla
+				$("#animal1").html("<img src = \"images/Animal_Feeder/gorilla_angry.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal1 == 3){//wolf
+				$("#animal1").html("<img src = \"images/Animal_Feeder/wolf_happy.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		}
 	}
 	
 	if(decisionPoint == 2){//goes to animal2
 		 
-		 if(stim == 0){//banana
-		 
-			 if (animal2 == 0){//zebra
-				$("#animal2").html("<img src = \"images/Animal_Feeder/happyZebra.png\" />");
+		 if (stim == 0){//Corn
+	
+			if(animal2 == 0){//giraffe
+				$("#animal2").html("<img src = \"images/Animal_Feeder/giraffe_happy.png\" />");
 				subject.inputData(trial,"outcome","P");}
-			 
-			 if (animal2 == 1){ //lion
-				$("#animal2").html("<img src = \"images/Animal_Feeder/madLion.png\" />");
+				
+			if (animal2 == 1){ //lion
+				$("#animal2").html("<img src = \"images/Animal_Feeder/lion_angry.png\" />");
 				subject.inputData(trial,"outcome","N");}
+			
+			if(animal2 == 2){ //Gorilla
+				$("#animal2").html("<img src = \"images/Animal_Feeder/gorilla_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal2 == 3){//wolf
+				$("#animal2").html("<img src = \"images/Animal_Feeder/wolf_angry.png\" />");
+				subject.inputData(trial,"outcome","N");}
+			
 		}
 		
 		if (stim == 1){//steak
-		 
-			 if (animal2 == 0){//zebra
-				$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
-				subject.inputData(trial,"outcome","N");}
-			 
-			 if (animal2 == 1){//lion
-				$("#animal2").html("<img src = \"images/Animal_Feeder/happyLion.png\" />");
+	
+			if(animal2 == 0){//giraffe
+				$("#animal2").html("<img src = \"images/Animal_Feeder/giraffe_angry.png\" />");
 				subject.inputData(trial,"outcome","P");}
-		}		
+		
+			if (animal2 == 1){//lion
+				$("#animal2").html("<img src = \"images/Animal_Feeder/lion_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+				
+			if(animal2 == 2){ //Gorilla
+				$("#animal2").html("<img src = \"images/Animal_Feeder/gorilla_angry.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal2 == 3){//wolf
+				$("#animal2").html("<img src = \"images/Animal_Feeder/wolf_happy.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		}
+		
+		if(stim == 2){//lettuce
+		
+			if(animal2 == 0){//giraffe
+				$("#animal2").html("<img src = \"images/Animal_Feeder/giraffe_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+				
+			if (animal2 == 1){ //lion
+				$("#animal2").html("<img src = \"images/Animal_Feeder/lion_angry.png\" />");
+				subject.inputData(trial,"outcome","N");}
+			
+			if(animal2 == 2){ //Gorilla
+				$("#animal2").html("<img src = \"images/Animal_Feeder/gorilla_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal2 == 3){//wolf
+				$("#animal2").html("<img src = \"images/Animal_Feeder/wolf_angry.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		}
+		
+		if(stim == 3){//Drumstick
+		
+			if(animal2 == 0){//giraffe
+				$("#animal2").html("<img src = \"images/Animal_Feeder/giraffe_angry.png\" />");
+				subject.inputData(trial,"outcome","P");}
+		
+			if (animal2 == 1){//lion
+				$("#animal2").html("<img src = \"images/Animal_Feeder/lion_happy.png\" />");
+				subject.inputData(trial,"outcome","P");}
+				
+			if(animal2 == 2){ //Gorilla
+				$("#animal2").html("<img src = \"images/Animal_Feeder/gorilla_angry.png\" />");
+				subject.inputData(trial,"outcome","P");}
+			
+			if(animal2 == 3){//wolf
+				$("#animal2").html("<img src = \"images/Animal_Feeder/wolf_happy.png\" />");
+				subject.inputData(trial,"outcome","N");}
+		}
+			
 	}
 }
 
 //This function will govern the animal when no food is chosen, aka falls to the ground and splatters
 function noFood(maxVert,speed){
 		
-		var position = $("#food").position();
+	var position = $("#food").position();
 		
-		if(position.top < maxVert){
+	if(position.top < maxVert){
 			moveObjVert(speed,"#food");}
 		
-		if(position.top >= maxVert){
-			
-			if(animal1 == 1 && animal2 == 0){
-				$("#animal2").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
-				$("#animal1").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
-			
-			if(animal1 == 0 && animal2 == 1){
-				$("#animal1").html("<img src = \"images/Animal_Feeder/madZebra.png\" />");
-				$("#animal2").html("<img src = \"images/Animal_Feeder/madLion.png\" />");}
-			
-			if(stim == 0){
-				$("#food").html("<img src = \"images/Animal_Feeder/squashedBanana.png\" />");}
-			
-			if(stim == 1){
-				$("#food").html("<img src == \"images/Animal_Feeder/squishedSteak.png\" />");}
+	if(position.top >= maxVert){
+		
+		switch (animal1){
+		
+			case 0:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/giraffe_angry.png\" />");
+				break;
+			case 1:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/lion_angry.png\" />");
+				break;
+			case 2:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/gorilla_angry.png\" />");
+				break;
+			case 3:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/wolf_angry.png\" />");
+				break;
 		}
+		
+		switch (animal2){
+		
+			case 0:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/giraffe_angry.png\" />");
+				break;
+			case 1:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/lion_angry.png\" />");
+				break;
+			case 2:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/gorilla_angry.png\" />");
+				break;
+			case 3:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/wolf_angry.png\" />");
+				break;
+		}
+		
+		switch (stim){
+		
+			case 0:
+				$("#food").html("<img src = \"images/Animal_Feeder/corn_squashed.png\" />");
+				break;
+			case 1:
+				$("#food").html("<img src == \"images/Animal_Feeder/steak_squashed.png\" />");
+				break;
+			case 2:
+				$("#food").html("<img src == \"images/Animal_Feeder/lettuce_squashed.png\" />");
+				break;
+			case 3:
+				$("#food").html("<img src == \"images/Animal_Feeder/drumstick_squashed.png\" />");
+				break;
+		}
+	}
 }
 
 function movePaddle(){
@@ -224,10 +379,10 @@ $(document).ready(function(){
 	timeInc = 1;
 	level = 0;
 	trial = 0;
-	stimList = [0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0];
-	animalList1 = [0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1];
-	animalList2 = [1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0];
-	stimFile = ["steak.png", "banana.png"];
+	stimList = [0, 1, 2, 3, 2, 0, 1, 3, 1, 2, 1, 0];
+	animalList1 = [0, 2, 2, 1, 1, 0, 2, 1, 1, 0, 0, 1];
+	animalList2 = [1, 3, 3, 0, 2, 3, 3, 0, 2, 1, 1, 0];
+	stimFile = ["steak.png", "corn.png","drumstick.png", "lettuce.png"];
 	trialStart = currentTime.getTime();
 	
 	//Start things off
@@ -248,19 +403,47 @@ $.timer(40,function(timer){
 	newposH = parseInt(posH);
 	
 	//Decide what comes next on the converyor belt
-	if (stim == 0){//banana
-		$("#food").html("<img src = \"images/Animal_Feeder/banana.png\" />");}
+	if (stim == 0){//corn
+		$("#food").html("<img src = \"images/Animal_Feeder/corn.png\" />");}
 	else if (stim == 1){//steak
 		$("#food").html("<img src = \"images/Animal_Feeder/steak.png\" />");}
+	else if (stim == 2){//lettuce
+		$("#food").html("<img src = \"images/Animal_Feeder/lettuce.png\" />");}
+	else if (stim == 3){//drumstick
+		$("#food").html("<img src = \"images/Animal_Feeder/drumstick.png\" />");}
 		
 	//Decide which animals will be shown
-	if(animal1 == 1 && animal2 == 0){
-		$("#animal1").html("<img src = \"images/Animal_Feeder/lion.png\" />");
-		$("#animal2").html("<img src = \"images/Animal_Feeder/zebra.png\" />");}
-	
-	else if(animal1 == 0 && animal2 == 1){
-		$("#animal1").html("<img src = \"images/Animal_Feeder/zebra.png\" />");	
-		$("#animal2").html("<img src = \"images/Animal_Feeder/lion.png\" />");}
+		switch (animal1){
+		
+			case 0:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/giraffe.png\" />");
+				break;
+			case 1:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/lion.png\" />");
+				break;
+			case 2:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/gorilla.png\" />");
+				break;
+			case 3:
+				$("#animal1").html("<img src = \"images/Animal_Feeder/wolf.png\" />");
+				break;
+		}
+		
+		switch (animal2){
+		
+			case 0:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/giraffe.png\" />");
+				break;
+			case 1:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/lion.png\" />");
+				break;
+			case 2:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/gorilla.png\" />");
+				break;
+			case 3:
+				$("#animal2").html("<img src = \"images/Animal_Feeder/wolf.png\" />");
+				break;
+		}
 
 //Here are the statements which govern the moving of the food		
 	
