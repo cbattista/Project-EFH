@@ -35,7 +35,6 @@ function Subject(sid, game) {
 	this.post = function(senddata) {
 		$.post(this.homebase, senddata, 
 		function(data){
-			alert(data);
 			if (data == "success") {
 				this.data = "";
 			}
