@@ -2,19 +2,19 @@
 
 //inputData.php
 
-$uname="OH";
-$pw="HELL";
-$database="NO";
+$uname="tbattist_execute";
+$pw="frontalcortex";
+$database="tbattist_EFH";
 
 mysql_connect(localhost, $uname, $pw);
 mysql_select_db($database);
 
-if(isset($_GET['sid'])) { 
+if(isset($_POST['sid'])) { 
 	
-	$sid = $_GET['sid'];
-	$data = $_GET['data'];	
+	$sid = $_POST['sid'];
+	$data = $_POST['data'];	
 	$lines = explode("|", $data);
-	$table = $_GET['table'];
+	$table = $_POST['table'];
 	$table = trim($table, "\"");
 	
 	$qstring = "INSERT INTO %s VALUES (%s, %s);";
@@ -35,9 +35,11 @@ if(isset($_GET['sid'])) {
 			echo mysql_error();
 				
 		}
-} 
-else 
-	echo "fail no data";
 
+
+} 
+else { 
+	echo $_POST['sid'];
+}
 
 ?>
