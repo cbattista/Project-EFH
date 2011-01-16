@@ -2,9 +2,9 @@
 
 //inputData.php
 
-$uname="tbattist_execute";
-$pw="frontalcortex";
-$database="tbattist_EFH";
+$uname="OH";
+$pw="HELL";
+$database="NO";
 
 mysql_connect(localhost, $uname, $pw);
 mysql_select_db($database);
