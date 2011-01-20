@@ -45,11 +45,19 @@ Drumstick: stim == 3
 
 
 */
+function setDifficulty(accuracy,reactionTime){
 
+	if (reactionTime <= 600){
+		conveyorHSpeed = conveyorHSpeed + 2;
+	}
+	if(reactionTime > 600 && reactionTime <= 1000){
+		conveyorHSpeed = conveyorHSpeed + 1;}
+}
 function nextLevel() {
 	//stuff for making a new stimList etc...
 	totalAccuracy = (correct/stimList.length)*100;
-	correct = 0;
+	
+	correct = 0;//Set accuracy counter back to 0 for next level
 	//settin\g of game variables - eventually should be retrieved from the database
 	trial = 0;
 	level = level + 1;
@@ -225,8 +233,24 @@ $(document).ready(function(){
 	setHorPos(foodHStart,"#food");
 	
 	//Set end positions for food
-	foodEnd1 = 380;
-	foodEnd2 = 300;
+	foodVEnd1 = 380;
+	foodHEnd1 = 670;
+	
+	foodVEnd2 = 300;
+	foodHEnd2 = 470;
+	
+	//Set Speed variables
+	converyorSlope = (maxVertPos - foodVStart)/(foodHStart - maxHorPos);
+	converyorHSpeed = 5;
+	converyorVSpeed = converyorHSpeed*converyorSlope;
+	
+	animal1Slope = Math.abs((maxVertPos - foodVEnd1)/(maxHorPos - foodHEnd1));
+	animal1HSpeed = 5;
+	animal1VSpeed = animal1Slope*animal1HSpeed;
+	
+	animal2Slope = Math.abs((maxVertPos - foodVEnd2)/(maxHorPos - foodHEnd2));
+	animal2HSpeed = 5;
+	animal2VSpeed = animal2Slope*animal2HSpeed;
 	
 	//Set game Variables-which will be retrieved from the server
 	timeInc = 1;
@@ -275,8 +299,8 @@ $.timer(40,function(timer){
 	
 	//Phase 1: Move obj down the conveyor belt, angle is determined by the difference of vertical and horizontal speed(slope)
 	if (newposH > maxHorPos && positionV < maxVertPos){
-		moveObjVert(timeInc,"#food");
-		moveObjHor(-timeInc - 3.5,"#food");
+		moveObjVert(converyorVSpeed,"#food");
+		moveObjHor(-converyorHSpeed,"#food");
 	
 	//Phase 2: Three possibilities, go left, go right, or falls of the belt	
 		if(key == 0){
@@ -294,11 +318,11 @@ $.timer(40,function(timer){
 	
 		if (decisionPoint == 1){
 			
-			if (positionV < foodEnd1){
-				moveObjVert(timeInc*7,"#food");
-				moveObjHor(timeInc*2,"#food");}
+			if (positionV < foodVEnd1){
+				moveObjVert(animal1VSpeed,"#food");
+				moveObjHor(animal1HSpeed,"#food");}
 				
-			if(positionV >= foodEnd1){
+			if(positionV >= foodVEnd1){
 				onDelivery();
 				landing = landing - 1;
 		
@@ -311,11 +335,11 @@ $.timer(40,function(timer){
 		
 		if (decisionPoint == 2){
 			
-			if (positionV < foodEnd2){
-				moveObjVert(timeInc*6,"#food");
-				moveObjHor(-timeInc*2,"#food");}
+			if (positionV < foodVEnd2){
+				moveObjVert(animal2VSpeed,"#food");
+				moveObjHor(-animal2HSpeed,"#food");}
 			
-			if (positionV >= foodEnd2){
+			if (positionV >= foodVEnd2){
 				onDelivery();
 				landing = landing - 1;
 		
