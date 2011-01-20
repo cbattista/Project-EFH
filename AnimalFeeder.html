@@ -48,8 +48,7 @@ Drumstick: stim == 3
 
 function nextLevel() {
 	//stuff for making a new stimList etc...
-	totalAccuracy = correct/stimList.length;
-	alert(totalAccuracy);
+	totalAccuracy = (correct/stimList.length)*100;
 	correct = 0;
 	//settin\g of game variables - eventually should be retrieved from the database
 	trial = 0;
@@ -118,7 +117,10 @@ function onDelivery(){
 			
 			$("#animal1").html("<img src = \"images/Animal_Feeder/"+creature1+ "_happy.png\" />");
 			subject.inputData(trial,"outcome","P");
-			correct = correct + 1;}
+			
+			if(landing == 1){//Since this animation is run until a timer runs out, this guarantees correct is only added to once
+				correct = correct + 1;}
+		}
 			
 		else { 
 		
@@ -132,7 +134,10 @@ function onDelivery(){
 		
 			$("#animal2").html("<img src = \"images/Animal_Feeder/"+creature2+ "_happy.png\" />");
 			subject.inputData(trial,"outcome","P");
-			correct = correct + 1;}
+			
+			if(landing == 1){
+				correct = correct + 1;}
+		}
 		else {
 		
 			$("#animal2").html("<img src = \"images/Animal_Feeder/"+creature2+ "_angry.png\" />");
@@ -204,8 +209,8 @@ $(document).ready(function(){
 	landing = landingMax;
 	
 	//State variable, changes when user decides what to do with the food
-	decisionPoint = 0;
-	choice = 0;
+	decisionPoint = 0;//Determines what happens when the food reaches the drop point
+	choice = 0;//Makes it so only one button press is allowed each trial
 	//Info Data
 	totalRT = 0; //Total reaction time
 	t1= currentTime.getTime();//Time at start of the trial
@@ -290,7 +295,7 @@ $.timer(40,function(timer){
 		if (decisionPoint == 1){
 			
 			if (positionV < foodEnd1){
-				moveObjVert(timeInc*3.2,"#food");
+				moveObjVert(timeInc*7,"#food");
 				moveObjHor(timeInc*2,"#food");}
 				
 			if(positionV >= foodEnd1){
@@ -307,7 +312,7 @@ $.timer(40,function(timer){
 		if (decisionPoint == 2){
 			
 			if (positionV < foodEnd2){
-				moveObjVert(timeInc*3,"#food");
+				moveObjVert(timeInc*6,"#food");
 				moveObjHor(-timeInc*2,"#food");}
 			
 			if (positionV >= foodEnd2){
