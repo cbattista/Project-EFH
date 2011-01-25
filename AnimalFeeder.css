@@ -58,12 +58,17 @@ h1{
 	
 }
 #Instructions{
-	position:absolute;
-	text-align: left;
+	position:relative;
+	text-align: center;
 	color: #ed6a33;
 	font-size: 17;
 	top:100px;
 
 }
+#cue{
+	position:fixed;
+	right: 100px;
+	top:100px;
+	}
 
 
