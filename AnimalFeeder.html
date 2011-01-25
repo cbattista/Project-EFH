@@ -1,6 +1,5 @@
 <html>
 
-
 <head>
 <link href = "AnimalFeeder.css" rel = "stylesheet" type = "text/css"></link>
 <script type = "text/javascript" src = "Jquery.js"> </script>
@@ -49,10 +48,11 @@ Drumstick: stim == 3
 function setDifficulty(accuracy,reactionTime){
 
 	if (reactionTime <= 600){
-		conveyorHSpeed = conveyorHSpeed + 2;
-	}
+		decisionTimerLength = decisionTimerLength - 1;}
 	if(reactionTime > 600 && reactionTime <= 1000){
-		conveyorHSpeed = conveyorHSpeed + 1;}
+		decisionTimerLength = decisionTimerLength -0.5;}
+	if(reactionTime > 1000){
+		decisionTimerLength = decisionTimerLength;} 
 }
 function nextLevel() {
 	//stuff for making a new stimList etc...
@@ -118,9 +118,7 @@ function nextTrial(vertPos,horPos) {
 	setCue();
 	key = 222; //default key value, used throughout program
 	decisionTimer = decisionTimerLength;//How long user has to make a decision
-	choice = 0;
-	t = new Date();
-	t1 = t.getTime();
+	choice = 0; //decision variaible for to stop key press abuse
 }
 
 	//This function with govern the animation when the food is delivered (name pending)
@@ -226,7 +224,6 @@ $(document).ready(function(){
 		$("#jungle").show();
 	});
 	subject = new Subject(666,"animalFeeder");
-	currentTime = new Date();
 	
 	//Set start positions of food
 	foodHStart = 800;
@@ -256,7 +253,6 @@ $(document).ready(function(){
 	choice = 0;//Makes it so only one button press is allowed each trial
 	//Info Data
 	totalRT = 0; //Total reaction time
-	t1= currentTime.getTime();//Time at start of the trial
 	
 	correct = 0;
 	
@@ -292,8 +288,6 @@ $(document).ready(function(){
 	rule['drumstick'] = ['lion','wolf'];
 	rule['lettuce'] = ['giraffe','gorilla'];
 	
-	trialStart = currentTime.getTime();
-	
 	//Start things off
 	stim = stimList[trial];
 	food = stimFile[stim];
@@ -326,42 +320,45 @@ $(document).ready(function(){
 		moveObjVert(converyorVSpeed,"#food");
 		moveObjHor(-converyorHSpeed,"#food");}
 	
-	else if (positionV >= maxVertPos){
-	
-	$("#food").html("<img src = \"images/Animal_Feeder/"+food+".png\" />");
-	
-	if(decisionTimer > 0){
-	//Phase 2: Three possibilities, go left, go right, or falls of the belt	
-		if(key == 0){
-			decisionPoint = 1;}
+	else if (positionV == maxVertPos){
+		$("#food").html("<img src = \"images/Animal_Feeder/"+food+".png\" />");
+		t = new Date();
+		t1 = t.getTime();
+		moveObjVert(converyorVSpeed,"#food");}
 		
-		if(key == 1){
-			decisionPoint = 2;}
-			
-		if(key == 222){
-			decisionPoint = 0;}
-		
-	decisionTimer = decisionTimer - 1;}
+	else if (positionV > maxVertPos){
 	
-	if (decisionTimer == 0){
-	//Phase 3: execute decision	
-		if (decisionPoint == 1){
+		if(decisionTimer > 0){
+		//Phase 2: Three possibilities, go left, go right, or falls of the belt	
+			if(key == 0){
+				decisionPoint = 1;}
 			
-			if (positionV < foodVEnd1){
-				moveObjVert(animal1VSpeed,"#food");
-				moveObjHor(animal1HSpeed,"#food");}
+			if(key == 1){
+				decisionPoint = 2;}
 				
-			if(positionV >= foodVEnd1){
-				onDelivery();
-				landing = landing - 1;
+			if(key == 222){
+				decisionPoint = 0;}
+			
+		decisionTimer = decisionTimer - 1;}
 		
-				if(landing == 0){
-					nextTrial(foodVStart,foodHStart);
-					landing = landingMax;}
+		if (decisionTimer == 0){
+		//Phase 3: execute decision	
+			if (decisionPoint == 1){
+				
+				if (positionV < foodVEnd1){
+					moveObjVert(animal1VSpeed,"#food");
+					moveObjHor(animal1HSpeed,"#food");}
+					
+				if(positionV >= foodVEnd1){
+					onDelivery();
+					landing = landing - 1;
+			
+					if(landing == 0){
+						nextTrial(foodVStart,foodHStart);
+						landing = landingMax;}
+				}
 			}
-		}
 
-		
 		if (decisionPoint == 2){
 			
 			if (positionV < foodVEnd2){
@@ -375,9 +372,9 @@ $(document).ready(function(){
 				if (landing == 0){
 					nextTrial(foodVStart,foodHStart);
 					landing = landingMax;}
+				}
 			}
-		}
-		
+			
 		if(decisionPoint == 0){
 			noFood(maxFallPos, 19);
 			
@@ -387,11 +384,10 @@ $(document).ready(function(){
 				if(landing == 0){
 					nextTrial(foodVStart,foodHStart);
 					landing = landingMax;}
+				}
 			}
 		}
 	}
-	}
-	
 });
 //Event function that moves the paddle
 	//Set key to random number so we don't get warnings if user doesnt press a button
