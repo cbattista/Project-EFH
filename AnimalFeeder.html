@@ -220,9 +220,16 @@ $(document).ready(function(){
 	
 	$("#jungle").hide();
 	
-	$("button").click(function(){
+	$("#ready").click(function(){
 		$("#jungle").show();
+		$("#Instructions").hide();
 	});
+	
+	$("#showInstructions").click(function(){
+		$("#jungle").hide();
+		$("#Instructions").show();
+	});
+	
 	subject = new Subject(666,"animalFeeder");
 	
 	//Set start positions of food
@@ -419,8 +426,12 @@ $(document).ready(function(){
 
 <div id = "Instructions"> 
 <p>Instructions:<br/> Left and Right Arrows govern paddle movement<br/> Get the right food to the right animal<br/> Click the Ready button when your ready to go <br/> Have Fun!!</p>
-<button>Ready</button>
+<button id = "ready">Ready</button>
+</div>
 
+<div id ="getInstructions">
+<p> If you would like to pause the game <br/> and re-read the instructions<br/> press the button below</p>
+<button id = "showInstructions"> Show Instructions </button>
 </div>
 
 </body>

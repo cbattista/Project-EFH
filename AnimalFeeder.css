@@ -62,13 +62,19 @@ h1{
 	text-align: center;
 	color: #ed6a33;
 	font-size: 17;
-	top:100px;
-
+	top:100
 }
 #cue{
 	position:fixed;
 	right: 100px;
 	top:100px;
 	}
+#getInstructions{
+	position:absolute;
+	text-align: left;
+	font-size: 17;
+	top:100px;
+	z-index:100;
+}
 
 
