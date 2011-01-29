@@ -200,14 +200,14 @@ function moveObjHor(h,id){//Set direction of motion in horizonal dirction. Negat
 //Main Program
 $(document).ready(function(){
 	
-	$("#jungle").hide();
+	$("#jungle").hide(); //When the program first starts, hide the jungle and show the instructions
 	
-	$("#ready").click(function(){
+	$("#ready").click(function(){ //When the ready button is pressed, show the jungle and start the game
 		$("#jungle").show();
 		$("#Instructions").hide();
 	});
 	
-	$("#showInstructions").click(function(){
+	$("#showInstructions").click(function(){//When the Show Instructions button is pressed, hide the game and show instructions
 		$("#jungle").hide();
 		$("#Instructions").show();
 	});
@@ -217,6 +217,7 @@ $(document).ready(function(){
 	//Set start positions of food
 	foodHStart = 800;
 	foodVStart = 50;
+	
 	setVertPos(foodVStart,"#food");
 	setHorPos(foodHStart,"#food");
 	
@@ -232,7 +233,7 @@ $(document).ready(function(){
 	foodVEnd2 = 300;
 	foodHEnd2 = 470;
 	
-	decisionTimerLength = 15;
+	decisionTimerLength = 40;
 	decisionTimer = decisionTimerLength;
 	landingMax = 20; //How long the landing animation will last
 	landing = landingMax;
@@ -240,18 +241,15 @@ $(document).ready(function(){
 	//State variable, changes when user decides what to do with the food
 	decisionPoint = 0;//Determines what happens when the food reaches the drop point
 	choice = 222;//Makes it so only one button press is allowed each trial
-	//Info Data
-	totalRT = 0; //Total reaction time
-	
-	correct = 0;
+	correct = 0;//Resets correct trial timer to 0 for next level
 	
 	//Set Speed variables
 	converyorSlope = (maxVertPos - foodVStart)/(foodHStart - maxHorPos);
-	converyorHSpeed = 5;
+	converyorHSpeed = 5; //Sets how fast the food moves through the pipe
 	converyorVSpeed = converyorHSpeed*converyorSlope;
 	
 	animal1Slope = Math.abs((maxVertPos - foodVEnd1)/(maxHorPos - foodHEnd1));
-	animal1HSpeed = 5;
+	animal1HSpeed = 5;//Sets how fact the food goes to the animals
 	animal1VSpeed = animal1Slope*animal1HSpeed;
 	
 	animal2Slope = Math.abs((maxVertPos - foodVEnd2)/(maxHorPos - foodHEnd2));
@@ -305,21 +303,26 @@ $(document).ready(function(){
 //Here are the statements which govern the moving of the food		
 	
 	//Phase 1: Move obj down the conveyor belt, angle is determined by the difference of vertical and horizontal speed(slope)
+	
 	if (newposH > maxHorPos && positionV < maxVertPos){
 		moveObjVert(converyorVSpeed,"#food");
 		moveObjHor(-converyorHSpeed,"#food");}
 	
 	else if (positionV == maxVertPos){
+		
 		$("#food").html("<img src = \"images/Animal_Feeder/"+food+".png\" />");
+		
 		t = new Date();
 		t1 = t.getTime();
+		
+		choice = 0;//Unlocks keypress event, user can now make their choice
 		
 		moveObjVert(converyorVSpeed,"#food");}
 		
 	else if (positionV > maxVertPos){
 	
 		if(decisionTimer > 0){
-			choice = 0;//Unlocks keypress event, user can now make their choice
+			
 		//Phase 2: Three possibilities, go left, go right, or falls of the belt	
 			if(key == 0){
 				decisionPoint = 1;}
@@ -330,10 +333,17 @@ $(document).ready(function(){
 			if(key == 222){
 				decisionPoint = 0;}
 			
-		decisionTimer = decisionTimer - 1;}
+			decisionTimer = decisionTimer - 1;
+			
+			if(choice == 1){ //If user makes his choice before the decisionTimer hits 0, set decisionTimer to 0 to make food fall immediately
+				decisionTimer = 0;}
+		}
 		
-		if (decisionTimer == 0){
 		//Phase 3: execute decision	
+		if (decisionTimer == 0){
+			
+			choice = 1; //Locks keypress event, so user cannot make a choice after it has fallen
+			
 			if (decisionPoint == 1){
 				
 				if (positionV < foodVEnd1){
@@ -350,57 +360,60 @@ $(document).ready(function(){
 				}
 			}
 
-		if (decisionPoint == 2){
+			if (decisionPoint == 2){
+				
+				if (positionV < foodVEnd2){
+					moveObjVert(animal2VSpeed,"#food");
+					moveObjHor(-animal2HSpeed,"#food");}
+				
+				if (positionV >= foodVEnd2){
+					onDelivery();
+					landing = landing - 1;
 			
-			if (positionV < foodVEnd2){
-				moveObjVert(animal2VSpeed,"#food");
-				moveObjHor(-animal2HSpeed,"#food");}
-			
-			if (positionV >= foodVEnd2){
-				onDelivery();
-				landing = landing - 1;
-		
-				if (landing == 0){
-					nextTrial(foodVStart,foodHStart);
-					landing = landingMax;}
+					if (landing == 0){
+						nextTrial(foodVStart,foodHStart);
+						landing = landingMax;}
 				}
 			}
+				
+			if(decisionPoint == 0){
+				noFood(maxFallPos, 19);
+				
+				if(positionV >= maxFallPos){
+					landing = landing - 1;
 			
-		if(decisionPoint == 0){
-			noFood(maxFallPos, 19);
-			
-			if(positionV >= maxFallPos){
-				landing = landing - 1;
-		
-				if(landing == 0){
-					nextTrial(foodVStart,foodHStart);
-					landing = landingMax;}
+					if(landing == 0){
+						nextTrial(foodVStart,foodHStart);
+						landing = landingMax;}
 				}
 			}
 		}
 	}
 });
+
 //Event function that moves the paddle
-	//Set key to random number so we don't get warnings if user doesnt press a button
-	key = 222;
 	
-	$(document).keypress(function(event) {
+	key = 222;//Set key to random number so we don't get warnings if user doesnt press a button
+	
+	$(document).keypress(function(event){
 	
 	eventArray = new Array();
-	eventArray['37'] = 0;
-	eventArray['39'] = 1;
+	eventArray['37'] = 0;//Keycode for left arrow key
+	eventArray['39'] = 1;//Key code for right arrow key
 	
-	if (choice == 0){
-		
-		if (eventArray[event.keyCode] != 'undefined'){ //If user presses left Arrow
-			key = eventArray[event.keyCode];
-			movePaddle();
-			choice = 1;
-			d = new Date();
-			t2 = d.getTime();
-			RT = t2 - t1;
-			alert(RT);
-			subject.inputData(trial,'RT',RT);
+		if (choice == 0){
+			
+			if (eventArray[event.keyCode] != 'undefined'){ //If user presses left or right arrow
+				
+				key = eventArray[event.keyCode];
+				movePaddle();
+				choice = 1;
+			
+				d = new Date();
+				t2 = d.getTime();
+				RT = t2 - t1;
+				
+				subject.inputData(trial,'RT',RT);
 			}
 		}
 	});
@@ -408,6 +421,7 @@ $(document).ready(function(){
 });
 
 </script>
+
 
 <div id = "Instructions"> 
 <p>Instructions:<br/> Left and Right Arrows govern paddle movement<br/> Get the right food to the right animal<br/> Click the Ready button when your ready to go <br/> Have Fun!!</p>
