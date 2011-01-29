@@ -27,24 +27,6 @@
 
 //Functions
 
-/* To keep in mind
-
-Animal Key:
-
-Giraffe: animalList == 0
-Lion: animalList == 1
-Gorilla:: animalList == 2
-Wolf: animalList == 3
-
-Food Key:
-
-Corn : stim == 0 
-Steak: stim == 1
-Lettuce: stim == 2
-Drumstick: stim == 3
-
-
-*/
 function setDifficulty(accuracy,reactionTime){
 
 	if (reactionTime <= 600){
@@ -118,7 +100,7 @@ function nextTrial(vertPos,horPos) {
 	setCue();
 	key = 222; //default key value, used throughout program
 	decisionTimer = decisionTimerLength;//How long user has to make a decision
-	choice = 0; //decision variaible for to stop key press abuse
+	choice = 222; //decision variaible for to stop key press abuse
 }
 
 	//This function with govern the animation when the food is delivered (name pending)
@@ -257,7 +239,7 @@ $(document).ready(function(){
 	
 	//State variable, changes when user decides what to do with the food
 	decisionPoint = 0;//Determines what happens when the food reaches the drop point
-	choice = 0;//Makes it so only one button press is allowed each trial
+	choice = 222;//Makes it so only one button press is allowed each trial
 	//Info Data
 	totalRT = 0; //Total reaction time
 	
@@ -331,11 +313,13 @@ $(document).ready(function(){
 		$("#food").html("<img src = \"images/Animal_Feeder/"+food+".png\" />");
 		t = new Date();
 		t1 = t.getTime();
+		
 		moveObjVert(converyorVSpeed,"#food");}
 		
 	else if (positionV > maxVertPos){
 	
 		if(decisionTimer > 0){
+			choice = 0;//Unlocks keypress event, user can now make their choice
 		//Phase 2: Three possibilities, go left, go right, or falls of the belt	
 			if(key == 0){
 				decisionPoint = 1;}
@@ -415,6 +399,7 @@ $(document).ready(function(){
 			d = new Date();
 			t2 = d.getTime();
 			RT = t2 - t1;
+			alert(RT);
 			subject.inputData(trial,'RT',RT);
 			}
 		}
