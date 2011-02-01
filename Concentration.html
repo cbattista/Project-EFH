@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>jMemoGame</title>
+		<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="gameQuery" ></script>
+		<script type="text/javascript" src="js/memory/jquery.colors.js" ></script>
+
+		<script type="text/javascript" src="Concentration.js" ></script>
+		<link rel="stylesheet" href="Concentration.css" type="text/css" media="screen" />
+		<script type="text/javascript">
+			$(document).ready(function(){jMemoGame.Play();});	
+		</script>
+	
+	</head>
+	
+	<body>
+
+		<div id="game">
+
+			<div id="playground">
+				<div id="mask"></div>
+				<div id="start">
+					<span id="msg-endgame"></span>
+					<span id="bt-start">Start</span>
+					<span id="continue">Click to continue</span>
+				</div>
+			</div>
+
+			<span class="label level">Level <span id="num-level"></span></span>
+			<span class="label">Time left</span>
+			<span class="display_zone" id="time"></span>
+			<span class="label">Score</span>
+			<span id="score" class="display_zone"></span>
+			<div class="break"></div>
+		</div>
+
+	</body>
+
+</html>
