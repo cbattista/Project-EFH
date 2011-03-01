@@ -1,0 +1,10 @@
+html,body{
+	background:black;
+	margin:0;
+	padding:0;
+}
+#title{
+	text-align:center;
+	font-size:30;
+	color:red;
+}
