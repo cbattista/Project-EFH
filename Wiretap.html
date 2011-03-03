@@ -2,32 +2,25 @@
 <head>
 <link href = "Wiretap.css" rel = "stylesheet" type = "text/css"></link>
 <script type = "text/javascript" src = "Jquery.js"></script>
-<script type = "text/javascript" src = "soundmanager2.js"></script>
+<script type = "text/javascript" src - "/jPlayer/jquery.jplayer.min.js"></script>
 <script type = "text/javascript" src = "Jquery.gameQuery.js"></script>
-<script type = "text/javascript" src = "Jquery.gameQuery.soundwrapper.soundmanager2.js"></script>
 <script type = "text/javascript" src = "Subject.js"</script>
 <script type = "text/javascript" src = "timer.js"</script>
-
-<script type = "text/javascript">
-soundManager.url = '/soundmanager2/swf/';
-soundManager.flashVersion = 9;
-soundManager.useFlashBlock = false;
-soundManager.debugMode =false;
-soundManager.onready(function(){
-});
-</script>
-
 </head>
 
 <body>
+
 <div class = "headers">	
 <h1 id="title">Wire Tap</h1>
 </div>
+
 <div class = "links">
 <a href = "user.html">User Page</a>
+</div>
 
 <div class = "pg">
 <p id = "instructions"> Instructions: </p>
+</div>
 
 <div id = "game">
 <script type = "text/javascript">
@@ -50,17 +43,6 @@ function playSound(){
 }
 $(document).ready(function(){
 
-soundManager.onready(function(){
-s1 = soundManager.createSound('cmtb','/audio/cmtb.mps');
-s1.play();
-});
-
-//s2 = soundManager.createSound('cmtb','/audio/cmtb.mps');
-//s3 = soundManager.createSound('cmtb','/audio/cmtb.mps');
-//s4 = soundManager.createSound('cmtb','/audio/cmtb.mps');
-
-
-
 //audioList = [sound1,sound2,sound3,sound4];
 
 //Hash map, associates each audio file with a set of numbers
@@ -79,7 +61,7 @@ soundNumbers['sound4'] = ['5','25','64'];
 	});
 	
 });
-
 </script>
 </div>
+
 </body>
