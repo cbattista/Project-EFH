@@ -1,21 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
 <head>
 <link href = "Wiretap.css" rel = "stylesheet" type = "text/css"></link>
 <script type = "text/javascript" src = "Jquery.js"></script>
-<script type = "text/javascript" src - "/jPlayer/jquery.jplayer.min.js"></script>
+<script type = "text/javascript" src = "jPlayer/jquery.jplayer.min.js"></script>
 <script type = "text/javascript" src = "Jquery.gameQuery.js"></script>
 <script type = "text/javascript" src = "Subject.js"</script>
 <script type = "text/javascript" src = "timer.js"</script>
 </head>
 
 <body>
+<div id = "jPlayer"></div>
 
 <div class = "headers">	
-<h1 id="title">Wire Tap</h1>
 </div>
 
 <div class = "links">
 <a href = "user.html">User Page</a>
+</div>
+
+<div class = "images">
+	<div id = "title"><center><img src = "images/Wiretap/wiretap.png"></center></div>
+	<div id = "scene"></div>
 </div>
 
 <div class = "pg">
@@ -24,9 +30,15 @@
 
 <div id = "game">
 <script type = "text/javascript">
-function nextLevel(){}
+function nextLevel(){
+	
+	level = level + 1;
+	trial = 0;
+	audioCue = [0,1,2,3,4];	
+}
 function nextTrial(){
-
+	trial = trial + 1;
+	audio = audioCue[trial];
 }
 
 //Grades user response and gives feedback
@@ -39,10 +51,16 @@ function showPrompt(){
 }
 
 function playSound(){
-	
+	//Insert Jplayer code here	
 }
+
+
 $(document).ready(function(){
 
+//Game Variables
+trial = 0;
+level = 0;
+audioCue = [0,4,3,2,1];
 //audioList = [sound1,sound2,sound3,sound4];
 
 //Hash map, associates each audio file with a set of numbers
@@ -54,9 +72,7 @@ soundNumbers['sound4'] = ['5','25','64'];
 
 
 	$.timer(40,function(){
-		
-		
-
+	
 	
 	});
 	
@@ -65,3 +81,4 @@ soundNumbers['sound4'] = ['5','25','64'];
 </div>
 
 </body>
+</html>
