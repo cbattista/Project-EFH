@@ -63,11 +63,16 @@ function setDifficulty(accuracy,reactionTime){
 	}
 }
 function nextLevel() {
-	//Caclulate user score
+	//Calculate user score
 	totalAccuracy = (correct/stimList.length)*100;
 	averageRT = (totalRT/stimList.length);
-	setDifficulty(totalAccuracy, averageRT);
+	minuteRT = averageRT/1000;
+	alert("Your total accuracy was "+totalAccuracy+"% and your average reaction time was "+minuteRT+" seconds");
+	
 
+	//Set difficulty for next level using scores from completed level
+	setDifficulty(totalAccuracy, averageRT);
+	alert(decisionTimerLength);
 	//Set counter to default state
 	correct = 0;//Set accuracy counter back to 0 for next level
 	totalRT = 0;//Set reaction time counter back to 0 for next level
@@ -117,7 +122,7 @@ function nextTrial(vertPos,horPos) {
 		subject.inputData(trial, "stimFile", stimFile[stim]);
 	}
 	else {
-		//alert('Level Complete');
+		alert('Level Complete');
 		subject.sendData();
 		nextLevel(stimFile, stimList);
 	}
