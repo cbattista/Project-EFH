@@ -1,35 +1,57 @@
+
 // Global constants:
 var PLAYGROUND_WIDTH    = 640;
 var PLAYGROUND_HEIGHT    = 480;
 var REFRESH_RATE        = 30;
 
-// Gloabl animation holder
+//Set start positions of food
+var initLeft = 30;
+var initTop = 60;
+
+//Set Speed variables
+var hSpeed = 5; //Sets how fast the food moves through the pipe
+var vSpeed = 0; //Sets how fast the food drops
+var newHSpeed = 0;
+
+//Set State variables
+var canSort = 0;
+var sorted = 0;
+
+//Creature on left, creature on right
 var creature1 = new Array();
 var creature2 = new Array();	
 
-//A set of functions for moving objects
-function setVertPos(v,id) {
-	boxVPos = v;
-	v = v + "px";
-	$(id).css("top", v);
-}
+//Set game Variables-which will be retrieved from the server
+var	timeInc = 1;
+var	level = 0;
+var	trial = 0;
+var	stimList = [1, 0, 2, 3, 2, 0, 1, 3, 1, 2, 1, 0];
+var	animalList1 = [0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1];
+var	animalList2 = [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0];
+var	cueList = [0, 1, 2, 2, 1, 0, 2, 1, 0, 2, 0, 1];
+var	stimFile = ["pinktri","bluetri","pinkcirc","bluecirc"];
+var	animalFile = ["pt","bc"];
+var	cueFile = ["cue0","cue1", "cue2"];
+
+//subject performance info
+var	correct = 0;//Resets correct trial timer to 0 for next level
+var	totalRT = 0;//Resets reaction time tracker
+
 	
-function moveObjVert(v,id) {//Move objects vertically. Negative v values move up, position move down
-	boxVPos = boxVPos + v;
-	newVPos = boxVPos + "px";
-	$(id).css("top", newVPos);
-}
-function setHorPos(h,id){
-	boxHPos = h;
-	h = h + "px";
-	$(id).css("right",h);
-}
+var	rule = new Array();
 	
-function moveObjHor(h,id){//Set direction of motion in horizonal dirction. Negative h makes the object move right. Positive the opposite.
-	boxHPos = boxHPos + h;
-	newHPos = boxHPos + "px";
-	$(id).css("right",newHPos);
-}
+var subject = new Subject(666,"animalFeeder");
+
+//Set stage variables which goven when things should start to fall
+maxLeft = 285;//How far across the conveyor belt food will go
+maxTop = 450;// How far down the conveyor belt food will go
+maxFallPos = 450;//How far unchosen food will fall
+revealLeft = 210;	
+
+rule['pinktri'] =  ['pt'];
+rule['bluecirc'] = ['bc'];
+rule['bluetri'] = ['bc'];
+rule['pinkcirc'] = ['pt'];
 
 function setDifficulty(accuracy,reactionTime){
 
@@ -71,12 +93,12 @@ function nextLevel() {
 	totalAccuracy = (correct/stimList.length)*100;
 	averageRT = (totalRT/stimList.length);
 	minuteRT = averageRT/1000;
-	alert("Your total accuracy was "+totalAccuracy+"% and your average reaction time was "+minuteRT+" seconds");
+	//alert("Your total accuracy was "+totalAccuracy+"% and your average reaction time was "+minuteRT+" seconds");
 	
 
 	//Set difficulty for next level using scores from completed level
 	setDifficulty(totalAccuracy, averageRT);
-	alert(decisionTimerLength);
+	//alert(decisionTimerLength);
 	//Set counter to default state
 	correct = 0;//Set accuracy counter back to 0 for next level
 	totalRT = 0;//Set reaction time counter back to 0 for next level
@@ -97,15 +119,22 @@ function nextLevel() {
 	creature1 = animalFile[animal1];
 	creature2 = animalFile[animal2];
 	
-	
 	//subject.inputLevelData(level, score, currentTime.getTime());
 	subject.sendLevelData();
 }
 function nextTrial(vertPos,horPos) {
+	//reset paddle
+	$("#paddle").rotate(0);
 
-	//Move food back to its original position
-	setVertPos(vertPos,"#food");
-	setHorPos(horPos,"#food");
+	//Set Speed variables
+	hSpeed = 5;
+	vSpeed = 0;
+	sorted = 0;
+	canSort = 0;
+
+	//subject performance
+	correct = 0;
+	totalRT = 0;
 
 	//Increment trial number each time this function is called
 	trial = trial + 1;
@@ -113,12 +142,20 @@ function nextTrial(vertPos,horPos) {
 	stim = stimList[trial];
 	food = stimFile[stim];
 	
-	animal1 = animalList1[trial];
-	animal2 = animalList2[trial];
+	creature1 = makeCreature(animalFile[animalList1[trial]]);
+    creature2 = makeCreature(animalFile[animalList2[trial]]);
 	
-	creature1 = animalFile[animal1];
-	creature2 = animalFile[animal2];
-	
+	c1 = animalFile[animalList1[trial]];
+	c2 = animalFile[animalList2[trial]];
+
+	$("#creature1").setAnimation(creature1["idle"]);
+	$("#creature2").setAnimation(creature2["idle"]);
+
+	$("#food").setAnimation(new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/pipebulge.png"}));
+
+	$("#food").css("left", initLeft);
+	$("#food").css("top", initTop);
+
 	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
 		//Send to the server which object was sent to the user to be 'delt' with (steak or banana)
 		stim = stimList[trial];
@@ -126,15 +163,12 @@ function nextTrial(vertPos,horPos) {
 		subject.inputData(trial, "stimFile", stimFile[stim]);
 	}
 	else {
-		alert('Level Complete');
+		//alert('Level Complete');
 		subject.sendData();
 		nextLevel(stimFile, stimList);
 	}
 	//Set objects to default state
-	$("#food").html("<img src = \"images/Animal_Feeder/pipe_bulge.png\" />");
-	$("#paddle").html("<img src = \"images/Animal_Feeder/paddle_middle.png\" />");
-	$("#animal1").html("<img src = \"images/Animal_Feeder/" +creature1+ ".png\" />");
-	$("#animal2").html("<img src = \"images/Animal_Feeder/" +creature2+ ".png\" />");
+	
 	
 	setCue();
 	key = 222; //default key value, used throughout program
@@ -149,7 +183,8 @@ function onDelivery(){
 		
 		if ( $.inArray(creature1, rule[food]) != -1){
 			
-			$("#animal1").html("<img src = \"images/Animal_Feeder/"+creature1+ "_happy.png\" />");
+			$("#creature1").setAnimation(creature1["happy"]);
+
 			subject.inputData(trial,"outcome","P");
 			
 			if(landing == 1){//Since this animation is run until a timer runs out, this guarantees correct is only added to once
@@ -158,7 +193,7 @@ function onDelivery(){
 			
 		else { 
 		
-			$("#animal1").html("<img src = \"images/Animal_Feeder/"+creature1+"_angry.png\" />");
+			$("#creature1").setAnimation(creature1["angry"]);
 			subject.inputData(trial,"outcome","N");}
 	}
 	
@@ -166,7 +201,7 @@ function onDelivery(){
 		
 		if ( $.inArray(creature2,rule[food]) != -1){
 		
-			$("#animal2").html("<img src = \"images/Animal_Feeder/"+creature2+ "_happy.png\" />");
+			$("#creature2").setAnimation(creature1["happy"]);
 			subject.inputData(trial,"outcome","P");
 			
 			if(landing == 1){
@@ -174,7 +209,7 @@ function onDelivery(){
 		}
 		else {
 		
-			$("#animal2").html("<img src = \"images/Animal_Feeder/"+creature2+ "_angry.png\" />");
+			$("#creature2").setAnimation(creature1["angry"]);
 			subject.inputData(trial,"outcome","N");}
 	}
 }
@@ -196,97 +231,52 @@ function noFood(maxVert,speed){
 			moveObjVert(speed,"#food");}
 		
 	if(position.top >= maxVert){
-		
-		$("#animal1").html("<img src = \"images/Animal_Feeder/" + creature1 + "_angry.png\" />");
-		$("#animal2").html("<img src = \"images/Animal_Feeder/" + creature2da + "_angry.png\" />");
-		$("#food").html("<img src = \"images/Animal_Feeder/" + food + "_squashed.png\" />");
+	
+        $("#creature1").setAnimation(creature1["angry"]);
+		$("#creature2").setAnimation(creature2["angry"]);
 	}
 }
 
-function movePaddle(){
-	
-	if (key == 0){	
-		$("#paddle").html("<img src = \"images/Animal_Feeder/paddle_left.png\" />");}
 
-	if (key == 1){	
-		$("#paddle").html("<img src = \"images/Animal_Feeder/paddle_right.png\" />");}
+function makeCreature(id){
+	creature = new Array;
+    creature["idle"] = new $.gameQuery.Animation({
+        imageURL: "images/Animal_Feeder/" + id+ "_idle.png",
+		numberOfFrame: 4,
+		delta: 200,
+		rate: 1500,
+		type: $.gameQuery.ANIMATION_HORIZONTAL});
+    creature["angry"] = new $.gameQuery.Animation({
+        imageURL: "images/Animal_Feeder/" + id+ "_angry.png",
+		numberOfFrame: 4,
+		delta: 200,
+		rate: 120,
+		type: $.gameQuery.ANIMATION_HORIZONTAL});
+    creature["happy"] = new $.gameQuery.Animation({
+        imageURL: "images/Animal_Feeder/" + id+ "_happy.png",
+		numberOfFrame: 4,
+		delta: 200,
+		rate: 400,
+		type: $.gameQuery.ANIMATION_HORIZONTAL});
+	return creature;
 }
-
 
 
 // --------------------------------------------------------------------
 // --                      the main declaration:                     --
 // --------------------------------------------------------------------
-
 $(function(){
-    // Animations declaration:
-	
-	//Set game Variables-which will be retrieved from the server
-	timeInc = 1;
-	level = 0;
-	trial = 0;
-	stimList = [1, 0, 2, 3, 2, 0, 1, 3, 1, 2, 1, 0];
-	animalList1 = [0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1];
-	animalList2 = [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0];
-	cueList = [0, 1, 2, 2, 1, 0, 2, 1, 0, 2, 0, 1];
-	stimFile = ["pinktri","bluetri","pinkcirc","bluecirc"];
-	animalFile = ["pt","bc"];
-	cueFile = ["cue0","cue1", "cue2"];
-	
-	rule = new Array();
-	
-	rule['pinktri'] =  ['pt'];
-	rule['bluecirc'] = ['bc'];
-	rule['bluetri'] = ['bc'];
-	rule['pinkcirc'] = ['pt'];
-	
-	animal1 = animalList1[trial];
-	animal2 = animalList2[trial];
-	
 
 	//Start things off
 	stim = stimList[trial];
 	food = stimFile[stim];
 	setCue();
 
-    creature1["idle"] = new $.gameQuery.Animation({
-        imageURL: "images/Animal_Feeder/bc_idle.png",
-		numberOfFrame: 4,
-		delta: 200,
-		rate: 1500,
-		type: $.gameQuery.ANIMATION_HORIZONTAL});
-    creature1["angry"] = new $.gameQuery.Animation({
-        imageURL: "images/Animal_Feeder/bc_angry.png",
-		numberOfFrame: 4,
-		delta: 200,
-		rate: 120,
-		type: $.gameQuery.ANIMATION_HORIZONTAL});
-    creature1["happy"] = new $.gameQuery.Animation({
-        imageURL: "images/Animal_Feeder/bc_happy.png",
-		numberOfFrame: 4,
-		delta: 200,
-		rate: 400,
-		type: $.gameQuery.ANIMATION_HORIZONTAL});
+	creature1 = makeCreature(animalFile[animalList1[trial]]);
+    creature2 = makeCreature(animalFile[animalList2[trial]]);
 
-    creature2["idle"] = new $.gameQuery.Animation({
-        imageURL: "images/Animal_Feeder/pt_idle.png",
-		numberOfFrame: 4,
-		delta: 200,
-		rate: 1500,
-		type: $.gameQuery.ANIMATION_HORIZONTAL});
-    creature2["angry"] = new $.gameQuery.Animation({
-        imageURL: "images/Animal_Feeder/pt_angry.png",
-		numberOfFrame: 4,
-		delta: 200,
-		rate: 120,
-		type: $.gameQuery.ANIMATION_HORIZONTAL});
-    creature2["happy"] = new $.gameQuery.Animation({
-        imageURL: "images/Animal_Feeder/pt_happy.png",
-		numberOfFrame: 4,
-		delta: 200,
-		rate: 400,
-		type: $.gameQuery.ANIMATION_HORIZONTAL});
-
+	c1 = animalFile[animalList1[trial]];
+	c2 = animalFile[animalList2[trial]];
 
     // Initialize the game:
     $("#playground").playground({height: PLAYGROUND_HEIGHT,
@@ -326,10 +316,10 @@ $(function(){
 		     width: 200,
 		     height: 250}).end()
 
-	.addGroup("food", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT})
+	.addGroup("item", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT})
 		.addSprite("food", {animation : new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/pipebulge.png"}),
-			posx:0,
-			posy:110,
+			posx:initLeft,
+			posy:initTop,
 			width: 62,
 			height: 53});
 	
@@ -341,191 +331,88 @@ $(function(){
         $.playground().startGame(function(){
             $("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove();});
         });
-    })
-    
-	//Set start positions of food
-	foodHStart = 800;
-	foodVStart = 50;
-	
-	setVertPos(foodVStart,"#food");
-	setHorPos(foodHStart,"#food");
-	
-	//Set stage variables which goven when things should start to fall
-	maxHorPos = 575;//How far across the conveyor belt food will go
-	maxVertPos = 100;// How far down the conveyor belt food will go
-	maxFallPos = 450;//How far unchosen food will fall
-	
-	//Set end positions for food
-	foodVEnd1 = 380;
-	foodHEnd1 = 670;
-	
-	foodVEnd2 = 300;
-	foodHEnd2 = 470;
-	
-	decisionTimerLength = 40;
-	decisionTimer = decisionTimerLength;
-	landingMax = 20; //How long the landing animation will last
-	landing = landingMax;
-	
-	//State variable, changes when user decides what to do with the food
-	decisionPoint = 0;//Determines what happens when the food reaches the drop point
-	choice = 222;//Makes it so only one button press is allowed each trial
-	correct = 0;//Resets correct trial timer to 0 for next level
-	totalRT = 0;//Resets reaction time tracker
-	
-	//Set Speed variables
-	converyorSlope = (maxVertPos - foodVStart)/(foodHStart - maxHorPos);
-	converyorHSpeed = 5; //Sets how fast the food moves through the pipe
-	converyorVSpeed = converyorHSpeed*converyorSlope;
-	
-	animal1Slope = Math.abs((maxVertPos - foodVEnd1)/(maxHorPos - foodHEnd1));
-	animal1HSpeed = 5;//Sets how fact the food goes to the animals
-	animal1VSpeed = animal1Slope*animal1HSpeed;
-	
-	animal2Slope = Math.abs((maxVertPos - foodVEnd2)/(maxHorPos - foodHEnd2));
-	animal2HSpeed = 5;
-	animal2VSpeed = animal2Slope*animal2HSpeed;
-
-	//timer stuff
+    });
+		
+	//--------------------------------PASSAGE OF TIME----------------------------------------------------------------------
+	//
 	$.playground().registerCallback(function(){
-	
-	//Get current position; take css info and cast as int so we can work with it
-	var posV = $("#food").position();
-	positionV = posV.top;
-	
-	var positionH = $("#food").css("right");
-	var posH = positionH.substr(0,3);
-	newposH = parseInt(posH);
-
-//Here are the statements which govern the moving of the food		
-	
+		
+	var newLeft = parseInt($("#food").css("left")) + hSpeed;	
+	var newTop = parseInt($("#food").css("top")) + vSpeed;
 	//Phase 1: Move obj down the conveyor belt, angle is determined by the difference of vertical and horizontal speed(slope)
-	
-	if (newposH > maxHorPos && positionV < maxVertPos){
-		moveObjVert(converyorVSpeed,"#food");
-		moveObjHor(-converyorHSpeed,"#food");}
-	
-	else if (positionV == maxVertPos){
-		
-		$("#food").html("<img src = \"images/Animal_Feeder/"+food+".png\" />");
-		
+	$("#food").css("left", newLeft);
+	$("#food").css("top", newTop);	
+
+	if (newLeft==revealLeft && sorted==0){
+		//alert("shoveit");
+
+		canSort = 1;
+				
 		t = new Date();
 		t1 = t.getTime();
 		
-		choice = 0;//Unlocks keypress event, user can now make their choice
-		
-		moveObjVert(converyorVSpeed,"#food");}
-		
-	else if (positionV > maxVertPos){
-	
-		if(decisionTimer > 0){
-			
-		//Phase 2: Three possibilities, go left, go right, or falls of the belt	
-			if(key == 0){
-				decisionPoint = 1;}
-			
-			if(key == 1){
-				decisionPoint = 2;}
-				
-			if(key == 222){
-				decisionPoint = 0;}
-			
-			decisionTimer = decisionTimer - 1;
-			
-			if(choice == 1){ //If user makes his choice before the decisionTimer hits 0, set decisionTimer to 0 to make food fall immediately
-				decisionTimer = 0;}
-		}
-		
-		//Phase 3: execute decision	
-		if (decisionTimer == 0){
-			
-			choice = 1; //Locks keypress event, so user cannot make a choice after it has fallen
-			
-			if (decisionPoint == 1){
-				
-				if (positionV < foodVEnd1){
-					moveObjVert(animal1VSpeed,"#food");
-					moveObjHor(animal1HSpeed,"#food");}
-					
-				if(positionV >= foodVEnd1){
-					onDelivery();
-					landing = landing - 1;
-			
-					if(landing == 0){
-						nextTrial(foodVStart,foodHStart);
-						landing = landingMax;}
-				}
-			}
+		myURL = "images/Animal_Feeder/" + stimFile[stimList[trial]] + ".png";
+		theFood = new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/" + stimFile[stimList[trial]] + ".png"});
+		$("#food").setAnimation(theFood)
 
-			if (decisionPoint == 2){
-				
-				if (positionV < foodVEnd2){
-					moveObjVert(animal2VSpeed,"#food");
-					moveObjHor(-animal2HSpeed,"#food");}
-				
-				if (positionV >= foodVEnd2){
-					onDelivery();
-					landing = landing - 1;
-			
-					if (landing == 0){
-						nextTrial(foodVStart,foodHStart);
-						landing = landingMax;}
-				}
+	}
+	else if (newLeft >= maxLeft && newTop < maxTop) {
+		canSort = 0;
+		if (sorted == 0) {
+			hSpeed = 0;
+		}
+		else {
+			hSpeed = newHSpeed;
+		}
+		vSpeed = 5;
+	}
+	else if (newTop == maxTop) {
+		if (sorted == 0) {
+            $("#creature1").setAnimation(creature1["angry"]);
+			$("#creature2").setAnimation(creature2["angry"]);
+		}
+		else {
+			if (hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
+			$("#creature1").setAnimation(creature1["happy"]);
 			}
-				
-			if(decisionPoint == 0){
-				noFood(maxFallPos, 19);
-				
-				if(positionV >= maxFallPos){
-					landing = landing - 1;
-			
-					if(landing == 0){
-						nextTrial(foodVStart,foodHStart);
-						landing = landingMax;}
-				}
+			else if (hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
+			$("#creature1").setAnimation(creature1["angry"]);
 			}
+			else if (hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
+			$("#creature2").setAnimation(creature2["happy"]);
+			}
+			else if (hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
+			$("#creature2").setAnimation(creature2["angry"]);
+			}						
 		}
 	}
+	else if (newTop > (maxTop + 100)) {
+		nextTrial(initTop, initLeft);
+	}	
+
+
 	}, 40);
-
-
 	
     //this is where the keybinding occurs
     $(document).keydown(function(e){
+
         switch(e.keyCode){
             case 65: //this is left! (a)
-                $("#playerBooster").setAnimation();
-                break;
-            case 87: //this is up! (w)
-                $("#creature1").setAnimation(creature1["angry"]);
-				$("#creature2").setAnimation(creature2["happy"]);
-                break;
+				if (canSort==1) {
+					sorted = 1;
+					newHSpeed = -4;
+					canSort = 0;
+					$("#paddle").rotate(315);
+		            break;
+				}
             case 68: //this is right (d)
-                $("#playerBooster").setAnimation(playerAnimation["booster"]);
-                break;
-            case 83: //this is down! (s)
-                $("#creature1").setAnimation(creature1["happy"]);
-				$("#creature2").setAnimation(creature2["angry"]);
-                break;
-        }
-    });
-    //this is where the keybinding occurs
-    $(document).keyup(function(e){
-        switch(e.keyCode){
-            case 65: //this is left! (a)
-                $("#playerBooster").setAnimation(playerAnimation["boost"]);
-                break;
-            case 87: //this is up! (w)
-                $("#creature1").setAnimation(creature1["idle"]);
-				$("#creature2").setAnimation(creature2["idle"]);
-                break;
-            case 68: //this is right (d)
-                $("#playerBooster").setAnimation(playerAnimation["boost"]);
-                break;
-            case 83: //this is down! (s)
-                $("#creature1").setAnimation(creature1["idle"]);
-				$("#creature2").setAnimation(creature2["idle"]);
-                break;
+				if (canSort == 1) {
+					sorted = 1;
+					newHSpeed = 4;
+					canSort = 0;
+					$("#paddle").rotate(45);
+		            break;
+				}
         }
     });
 });
