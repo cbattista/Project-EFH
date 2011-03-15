@@ -1,17 +1,25 @@
-
 // Global constants:
 var PLAYGROUND_WIDTH    = 640;
 var PLAYGROUND_HEIGHT    = 480;
-var REFRESH_RATE        = 30;
+var REFRESH_RATE        = 40; //ms between frame change callbacks
 
 //Set start positions of food
 var initLeft = 30;
 var initTop = 60;
 
-//Set Speed variables
+//Set stage variables which goven when things should start to fall
+maxLeft = 285;//How far across the conveyor belt food will go
+maxTop = 450;// How far down the conveyor belt food will go
+maxFallPos = 450;//How far unchosen food will fall
+revealLeft = 210;	
+
+//Set Initial Speed/Difficulty Variables
 var hSpeed = 5; //Sets how fast the food moves through the pipe
 var vSpeed = 0; //Sets how fast the food drops
 var newHSpeed = 0;
+
+var switchFreq = 50;
+var trials = 30;
 
 //Set State variables
 var canSort = 0;
@@ -25,91 +33,52 @@ var creature2 = new Array();
 var	timeInc = 1;
 var	level = 0;
 var	trial = 0;
-var	stimList = [1, 0, 2, 3, 2, 0, 1, 3, 1, 2, 1, 0];
-var	animalList1 = [0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1];
-var	animalList2 = [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0];
-var	cueList = [0, 1, 2, 2, 1, 0, 2, 1, 0, 2, 0, 1];
+var	stimList = [];
+var	animalList1 = [];
+var	animalList2 = [];
+var	cueList = [];
+
+//names of animals in the game
 var	stimFile = ["pinktri","bluetri","pinkcirc","bluecirc"];
 var	animalFile = ["pt","bc"];
-var	cueFile = ["cue0","cue1", "cue2"];
+var	cueFile = ["colour","shape"];
 
 //subject performance info
 var	correct = 0;//Resets correct trial timer to 0 for next level
-var	totalRT = 0;//Resets reaction time tracker
+var RT = 0;
+var	totalScore = 0;//Resets reaction time tracker
+var totalRT = 0;
+var totalACC = 0;
 
-	
 var	rule = new Array();
-	
-var subject = new Subject(666,"animalFeeder");
-
-//Set stage variables which goven when things should start to fall
-maxLeft = 285;//How far across the conveyor belt food will go
-maxTop = 450;// How far down the conveyor belt food will go
-maxFallPos = 450;//How far unchosen food will fall
-revealLeft = 210;	
-
 rule['pinktri'] =  ['pt'];
 rule['bluecirc'] = ['bc'];
 rule['bluetri'] = ['bc'];
 rule['pinkcirc'] = ['pt'];
-
-function setDifficulty(accuracy,reactionTime){
-
-	if(totalAccuracy >= 80){
-		if (reactionTime <= 600){
-			decisionTimerLength = decisionTimerLength - 1.5;}
-		if(reactionTime > 600 && reactionTime <= 1000){
-			decisionTimerLength = decisionTimerLength -1.0}
-		if(reactionTime > 1000){
-			decisionTimerLength = -0.5;} 
-	}
-	if(totalAccuracy >= 70 && totalAccuracy < 80){
-		if (reactionTime <= 600){
-			decisionTimerLength = decisionTimerLength - 1;}
-		if(reactionTime > 600 && reactionTime <= 1000){
-			decisionTimerLength = decisionTimerLength -0.5;}
-		if(reactionTime > 1000){
-			decisionTimerLength = decisionTimerLength;} 
-	}	
-	if(totalAccuracy <70 && totalAccuracy>=60){
-		if (reactionTime <= 600){
-			decisionTimerLength = decisionTimerLength -0.5;}
-		if(reactionTime > 600 && reactionTime <= 1000){
-			decisionTimerLength = decisionTimerLength;}
-		if(reactionTime > 1000){
-			decisionTimerLength = decisionTimerLength + 0.5;} 
-	}
-	if(totalAccuracy <60){
-	if (reactionTime <= 600){
-			decisionTimerLength = decisionTimerLength -0.3;}
-		if(reactionTime > 600 && reactionTime <= 1000){
-			decisionTimerLength = decisionTimerLength -0.2;}
-		if(reactionTime > 1000){
-			decisionTimerLength = decisionTimerLength + 0.1;} 
-	}
-}
-function nextLevel() {
-	//Calculate user score
-	totalAccuracy = (correct/stimList.length)*100;
-	averageRT = (totalRT/stimList.length);
-	minuteRT = averageRT/1000;
-	//alert("Your total accuracy was "+totalAccuracy+"% and your average reaction time was "+minuteRT+" seconds");
 	
+var subject = new Subject(666,"taskswitch");
 
+var scoreMult = revealLeft / hSpeed * REFRESH_RATE;
+
+
+function nextLevel() {
+	
 	//Set difficulty for next level using scores from completed level
-	setDifficulty(totalAccuracy, averageRT);
-	//alert(decisionTimerLength);
+	setDifficulty(totalScore);
+
 	//Set counter to default state
-	correct = 0;//Set accuracy counter back to 0 for next level
+	ACC = 0;//Set accuracy counter back to 0 for next level
+	RT = 0;
 	totalRT = 0;//Set reaction time counter back to 0 for next level
+	totalACC = 0;
 	trial = 0;
-	level = level + 1;
+	level += 1;
 	
 	//setting of game variables - eventually should be retrieved from the database
-	stimList =    [1, 2, 1, 1, 0, 3, 0, 2, 0, 3, 2, 3];
-	animalList1 = [1, 0, 3, 2, 2, 2, 1, 3, 2, 1, 1, 1];
-	animalList2 = [0, 3, 0, 1, 3, 0, 2, 2, 2, 0, 1, 0];
-	cueList =     [1, 2, 0, 1, 2, 0, 2, 2, 1, 0, 2, 1];
+	stimList =    [0, 1, 3, 4] * (trials/4);
+	animalList1 = [1] * trials;
+	animalList2 = [0] * trials;
+	switches = switchFreq / 100 * trials;
 	
 	//start things off
 	stim = stimList[trial];
@@ -176,42 +145,19 @@ function nextTrial(vertPos,horPos) {
 	choice = 222; //decision variaible for to stop key press abuse
 }
 
-	//This function with govern the animation when the food is delivered (name pending)
-function onDelivery(){
-	
-	if(decisionPoint == 1){	//goes to animal 1
-		
-		if ( $.inArray(creature1, rule[food]) != -1){
-			
-			$("#creature1").setAnimation(creature1["happy"]);
 
-			subject.inputData(trial,"outcome","P");
-			
-			if(landing == 1){//Since this animation is run until a timer runs out, this guarantees correct is only added to once
-				correct = correct + 1;}
-		}
-			
-		else { 
-		
-			$("#creature1").setAnimation(creature1["angry"]);
-			subject.inputData(trial,"outcome","N");}
-	}
+function setDifficulty(score){
+	game = "taskswitch";
+
+	$.get("getDifficulty.php?score=" + score + "&game='taskswitch'", function(data) { 
+		diffs = data.split(',');
+		trials = diffs[0]
+		hSpeed = diffs[1];
+		switchFreq = diffs[2];
+	});
 	
-	if(decisionPoint == 2){
-		
-		if ( $.inArray(creature2,rule[food]) != -1){
-		
-			$("#creature2").setAnimation(creature1["happy"]);
-			subject.inputData(trial,"outcome","P");
-			
-			if(landing == 1){
-				correct = correct + 1;}
-		}
-		else {
-		
-			$("#creature2").setAnimation(creature1["angry"]);
-			subject.inputData(trial,"outcome","N");}
-	}
+	scoreMult = revealLeft / hSpeed * REFRESH_RATE;
+
 }
 
 //This function will set the cue
@@ -222,22 +168,6 @@ function setCue(){
 	$("#cue").html("<img src = \"images/Animal_Feeder/" +cueNext+".png\" />");
 }
 	
-//This function will govern the animal when no food is chosen, aka falls to the ground and splatters
-function noFood(maxVert,speed){
-		
-	var position = $("#food").position();
-		
-	if(position.top < maxVert){
-			moveObjVert(speed,"#food");}
-		
-	if(position.top >= maxVert){
-	
-        $("#creature1").setAnimation(creature1["angry"]);
-		$("#creature2").setAnimation(creature2["angry"]);
-	}
-}
-
-
 function makeCreature(id){
 	creature = new Array;
     creature["idle"] = new $.gameQuery.Animation({
@@ -322,6 +252,7 @@ $(function(){
 			posy:initTop,
 			width: 62,
 			height: 53});
+
 	
     // this sets the id of the loading bar:
     $().setLoadBar("loadingBar", 400);
@@ -367,31 +298,41 @@ $(function(){
 		vSpeed = 5;
 	}
 	else if (newTop == maxTop) {
+		
 		if (sorted == 0) {
             $("#creature1").setAnimation(creature1["angry"]);
 			$("#creature2").setAnimation(creature2["angry"]);
+			score = 0;
 		}
 		else {
 			if (hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 			$("#creature1").setAnimation(creature1["happy"]);
+			score = (1 - (RT / scoreMult)) * 10;
 			}
 			else if (hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
 			$("#creature1").setAnimation(creature1["angry"]);
+			score = 0;
 			}
 			else if (hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
 			$("#creature2").setAnimation(creature2["happy"]);
+			score = (1 - (RT / scoreMult)) * 10;
 			}
 			else if (hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
 			$("#creature2").setAnimation(creature2["angry"]);
+			score = 0;
 			}						
-		}
+		}		
+
+		totalScore += score;
+		$("#score").html(score);
+		subject.inputData(trial, "score", score);
+
 	}
 	else if (newTop > (maxTop + 100)) {
 		nextTrial(initTop, initLeft);
 	}	
 
-
-	}, 40);
+	}, REFRESH_RATE);
 	
     //this is where the keybinding occurs
     $(document).keydown(function(e){
@@ -403,6 +344,10 @@ $(function(){
 					newHSpeed = -4;
 					canSort = 0;
 					$("#paddle").rotate(315);
+					d = new Date();
+					t2 = d.getTime();
+					RT = t2 - t1;
+					subject.inputData(trial, 'RT', RT);
 		            break;
 				}
             case 68: //this is right (d)
@@ -411,6 +356,10 @@ $(function(){
 					newHSpeed = 4;
 					canSort = 0;
 					$("#paddle").rotate(45);
+					d = new Date();
+					t2 = d.getTime();
+					RT = t2 - t1;
+					subject.inputData(trial, 'RT', RT);
 		            break;
 				}
         }
