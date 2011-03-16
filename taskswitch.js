@@ -46,6 +46,9 @@ function nextLevel() {
 function nextTrial() {
 	//reset paddle
 	$("#paddle").rotate(0);
+	//set cue
+	setCue();
+
 
 	//Set Speed variables
 	hSpeed = 5;
@@ -88,9 +91,7 @@ function nextTrial() {
 		subject.sendData();
 		nextLevel(stimFile, stimList);
 	}
-	//Set objects to default state
-		
-	setCue();
+
 }
 
 function setDifficulty(score){
@@ -111,9 +112,25 @@ function setDifficulty(score){
 //This function will set the cue
 function setCue(){
 
-	var cue = cueList[trial];
-	var cueNext = cueFile[cue];
-	$("#cue").html("<img src = \"images/Animal_Feeder/" +cueNext+".png\" />");
+	cueSwitch = cueList[trial];
+	if (cueSwitch == 1) {
+		cueFile.reverse();
+	}
+	cue = cueFile[0];
+	$("#cue").html(cue);
+
+	if (cue == "shape"){
+		rule['pinktri'] =  ['pt'];
+		rule['bluecirc'] = ['bc'];
+		rule['bluetri'] = ['pt'];
+		rule['pinkcirc'] = ['bc'];
+	}
+	else {
+		rule['pinktri'] =  ['pt'];
+		rule['bluecirc'] = ['bc'];
+		rule['bluetri'] = ['bc'];
+		rule['pinkcirc'] = ['pt'];
+	}
 }
 	
 function makeCreature(id){
