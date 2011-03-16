@@ -24,8 +24,6 @@ function nextLevel() {
 		animalList2 = animalList2.concat([1]);
 	}
 	
-	alert(animalList1);
-
 	switches = switchFreq / 100 * trials;
 
 	for (i=0;i<switches;i++){
