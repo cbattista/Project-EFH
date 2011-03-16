@@ -6,6 +6,11 @@ function nextLevel() {
 	trial = 0;
 
 	level += 1;
+
+	cueList = [];
+	animalList1 = [];
+	animalList2 = [];
+	stimList = [];	
 	
 	//setting of game variables - eventually should be retrieved from the database
 	for (i=0;i<trials/4;i++) {
@@ -13,9 +18,14 @@ function nextLevel() {
 	}
 	
 	stimList.sort(randOrd);
+
+	for (i=0;i<trials;i++){
+		animalList1 = animalList1.concat([0]);
+		animalList2 = animalList2.concat([1]);
+	}
 	
-	animalList1 = [1] * trials;
-	animalList2 = [0] * trials;
+	alert(animalList1);
+
 	switches = switchFreq / 100 * trials;
 
 	for (i=0;i<switches;i++){
@@ -28,11 +38,13 @@ function nextLevel() {
 
 	cueList = cueList.sort(randOrd); //randomize the list
 
-	nextTrial()
+	nextTrial();
 	
 	//subject.inputLevelData(level, score, currentTime.getTime());
 	subject.sendLevelData();
+
 }
+
 function nextTrial() {
 	//reset paddle
 	$("#paddle").rotate(0);
@@ -186,13 +198,14 @@ $(function(){
     
     //initialize the start button
     $("#startbutton").click(function(){
+
+		//Start things off
+		nextLevel();
+
         $.playground().startGame(function(){
             $("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove();});
         });
     });
-	
-	//Start things off
-	nextLevel();
 
 
 	//--------------------------------PASSAGE OF TIME----------------------------------------------------------------------
