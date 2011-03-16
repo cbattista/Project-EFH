@@ -1,97 +1,39 @@
-// Global constants:
-var PLAYGROUND_WIDTH    = 640;
-var PLAYGROUND_HEIGHT    = 480;
-var REFRESH_RATE        = 40; //ms between frame change callbacks
-
-//Set start positions of food
-var initLeft = 30;
-var initTop = 60;
-
-//Set stage variables which goven when things should start to fall
-maxLeft = 285;//How far across the conveyor belt food will go
-maxTop = 450;// How far down the conveyor belt food will go
-maxFallPos = 450;//How far unchosen food will fall
-revealLeft = 210;	
-
-//Set Initial Speed/Difficulty Variables
-var hSpeed = 5; //Sets how fast the food moves through the pipe
-var vSpeed = 0; //Sets how fast the food drops
-var newHSpeed = 0;
-
-var switchFreq = 50;
-var trials = 30;
-
-//Set State variables
-var canSort = 0;
-var sorted = 0;
-
-//Creature on left, creature on right
-var creature1 = new Array();
-var creature2 = new Array();	
-
-//Set game Variables-which will be retrieved from the server
-var	timeInc = 1;
-var	level = 0;
-var	trial = 0;
-var	stimList = [];
-var	animalList1 = [];
-var	animalList2 = [];
-var	cueList = [];
-
-//names of animals in the game
-var	stimFile = ["pinktri","bluetri","pinkcirc","bluecirc"];
-var	animalFile = ["pt","bc"];
-var	cueFile = ["colour","shape"];
-
-//subject performance info
-var	correct = 0;//Resets correct trial timer to 0 for next level
-var RT = 0;
-var	totalScore = 0;//Resets reaction time tracker
-var totalRT = 0;
-var totalACC = 0;
-
-var	rule = new Array();
-rule['pinktri'] =  ['pt'];
-rule['bluecirc'] = ['bc'];
-rule['bluetri'] = ['bc'];
-rule['pinkcirc'] = ['pt'];
-	
-var subject = new Subject(666,"taskswitch");
-
-var scoreMult = revealLeft / hSpeed * REFRESH_RATE;
-
-
 function nextLevel() {
 	
 	//Set difficulty for next level using scores from completed level
 	setDifficulty(totalScore);
 
-	//Set counter to default state
-	ACC = 0;//Set accuracy counter back to 0 for next level
-	RT = 0;
-	totalRT = 0;//Set reaction time counter back to 0 for next level
-	totalACC = 0;
 	trial = 0;
+
 	level += 1;
 	
 	//setting of game variables - eventually should be retrieved from the database
-	stimList =    [0, 1, 3, 4] * (trials/4);
+	for (i=0;i<trials/4;i++) {
+		stimList = stimList.concat([0, 1, 2, 3]);
+	}
+	
+	stimList.sort(randOrd);
+	
 	animalList1 = [1] * trials;
 	animalList2 = [0] * trials;
 	switches = switchFreq / 100 * trials;
-	
-	//start things off
-	stim = stimList[trial];
-	food=stimFile[stim];
-	animal1 = animalList1[trial];
-	animal2 = animalList2[trial];
-	creature1 = animalFile[animal1];
-	creature2 = animalFile[animal2];
+
+	for (i=0;i<switches;i++){
+		cueList = cueList.concat([1]);
+	}
+
+	for (i=0;i<trials-switches;i++){
+		cueList = cueList.concat([0]);
+	}
+
+	cueList = cueList.sort(randOrd); //randomize the list
+
+	nextTrial()
 	
 	//subject.inputLevelData(level, score, currentTime.getTime());
 	subject.sendLevelData();
 }
-function nextTrial(vertPos,horPos) {
+function nextTrial() {
 	//reset paddle
 	$("#paddle").rotate(0);
 
@@ -102,7 +44,7 @@ function nextTrial(vertPos,horPos) {
 	canSort = 0;
 
 	//subject performance
-	correct = 0;
+	totalACC = 0;
 	totalRT = 0;
 
 	//Increment trial number each time this function is called
@@ -137,23 +79,19 @@ function nextTrial(vertPos,horPos) {
 		nextLevel(stimFile, stimList);
 	}
 	//Set objects to default state
-	
-	
+		
 	setCue();
-	key = 222; //default key value, used throughout program
-	decisionTimer = decisionTimerLength;//How long user has to make a decision
-	choice = 222; //decision variaible for to stop key press abuse
 }
-
 
 function setDifficulty(score){
 	game = "taskswitch";
 
-	$.get("getDifficulty.php?score=" + score + "&game='taskswitch'", function(data) { 
+	$.get("getDifficulty.php?score=" + score + "&game=taskswitch", function(data) { 
 		diffs = data.split(',');
 		trials = diffs[0]
 		hSpeed = diffs[1];
 		switchFreq = diffs[2];
+		aswitchFreq = diffs[3];
 	});
 	
 	scoreMult = revealLeft / hSpeed * REFRESH_RATE;
@@ -196,17 +134,6 @@ function makeCreature(id){
 // --                      the main declaration:                     --
 // --------------------------------------------------------------------
 $(function(){
-
-	//Start things off
-	stim = stimList[trial];
-	food = stimFile[stim];
-	setCue();
-
-	creature1 = makeCreature(animalFile[animalList1[trial]]);
-    creature2 = makeCreature(animalFile[animalList2[trial]]);
-
-	c1 = animalFile[animalList1[trial]];
-	c2 = animalFile[animalList2[trial]];
 
     // Initialize the game:
     $("#playground").playground({height: PLAYGROUND_HEIGHT,
@@ -263,7 +190,11 @@ $(function(){
             $("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove();});
         });
     });
-		
+	
+	//Start things off
+	nextLevel();
+
+
 	//--------------------------------PASSAGE OF TIME----------------------------------------------------------------------
 	//
 	$.playground().registerCallback(function(){
@@ -303,33 +234,38 @@ $(function(){
             $("#creature1").setAnimation(creature1["angry"]);
 			$("#creature2").setAnimation(creature2["angry"]);
 			score = 0;
+			ACC = 0;
 		}
 		else {
 			if (hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 			$("#creature1").setAnimation(creature1["happy"]);
 			score = (1 - (RT / scoreMult)) * 10;
+			ACC = 1;
 			}
 			else if (hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
 			$("#creature1").setAnimation(creature1["angry"]);
 			score = 0;
+			ACC = 0;
 			}
 			else if (hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
 			$("#creature2").setAnimation(creature2["happy"]);
 			score = (1 - (RT / scoreMult)) * 10;
+			ACC = 1;
 			}
 			else if (hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
 			$("#creature2").setAnimation(creature2["angry"]);
 			score = 0;
+			ACC = 0;
 			}						
 		}		
 
 		totalScore += score;
 		$("#score").html(score);
 		subject.inputData(trial, "score", score);
-
+		subject.inputData(trial, "ACC", ACC);
 	}
 	else if (newTop > (maxTop + 100)) {
-		nextTrial(initTop, initLeft);
+		nextTrial();
 	}	
 
 	}, REFRESH_RATE);
