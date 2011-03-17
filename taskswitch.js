@@ -288,6 +288,7 @@ $(function(){
 		}		
 
 		totalScore += score;
+		$("#totalScore").html(totalScore);
 		$("#score").html(score);
 		subject.inputData(trial, "score", score);
 		subject.inputData(trial, "ACC", ACC);
