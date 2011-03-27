@@ -67,7 +67,7 @@ function nextTrial() {
 	food = stimFile[stim];
 	
 	creature1 = makeCreature(animalFile[animalList1[trial]]);
-    creature2 = makeCreature(animalFile[animalList2[trial]]);
+   	creature2 = makeCreature(animalFile[animalList2[trial]]);
 	
 	c1 = animalFile[animalList1[trial]];
 	c2 = animalFile[animalList2[trial]];
@@ -167,7 +167,7 @@ $(function(){
                                  width: PLAYGROUND_WIDTH,
                                  keyTracker: true});
     
-    // Initialize the background
+    // Initialize the background, items(pipe) and actors(aliens)
     $.playground().addGroup("background", {height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
 
 		.addSprite("background", {animation : new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/background.png"})}).end()
@@ -190,17 +190,18 @@ $(function(){
 
 		.addSprite("creature1",{animation: creature1["idle"],
 			 posx: 40,
-		     posy: 220,
-		     width: 200,
-		     height: 250})
+		     	 posy: 220,
+		         width: 200,
+		         height: 250})
 
 		.addSprite("creature2",{animation: creature2["idle"],
 			 posx: 400,		     
 			 posy: 220,
-		     width: 200,
-		     height: 250}).end()
+		         width: 200,
+		         height: 250}).end()
 
 	.addGroup("item", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT})
+		
 		.addSprite("food", {animation : new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/pipebulge.png"}),
 			posx:initLeft,
 			posy:initTop,
@@ -226,9 +227,11 @@ $(function(){
 	//--------------------------------PASSAGE OF TIME----------------------------------------------------------------------
 	//
 	$.playground().registerCallback(function(){
-		
+	
+	// Get position info of the food objects and add x and y component to chang position	
 	var newLeft = parseInt($("#food").css("left")) + hSpeed;	
 	var newTop = parseInt($("#food").css("top")) + vSpeed;
+	
 	//Phase 1: Move obj down the conveyor belt, angle is determined by the difference of vertical and horizontal speed(slope)
 	$("#food").css("left", newLeft);
 	$("#food").css("top", newTop);	
@@ -315,7 +318,7 @@ $(function(){
 					subject.inputData(trial, 'RT', RT);
 		            break;
 				}
-            case 68: //this is right (d)
+            case 68: //this is right! (d)
 				if (canSort == 1) {
 					sorted = 1;
 					newHSpeed = 4;
