@@ -119,7 +119,7 @@ function setCue(){
 	cue = cueFile[0];
 	$("#cue").html(cue);
 
-	if (cue == "shape"){
+	if (cue == "S"){
 		rule['pinktri'] =  ['pt'];
 		rule['bluecirc'] = ['bc'];
 		rule['bluetri'] = ['pt'];
@@ -170,7 +170,9 @@ $(function(){
     // Initialize the background, items(pipe) and actors(aliens)
     $.playground().addGroup("background", {height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
 
-		.addSprite("background", {animation : new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/background.png"})}).end()
+		.addSprite("background", {animation : new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/background.png"})})
+
+		.append("<span id='cue' style = 'color : white; position: absolute; left : 310px; top : 10px; font-size : 40px'></span><br/>").end()
 			
 	.addGroup("items", {height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
 

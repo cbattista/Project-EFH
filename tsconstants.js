@@ -42,8 +42,8 @@ var	cueList = [];
 //names of animals in the game
 var	stimFile = ["pinktri","bluetri","pinkcirc","bluecirc"];
 var	animalFile = ["pt","bc"];
-var	cueFile = ["colour","shape"];
-
+var	cueFile = ["C","S"];
+var cue = cueFile[0];
 //subject performance info
 var	ACC = 0; //trial ACC
 var RT = 0; //trial RT
