@@ -28,11 +28,22 @@ function nextLevel(){
 
 function nextTrial(){
 	
+	//Reset State variables
 	hitIt = 0;
+	blast = 0;
+
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
-
+	//alert(stim);
+	
+	//Set animation for next trial
 	box = theBox(stim);
+	$("#mysteryBox").setAnimation(box["idle"]);
+	var d = new Date();
+	t1 = d.getTime();
+
+	//Reset Positioin of the box
+	$("#mysteryBox").css("top",initTop);
 }
 function setDifficulty(){}
 
@@ -75,30 +86,30 @@ $(function(){
 		      .addGroup("scene", {height:PLAYGROUND_HEIGHT,width: PLAYGROUND_WIDTH})
 
 			.addSprite("city",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/city.png"}),
-				posx:100,
-				posy:200,
+				posx:150,
+				posy:465,
 				width:450,
-				height:100})
+				height:200})
 			
 			.addSprite("binoculars",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/binocular.png"}),
-				posx:100,
+				posx:75,
 				posy:100,
 				width:450,
-				height:100}).end()
+				height:200}).end()
 
 		     .addGroup("objects",{height:PLAYGROUND_HEIGHT,width:PLAYGROUND_WIDTH})
 		       
-		       	.addSprite("mysteryBox",{animation: theBox["idle"],
-				posx:225,
+		       	.addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/b_box.png"}),
+				posx:200,
 				posy:0,
-				width: 50,
-				height:50})
+				width: 100,
+				height:100});
 			
-			.addSprite("plane",{animation: new $.gameQuery.Animation({imagesURL:"images/SatDef/plane.png"}),
-				posx:0,
-				posy:0,
-				width:90,
-				height:60});
+			//.addSprite("plane",{animation: new $.gameQuery.Animation({imagesURL:"images/SatDef/plane.png"}),
+			//	posx:0,
+			//	posy:0,
+			//	width:90,
+			//	height:60})
 
 
 	//Give the loading bar functionality
@@ -121,29 +132,33 @@ $(function(){
 // --                          Time Passage                                      --
 // --------------------------------------------------------------------------------
 
-	$.playground().registerCallback(function(){
+$.playground().registerCallback(function(){
 	
 	//Get current position info of the box
 
-	var newTop = parseInt($("#mysterBox").css("top")) + vSpeed
+	var newTop = parseInt($("#mysteryBox").css("top")) + vSpeed
 
 	//Phase 1: Move Box from Top to binocs 
-	$("#food").css("top",newTop);
+	$("#mysteryBox").css("top",newTop);
 	
 	//Phase 2: Move box through the binocs
 	if(newTop >= revealTop && newTop < hideTop){
 		hitIt = 1;
 		$("#mysteryBox").setAnimation(box["exposed"]);
-	}	
-	//Phase 3(optional): move box to the ground
-	if(newTop >= hideTop && newTop < groundPos){
-		hitIt = 0;
-		$("#mysteryBox").setAnimation(box["idle"]);
 	}
+	if(blast == 0){ //If nothing was hit
 	
-	//Phase 4(optional): what happens when the box hits the ground
-	if(newTop == groundPos){
-		$("#mysteryBox").setAnimation(box["grounded"]);
+		//Phase 3(optional): move box to the ground
+		if(newTop >= hideTop && newTop < groundPos){
+			hitIt = 0;
+			$("#mysteryBox").setAnimation(box["idle"]);
+		}
+	
+		//Phase 4(optional): what happens when the box hits the ground
+		if(newTop == groundPos){
+			$("#mysteryBox").setAnimation(box["grounded"]);
+			nextTrial();
+	 	}
 	}
 
 },REFRESH_RATE);
@@ -153,15 +168,26 @@ $(function(){
 	
 		if(e.keyCode = 32){ //i.e if user hits SPACEBAR (because we are in SPACE and we are DEFENDING it with out BAR...get it)
 		
-			if(hitIt == 1){
-				d = new Date();
-				t2 = d.getTimer();
-				$("#mysteryBox").setAnimation(box["explode"]);
-				RT = t2 - t1;
-				subject.inputData(trial,'RT',RT);
-			}
 			if(hitIt == 0){
 				alert("You Missed...LOSER");
+			}
+
+			if(hitIt == 1){
+				
+				
+				//Calculate time of button pres and gather/send reaction time data
+				var d = new Date();
+				t2 = d.getTime();
+				RT = t2 - t1;
+				subject.inputData(trial,'RT',RT);
+
+				//Animate the explosion
+				$("#mysteryBox").setAnimation(box["explode"]);
+				//alert("You got it!");
+				
+				//set state variable so next trial can start when box is destroyed
+				blast = 1;
+				nextTrial();
 			}
 
 	 	}	
