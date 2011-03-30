@@ -31,19 +31,25 @@ function nextTrial(){
 	//Reset State variables
 	hitIt = 0;
 	blast = 0;
+	dropIt = 0;
+	moveIt = 1;
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
 	//alert(stim);
 	
-	//Set animation for next trial
+	//Reset animations for next trial
 	box = theBox(stim);
 	$("#mysteryBox").setAnimation(box["idle"]);
+
+	$("#city").setAnimation(cityAnim["fine"]);
+	
 	var d = new Date();
 	t1 = d.getTime();
 
-	//Reset Positioin of the box
+	//Reset Positioin of the box and plane
 	$("#mysteryBox").css("top",initTop);
+	$("#plane").css("left",initPlane);
 
 	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
 		
@@ -99,34 +105,34 @@ $(function(){
 				posy:200,
 				width:450,
 				height:565}).end()
+			
+			.addGroup("objects",{height:PLAYGROUND_HEIGHT,width:PLAYGROUND_WIDTH})
+		       
+		       	  .addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/b_box.png"}),
+				posx:200,
+				posy:0,
+				width: 100,
+				height:100})
+			
+			  .addSprite("plane",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/plane.png"}),
+				posx:450,
+				posy:0,
+				width:300,
+				height:200}).end()
 
 		      .addGroup("scene", {height:PLAYGROUND_HEIGHT,width: PLAYGROUND_WIDTH})
 
-			.addSprite("city",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/city.png"}),
+			.addSprite("city",{animation: cityAnim["fine"],
 				posx:150,
 				posy:465,
 				width:450,
 				height:200})
 			
-			.addSprite("binoculars",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/binocular.png"}),
+			.addSprite("binoculars",{animation: binocAnim["idle"],
 				posx:75,
 				posy:100,
 				width:450,
-				height:200}).end()
-
-		     .addGroup("objects",{height:PLAYGROUND_HEIGHT,width:PLAYGROUND_WIDTH})
-		       
-		       	.addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/b_box.png"}),
-				posx:200,
-				posy:0,
-				width: 100,
-				height:100});
-			
-			//.addSprite("plane",{animation: new $.gameQuery.Animation({imagesURL:"images/SatDef/plane.png"}),
-			//	posx:0,
-			//	posy:0,
-			//	width:90,
-			//	height:60})
+				height:200});
 
 	//Give the loading bar functionality
 
@@ -150,59 +156,81 @@ $(function(){
 
 $.playground().registerCallback(function(){
 	
-	//Get current position info of the box
+if(moveIt == 1){
+	//Get current position info of the box and move it
+	 newTop = parseInt($("#mysteryBox").css("top")) + vSpeed;
+}
+	//Get current position of the plane
+	 newLeft = parseInt($("#plane").css("left")) - planeSpeed;
+//Section 1: Plane moves across the screen to drop the box
+	
+	//Phase 1: Plane moves aross the screen
+	$("#plane").css("left",newLeft);
+	
+	//Phase 2: If Plane is in position, drop the box
+	if(newLeft == bombDrop){
+		dropIt = 1;
+	}
 
-	var newTop = parseInt($("#mysteryBox").css("top")) + vSpeed
+	//Phase 3: If box has been exploded and plane is out of sight (looks better when changing trial), start new trial
+	if(newLeft == maxPlane && blast == 1) {
+		nextTrial();
+	}
 
+//Section 2: Box moves down the screen 
+
+if(dropIt == 1){
 	//Phase 1: Move Box from Top to binocs 
 	$("#mysteryBox").css("top",newTop);
 	
 	//Phase 2: Move box through the binocs
 	if(newTop >= revealTop && newTop < hideTop){
-		hitIt = 1;
-		$("#mysteryBox").setAnimation(box["exposed"]);
+		
+		hitIt = 1; //Box is ready to be hit
+		
+		if(blast == 0){ //If the box has not exploded
+			$("#mysteryBox").setAnimation(box["exposed"]);
+		}
 	}
 
-	if(blast == 0){ //If nothing was hit
-	
-		//Phase 3(optional): move box to the ground
-		if(newTop >= hideTop && newTop < groundPos){
-			hitIt = 0;
-			$("#mysteryBox").setAnimation(box["idle"]);
-			
-			//Evaluate User's decision
-			if(stim == "cp"){
-				
-					//Adjust game score
-						score = 500;
-						totalScore += score;
-
-						//Append to HTML
-						$("#totalScore").html(totalScore);
-						$("#score").html(score);
-
-					//alert("Good Work!");		
-				}
-
-			if(stim == "b"){
-					
-					//Adjust game score
-					score =  -500;
-					totalScore += score;
-
-						//Append to HTML
-						$("#totalScore").html(totalScore);
-						$("#score").html(score);
-					
-					//alert("YOU ARE A HORRIBLE PERSON");
-				}
-			}
+	//Phase 3(optional): move box to the ground
+	if(newTop >= hideTop && newTop < groundPos){
+		hitIt = 0;
+		$("#mysteryBox").setAnimation(box["idle"]);
+	}
 		
-		//Phase 4(optional): what happens when the box hits the ground
-		if(newTop == groundPos){
-			$("#mysteryBox").setAnimation(box["grounded"]);
+	//Phase 4(optional): what happens when the box hits the ground
+	if(newTop == groundPos){
+		
+		//Animate the city
+		$("#city").setAnimation(cityAnim[stim]);
+
+		//Adjust score based upon user's decision
+		if(stim == "cp"){
+			//Adjust game score
+			score = 500;
+			totalScore += score;
+
+			//alert("Good Work!");		
+		}
+
+		if(stim == "b"){
+			//Adjust game score
+			score =  -500;
+			totalScore += score;
+
+			//alert("YOU ARE A HORRIBLE PERSON");
+		}
+
+		//Append score to HTML
+		$("#totalScore").html(totalScore);
+		$("#score").html(score);
+	}
+	
+	//Phase 5(optioal): The box falls below the screen, giving the animation time to run
+		if( newTop == maxTop){
 			nextTrial();
-	 	}
+		}
 	}
 },REFRESH_RATE);
 
@@ -216,7 +244,9 @@ $.playground().registerCallback(function(){
 			}
 
 			if(hitIt == 1){
-				
+				blast = 1;
+				moveIt = 0; //Stop the box from falling
+
 				//Calculate time of button press and gather/send reaction time data
 				var d = new Date();
 				t2 = d.getTime();
@@ -229,32 +259,24 @@ $.playground().registerCallback(function(){
 				
 				//Evaluate users decision
 				if(stim == "b"){
-				
 					//Adjust game score
-						score = (1 - (RT/100))*-10;
-						totalScore += score;
-
-						//Append to HTML
-						$("#totalScore").html(totalScore);
-						$("#score").html(score);
+					score = (1 - (RT/100))*-10;
+					totalScore += score;
 
 					alert("Good Work!");		
-
 				}
 
 				if(stim == "cp"){
-					
 					//Adjust game score
 					score =  -100;
 					totalScore += score;
 
-						//Append to HTML
-						$("#totalScore").html(totalScore);
-						$("#score").html(score);
-					
 					alert("YOU ARE A HORRIBLE PERSON");
-
 				}
+				
+				//Append score to HTML
+				$("#totalScore").html(totalScore);
+				$("#score").html(score);
 
 				//Send trial data to server
 				
@@ -262,10 +284,7 @@ $.playground().registerCallback(function(){
 				//subject.inputData(trial,"RT",RT);
 
 				//set state variable so next trial can start when box is destroyed
-				blast = 1;
-
-				//Initiate next trial
-				nextTrial();
+				
 			}
 
 	 	}	
