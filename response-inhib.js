@@ -213,21 +213,18 @@ if(dropIt == 1){
 		if(stim == "cp"){
 			//Adjust game score
 			score = 500;
-			totalScore += score;
 
 			correct += 1;
-
 			//alert("Good Work!");		
 		}
 
 		if(stim == "b"){
 			//Adjust game score
 			score =  -500;
-			totalScore += score;
-
 			//alert("YOU ARE A HORRIBLE PERSON");
 		}
 
+		totalScore += score;
 		//Append score to HTML
 		$("#totalScore").html(totalScore);
 		$("#score").html(score);
@@ -245,11 +242,11 @@ if(dropIt == 1){
 	
 		if(e.keyCode = 32){ //i.e if user hits SPACEBAR (because we are in SPACE and we are DEFENDING it with out BAR...get it)
 		
-			if(hitIt == 0){
+			if(hitIt == 0){//If the button press took place outside the binoculates
 				alert("You Missed...LOSER");
 			}
 
-			if(hitIt == 1){
+			if(hitIt == 1){//If button press took place inside the binoculars
 				blast = 1;
 				moveIt = 0; //Stop the box from falling
 
@@ -267,7 +264,6 @@ if(dropIt == 1){
 				if(stim == "b"){
 					//Adjust game score
 					score = (1 - (RT/100))*-10;
-					totalScore += score;
 					
 					correct += 1;
 
@@ -277,10 +273,11 @@ if(dropIt == 1){
 				if(stim == "cp"){
 					//Adjust game score
 					score =  -100;
-					totalScore += score;
 
 					alert("YOU ARE A HORRIBLE PERSON");
 				}
+				
+				totalScore += score;
 				
 				//Append score to HTML
 				$("#totalScore").html(totalScore);
@@ -290,9 +287,6 @@ if(dropIt == 1){
 				
 				//subject.inputData(trial,"score",score);
 				//subject.inputData(trial,"RT",RT);
-
-				//set state variable so next trial can start when box is destroyed
-				
 			}
 
 	 	}	
