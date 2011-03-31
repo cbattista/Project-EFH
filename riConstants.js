@@ -33,6 +33,7 @@ var trial = 0;
 	//Score Variables
 	var totalScore = 0;
 	var score = 0;
+	var correct = 0;
 
 
 //State variables

@@ -6,6 +6,9 @@ function nextLevel(){
 	trial = 0;
 
 	level += 1;
+
+	//Reset score variables
+	correct = 0;
 	
 	//Generate new stimList
 	stimList = [];	
@@ -162,7 +165,8 @@ if(moveIt == 1){
 }
 	//Get current position of the plane
 	 newLeft = parseInt($("#plane").css("left")) - planeSpeed;
-//Section 1: Plane moves across the screen to drop the box
+
+//Section 1: The Plane
 	
 	//Phase 1: Plane moves aross the screen
 	$("#plane").css("left",newLeft);
@@ -177,7 +181,7 @@ if(moveIt == 1){
 		nextTrial();
 	}
 
-//Section 2: Box moves down the screen 
+//Section 2: The Box
 
 if(dropIt == 1){
 	//Phase 1: Move Box from Top to binocs 
@@ -210,6 +214,8 @@ if(dropIt == 1){
 			//Adjust game score
 			score = 500;
 			totalScore += score;
+
+			correct += 1;
 
 			//alert("Good Work!");		
 		}
@@ -262,6 +268,8 @@ if(dropIt == 1){
 					//Adjust game score
 					score = (1 - (RT/100))*-10;
 					totalScore += score;
+					
+					correct += 1;
 
 					alert("Good Work!");		
 				}
