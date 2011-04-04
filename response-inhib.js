@@ -66,8 +66,19 @@ function nextTrial(){
 	}
 
 }
-function setDifficulty(){}
+function setDifficulty(){
+	game = "response-inhib"
+	
+	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
+		diffs = data.split(',');
+		trials = diffs[0];
+		dropSpeed = diffs[1];
+		nogoes = diffs[2];
+	});
 
+	scoreMult = dropSpeed*REFRESH_RATE;
+}
+	
 function setCue(){}
 
 //Create an array of animations 
@@ -161,7 +172,7 @@ $.playground().registerCallback(function(){
 	
 if(moveIt == 1){
 	//Get current position info of the box and move it
-	 newTop = parseInt($("#mysteryBox").css("top")) + vSpeed;
+	 newTop = parseInt($("#mysteryBox").css("top")) + dropSpeed;
 }
 	//Get current position of the plane
 	 newLeft = parseInt($("#plane").css("left")) - planeSpeed;
