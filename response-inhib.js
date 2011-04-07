@@ -9,17 +9,18 @@ function nextLevel(){
 
 	//Reset score variables
 	correct = 0;
+	buttonPress = 0;
 	
 	//Generate new stimList
 	stimList = [];	
 
-	for(i = 0; i <= trials/2; i++){
-		stimList = stimList.concat(['b']);}//b:= bomb
+	for(i = 0; i < (nogoes*trials); i++){
+		stimList.concat(['b']);}//b:= bomb cp:= care package
 	
-	for(i = 0; i <= trials/2; i++ ){
-		stimList = stimList.concat(['cp']);} //cp:= care package
-	
-	stimList = stimList.sort(randOrd);
+	for(i = 0; i < (1-nogoes)*trials; i++){
+		stimList.concat(['cp']);}//b:= bomb cp:= care package
+
+	stimList.sort(randOrd);
 	
 	//Initiate new trial
 	nextTrial();
@@ -36,6 +37,7 @@ function nextTrial(){
 	blast = 0;
 	dropIt = 0;
 	moveIt = 1;
+	holdYourFire = 0;
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
@@ -76,7 +78,7 @@ function setDifficulty(){
 		nogoes = diffs[2];
 	});
 
-	scoreMult = dropSpeed*REFRESH_RATE;
+	scoreMult = (dropSpeed/nogoes)*REFRESH_RATE;
 }
 	
 function setCue(){}
@@ -111,7 +113,6 @@ $(function(){
 	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH, keyTracker: true});
 
 	//Initialize the background, actors...
-
 	$.playground().addGroup("background", {height:PLAYGROUND_HEIGHT,width: PLAYGROUND_WIDTH})
 		
 			.addSprite("background",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/satDefBG.png"}),
@@ -149,11 +150,9 @@ $(function(){
 				height:200});
 
 	//Give the loading bar functionality
-
 	$().setLoadBar("loadingbar",400);
 
 	//Initialize the start button
-
 	$("#startbutton").click(function(){
 		
 		//Start the game
@@ -223,7 +222,7 @@ if(dropIt == 1){
 		//Adjust score based upon user's decision
 		if(stim == "cp"){
 			//Adjust game score
-			score = 500;
+			score = (1 - (dropSpeed/scoreMult))*10;
 
 			correct += 1;
 			//alert("Good Work!");		
@@ -231,7 +230,7 @@ if(dropIt == 1){
 
 		if(stim == "b"){
 			//Adjust game score
-			score =  -500;
+			score =  0;
 			//alert("YOU ARE A HORRIBLE PERSON");
 		}
 
@@ -257,7 +256,8 @@ if(dropIt == 1){
 				alert("You Missed...LOSER");
 			}
 
-			if(hitIt == 1){//If button press took place inside the binoculars
+			if(hitIt == 1 && holdYourFire == 0){//If button press took place inside the binoculars and you havn't fired already
+				holdYourFire = 1;
 				blast = 1;
 				moveIt = 0; //Stop the box from falling
 
@@ -265,6 +265,9 @@ if(dropIt == 1){
 				var d = new Date();
 				t2 = d.getTime();
 				RT = t2 - t1;
+				totalRT += RT
+				buttonPress += 1
+		
 				subject.inputData(trial,'RT',RT);
 
 				//Animate the explosion
@@ -274,7 +277,7 @@ if(dropIt == 1){
 				//Evaluate users decision
 				if(stim == "b"){
 					//Adjust game score
-					score = (1 - (RT/100))*-10;
+					score = (1 - (RT/scoreMult))*-.1;
 					
 					correct += 1;
 
@@ -283,7 +286,7 @@ if(dropIt == 1){
 
 				if(stim == "cp"){
 					//Adjust game score
-					score =  -100;
+					score =  0;
 
 					alert("YOU ARE A HORRIBLE PERSON");
 				}
