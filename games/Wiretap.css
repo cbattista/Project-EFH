@@ -1,0 +1,19 @@
+html,body{
+	background:black;
+	margin:0;
+	padding:0;
+}
+#title{
+	z-index:2;
+}
+#scene{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+}
+#jPlayer{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	z-index:5;
+}
