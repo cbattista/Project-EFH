@@ -2,9 +2,9 @@
 $username = $_GET['username'];
 $password = $_GET['password'];
 
-$uname = "tbattist_execute";
-$pw = "frontalcortex";
-$database="tbattist_EFH";
+$uname = "OH";
+$pw = "HELL";
+$database="NO";
 
 mysql_connect(localhost, $uname, $pw);
 
