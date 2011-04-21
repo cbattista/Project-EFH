@@ -1,32 +1,35 @@
 <?php
-$username = $_GET['username'];
+$username = $_GET['user'];
 $password = $_GET['password'];
 
 $uname = "OH";
 $pw = "HELL";
 $database="NO";
 
-mysql_connect(localhost, $uname, $pw);
+$con = mysql_connect(localhost, $uname, $pw);
 
 if (!$con)
 	{
-	die('Could not connect: Hello' . mysql_error());
+	die('Could not connect: ' . mysql_error());
 	}
 
 mysql_select_db($database);
 
-$result = mysql_query("SELECT name FROM users");
+$query = sprintf("SELECT password FROM users WHERE name = '%s'",$username);
+$result = mysql_query($query);
 
 while ($row = mysql_fetch_assoc($result)) {
-	$name = $row['name'];
-	}
-echo $name;
-
-$result = mysql_query("SELECT password FROM users");
-
-while ($row = mysql_fetch_assoc($result)){
 	$pswrd = $row['password'];
 }
-echo $pswrd;
+
+if ($password == $pswrd)
+{
+	header('Location: http://www.edenveilrecords.com/EFH/user.html');
+}
+
+else {
+	header('Location: http://www.edenveilrecords.com/EFH/login.html');
+	echo "Invalid username/password, please try again";
+}
 
 ?>
