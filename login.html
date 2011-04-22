@@ -9,23 +9,21 @@
 
 <div id = "login">
 <form action = "" >
-Username: <input type="text" name="user" /><br />
+Username: <input id = "user" type="text" name="user" /><br />
 Password: <input type="password" name="password" /><br />	
 </form>
 <button id = "submit">Login</button>
 </div>
 
-<script type = text/javascript>
+<script type = "text/javascript">
 
 	$(document).ready(function(){
-
 	$("#submit").click(function() {
 		query = $("form").serialize();
-		alert(query);
+		var user = $("#user").val();
 		$.get("login.php?"+query, function(data){
-		alert(data);
 		if (data == "1"){
-			window.location = "http://www.edenveilrecords.com/EFH/user.html";		
+			window.location = "http://www.edenveilrecords.com/EFH/user.html?user="+user;		
 			}
 		else {
 			alert("Incorrect username or password. Please try again.");
