@@ -1,7 +1,6 @@
 <html>
 <head>
-<script type = "text/javascript" src = "Jquery.js"></script>
-<script type = "text/javascript" src = "Subject.js"></script>
+<script type = "text/javascript" src = "games/source_code/Jquery.js"></script>
 <link type = "text/css" href = "mainPages.css" rel = "stylesheet"></link>
 
 </head>
@@ -9,12 +8,33 @@
 <h1><em> Welcome to Project-EFH </em></h1>
 
 <div id = "login">
-<form name = "input" method = "get" action = "login.php">
+<form action = "" >
 Username: <input type="text" name="user" /><br />
 Password: <input type="password" name="password" /><br />	
-<input type = "submit" value = "Submit"></input>
 </form>
+<button id = "submit">Login</button>
 </div>
+
+<script type = text/javascript>
+
+	$(document).ready(function(){
+
+	$("#submit").click(function() {
+		query = $("form").serialize();
+		alert(query);
+		$.get("login.php?"+query, function(data){
+		alert(data);
+		if (data == "1"){
+			window.location = "http://www.edenveilrecords.com/EFH/user.html";		
+			}
+		else {
+			alert("Incorrect username or password. Please try again.");
+			}
+
+		});
+	});
+});
+</script>
 
 <a href = "user.html"> Go to game page </a>
 

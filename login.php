@@ -6,30 +6,40 @@ $uname = "OH";
 $pw = "HELL";
 $database="NO";
 
-$con = mysql_connect(localhost, $uname, $pw);
+if ($username != "" && $password != ""){
 
-if (!$con)
-	{
-	die('Could not connect: ' . mysql_error());
+	$con = mysql_connect(localhost, $uname, $pw);
+
+
+	if (!$con){
+		die('Could not connect: ' . mysql_error());
 	}
 
-mysql_select_db($database);
+	mysql_select_db($database);
 
-$query = sprintf("SELECT password FROM users WHERE name = '%s'",$username);
-$result = mysql_query($query);
+	$query = sprintf("SELECT password FROM users WHERE name = '%s'",$username);
 
-while ($row = mysql_fetch_assoc($result)) {
-	$pswrd = $row['password'];
+	$result = mysql_query($query);
+
+	while ($row = mysql_fetch_assoc($result)) {
+		$pswrd = $row['password'];
+	}
+
+	if ($password == $pswrd){
+		$output = 1;
+	}
+
+	else {
+		$output = 0;
+	}
+
+	echo $output;
 }
 
-if ($password == $pswrd)
-{
-	header('Location: http://www.edenveilrecords.com/EFH/user.html');
-}
+if($username == "" || $password == ""){
 
-else {
-	header('Location: http://www.edenveilrecords.com/EFH/login.html');
-	echo "Invalid username/password, please try again";
-}
+	$output = 0;
 
+	echo $output;
+}
 ?>
