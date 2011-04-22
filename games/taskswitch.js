@@ -97,7 +97,7 @@ function nextTrial() {
 function setDifficulty(score){
 	game = "taskswitch";
 
-	$.get("getDifficulty.php?score=" + score + "&game=taskswitch", function(data) { 
+	$.get("methods/getDifficulty.php?score=" + score + "&game=taskswitch", function(data) { 
 		diffs = data.split(',');
 		trials = diffs[0];
 		hSpeed = diffs[1];
