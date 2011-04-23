@@ -6,6 +6,9 @@ $uname = "OH";
 $pw = "HELL";
 $database="NO";
 
+//Set cookie to track user login
+setcookie($username,'EFH', time()+3600);
+
 //If both fields are unempty, continue
 if ($username != "" && $password != ""){
 

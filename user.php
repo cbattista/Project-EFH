@@ -5,6 +5,12 @@ $uname = "OH";
 $password = "HELL";
 $database = "NO"; 
 
+if(isset($_COOKIE[$username])){
+	$login = 1;
+}
+else{
+	$login = 0;
+}
 $con = mysql_connect(localhost, $uname, $password);
 
 if (!$con){
@@ -30,7 +36,7 @@ while($row = mysql_fetch_assoc($result)){
 	$now_GP = $row['now_gamesPlayable'];
 }
 
-$output = sprintf("%s,%s",$tp,$now_GP);
+$output = sprintf("%s,%s,%s",$login,$tp,$now_GP);
 
 echo $output
 

@@ -18,6 +18,11 @@ Password: <input type="password" name="password" /><br />
 <script type = "text/javascript">
 
 	$(document).ready(function(){
+	
+	var login = window.location.href.split('=')[1];
+	if(login == '0'){
+		alert("Please Login!");
+	}	
 	$("#submit").click(function() {
 		query = $("form").serialize();
 		var user = $("#user").val();

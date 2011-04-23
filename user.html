@@ -23,8 +23,12 @@
 			$.get("user.php?user=" +user, function(data){
 				var gamesPlayable = data.split(',');
 				var i = 0;
-
-				var tp = gamesPlayable[0];
+				
+				var login = gamesPlayable[0];
+				if(login == '0'){
+					window.location = "http://www.edenveilrecords.com/EFH/login.html?login=0";
+				}
+				var tp = gamesPlayable[1];
 				$("#trainingProgram").html(tp);
 
 				var games = ["ri","ts","zk","wt","cc"];
