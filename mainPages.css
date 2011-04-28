@@ -9,7 +9,7 @@ h1{
 }
 #login{
 	position:relative;
-	top: 300px;
+	top: 50px;
 	text-align:center;
 	z-index:4;	
 }
@@ -22,8 +22,6 @@ a {}
 }
 #playStats{
 	position:relative;
-	text-align:center;
-	top:200px;
 }
 #userBrain{
 	position:relative;

@@ -5,7 +5,7 @@
 
 </head>
 <body>
-<h1><em> Welcome to Project-EFH </em></h1>
+<h1><em> Get on the FunkyTrain </em></h1>
 
 <div id = "login">
 <form action = "" >
@@ -28,7 +28,7 @@ Password: <input type="password" name="password" /><br />
 		var user = $("#user").val();
 		$.get("login.php?"+query, function(data){
 		if (data == "1"){
-			window.location = "http://www.edenveilrecords.com/EFH/user.html?user="+user;		
+			window.location = "http://www.edenveilrecords.com/EFH/index.html";		
 			}
 		else {
 			alert("Incorrect username or password. Please try again.");
@@ -38,8 +38,6 @@ Password: <input type="password" name="password" /><br />
 	});
 });
 </script>
-
-<a href = "user.html"> Go to game page </a>
 
 </body>
 </html>

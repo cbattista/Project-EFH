@@ -1,18 +1,13 @@
 <?php
+
+include "db.php";
+
 $username = $_GET['user'];
-$password = $_GET['password'];
-
-$uname = "OH";
-$pw = "HELL";
-$database="NO";
-
-//Set cookie to track user login
-setcookie($username,'EFH', time()+3600);
+$pass = $_GET['password'];
 
 //If both fields are unempty, continue
-if ($username != "" && $password != ""){
-
-	$con = mysql_connect(localhost, $uname, $pw);
+if ($username != "" && $pass != ""){
+	$con = mysql_connect(localhost, $uname, $password);
 
 
 	if (!$con){
@@ -29,7 +24,7 @@ if ($username != "" && $password != ""){
 		$pswrd = $row['password'];
 	}
 	//If password given matches the password on the server, return true, otherwise return false
-	if ($password == $pswrd){
+	if ($pass == $pswrd){
 		$output = 1;
 		
 		//set timezone and get time for update to users login information	
@@ -38,6 +33,10 @@ if ($username != "" && $password != ""){
 		$update = sprintf("UPDATE userInfo SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE username = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
 
 		mysql_query($update);
+
+		//Set cookie to track user login
+		setcookie("funkyTrainUser",$username, time() + 3600);
+
 	}
 
 	else {
@@ -47,7 +46,7 @@ if ($username != "" && $password != ""){
 	echo $output;
 }
 //If either field is left blank, automatically return false
-if($username == "" || $password == ""){
+if($username == "" || $pass == ""){
 
 	$output = 0;
 
