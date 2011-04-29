@@ -36,22 +36,20 @@ if ($username != "" && $pass != ""){
 
 		//Set cookie to track user login
 		setcookie("funkyTrainUser",$username, time() + 3600);
-
 	}
-
+	
+	//If password given does not match password in database...
 	else {
 		$output = 0;
 	}
 
-	echo $output;
 }
 //If either field is left blank, automatically return false
 if($username == "" || $pass == ""){
 
 	$output = 0;
-
-	echo $output;
 }
 
+echo $output;
 
 ?>
