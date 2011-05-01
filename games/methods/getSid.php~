@@ -1,0 +1,10 @@
+<?php
+include "db.php"
+
+if(isset($_COOKIE["funkyTrainUser"])){
+	$username = $_COOKIE["funkyTrainUser"];
+
+}
+
+
+?>
