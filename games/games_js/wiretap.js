@@ -3,23 +3,34 @@ function nextLevel(){
 	//Start the next level
 	level += 1;
 	
-	//Rest game variables
+	//Reset game variables
 	trial = 0;
-	audioCue = [0,1,2,3,4];
+	audioCue();
+	soundNumbers();
 
 	//Initiate new trial
 	nextTrial();
 }
+
 function nextTrial(){
 
 	//Reset game Variables
 	timer = timerStart;
-	soundNumbers();
 
 	trial += 1;
 	audio = audioList[audioCue[trial]];
 }
 
+//Function that generates the order of the audio files to be played
+// No repeats
+function audioCue(){
+	audioCue = new Array();
+	
+	for(i = 0, i < cueLength, i++){
+		audioCue[i] = i;}
+
+	audioCue = audioCue.sort(randOrd);
+}
 //Function that generates the numbers associated with each sound
 //Numbers go from 0 - 100
 function soundNumbers(){
@@ -49,7 +60,7 @@ function tapped(){
 	}
 
 	else{
-		feedback = 0
+		feedback = ""
 		alert("You got nothing");}
 
 	feedback();
@@ -61,9 +72,20 @@ function tapped(){
 function feedback(){
 	
 	if(feedback == 1){
-		correct += 1}
+		subject.inputData(trial,"score",'PP');}
 
-	if(feedback == 0){}
+	if(feedback == 0){
+		subject.inputData(trial,"score",'PN');}
+
+	if(feedback == ""){
+		subject.inputData(trial,"score",'NN');}
+
+	subject.sendData();
+}
+
+//Function that adjusts difficulty factors based on user play
+function setDifficulty(){
+	
 }
 
 
@@ -72,6 +94,13 @@ function feedback(){
 // ------------------------------------------------------------------------
 
 $(function(){
+
+//Get subjectID
+$.get("methods/getSid.php",function(data){
+	alert(data);
+	subject = new Subject(data,'wt');
+
+});
 
 //Initialize the game:
 $("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH});

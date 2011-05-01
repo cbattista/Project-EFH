@@ -6,8 +6,9 @@ var REFRESH_RATE = 40;
 //Game Variables
 var trial = 0;
 var level = 0;
-var timerStart = 20
-var timer = timerStart;
+var timerStart = 20; //How long user has to listen to a sound
+var timer = timerStart; //the countdown
+var cueLength = 4; //How many different sounds there are
 
 	//Audio files
 	var sound1 = 'audio/sound1.ogg';
@@ -19,7 +20,8 @@ var timer = timerStart;
 	var audioCue = [0,4,2,3,1];
 	var audioList = [sound1,sound2,sound3,sound4];
 
-	//
+	//Score Variables
+	var feedback = 0; //1:=user got it right 0:= user got it wrong
 
 var soundNumbers = new Array();
 soundNumbers['sound1'] = ['1','44','33'];
