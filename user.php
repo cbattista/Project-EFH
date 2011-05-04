@@ -33,6 +33,9 @@ if ($login == 1) {
 	if ($start == "0000-00-00") {
 		//we're starting today
 		$day = 1;
+		$today = getdate();
+		$query = sprintf("UPDATE users SET start=\"%s-%s-%s\" WHERE name = '%s'", $today['year'], $today['mon'], $today['mday'], $username);
+		mysql_query($query);
 	} else {
 		//we have already started and need to determine the day
 		date_default_timezone_set("Canada/Eastern");
