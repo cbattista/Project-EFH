@@ -19,23 +19,70 @@ if ($login == 1) {
 
 	mysql_select_db($database);
 
-	$query = sprintf("SELECT subjectID FROM userInfo WHERE username = '%s'", $username);
 
+	//get the training schedule for the user
+	$query = sprintf("SELECT currentTraining, start FROM users WHERE name = '%s'", $username);
 	$result = mysql_query($query);
 
 	while ($row = mysql_fetch_assoc($result)){
-		$subjectID = $row['subjectID'];
+		$tpid = $row['currentTraining'];
+		$start = $row['start'];
 	}
 
-	$query = sprintf("SELECT tprogramID, now_gamesPlayable FROM trainingProgramInfo WHERE subjectID = '%s'", $subjectID);
+	//let's see what the day of training the user is on
+	if ($start == "0000-00-00") {
+		//we're starting today
+		$day = 1;
+	} else {
+		//we have already started and need to determine the day
+		date_default_timezone_set("Canada/Eastern");
+		$today = getdate();
+		$start_day = strtotime($start);
+		$day = round($today-$start_day)/60/60/24 + 1;
+	}
+	
+	//so we know what day it is, let's determine whether we are in pre, training, or post phase
+
+	$query = sprintf("SELECT pre, post FROM training WHERE tpid = %s", $tpid);
 
 	$result = mysql_query($query);
 	
 	while($row = mysql_fetch_assoc($result)){
-		$tp = $row['tprogramID'];
-		$now_GP = $row['now_gamesPlayable'];
-		$output = sprintf("%s,%s,%s,%s",$username,$login,$tp,$now_GP);
+		$pre = $row['pre'];
+		$post = $row['post'];
 	}
+
+	if ($day == $pre) {
+		$phase = "preGames";
+	}
+	elseif ($day == $post) {
+		$phase = "postGames";
+	}
+	elseif (($day > $pre) && ($day < $post)) {
+		$phase = "trainingGames";
+	}
+
+	$query = sprintf("SELECT %s FROM training WHERE tpid = %s", $phase, $tpid);
+
+	$result = mysql_query($query);
+	while($row = mysql_fetch_assoc($result)){
+		$games = $row[$phase];
+	}
+
+	$games = explode(",", $games);
+
+	$output = "";
+
+	foreach ($games as $game) {
+		$query = sprintf("SELECT name, url FROM games WHERE gid = %s", $game);
+		$result = mysql_query($query);
+		while($row = mysql_fetch_assoc($result)) {
+			$name = $row['name'];
+			$url = $row['url'];
+			$output .= sprintf("<a href=\"%s\">%s</a><br/>", $url, $name);
+		}
+	}
+
 }
 else {
 	$output = "0";
