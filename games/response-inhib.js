@@ -154,7 +154,7 @@ $(function(){
 				height:200});
 
 	//Give the loading bar functionality
-	$().setLoadBar("loadingbar",400);
+	$().setLoadBar("#loadingbar",400);
 
 	//Initialize the start button
 	$("#startbutton").click(function(){
