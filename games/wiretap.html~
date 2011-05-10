@@ -3,33 +3,32 @@
 <head> 
 <title>WireTap!</title> 
 <link type="text/css" href="source_code/jp/jplayer.blue.monday.css" rel="stylesheet" />
-<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script> 
-<script src='source_code/jquery.gamequery-0.5.0.js'></script> 
+<script type = "text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script> 
+<script type = "text/javascript" src='source_code/jquery.gamequery-0.5.0.js'></script> 
 <script type = "text/javascript" src = "methods/Subject.js"></script>
-<script src='methods/shuffler.js' type = 'text/javascript'></script>
-<script src = 'wiretap.js' type = 'text/javascript'></script>
-<script src = 'games_constants/wtConstants.js' type = 'text/javascript'></script>
+<script type = "text/javascript" src = "methods/shuffler.js"></script>
+<script type = 'text/javascript' src = "wiretap.js"></script>
+<script type = 'text/javascript' src = 'games_constants/wtConstants.js'></script>
 </head> 
 
 <body>
 	<a href = "../index.html">UserPage</a>
-	<audio id = "aud"><source src = "audio/sound1.ogg" /></audio>
-	<audio><source src = "audio/sound2.ogg" /></audio>
-	<audio><source src = "audio/sound3.ogg" /></audio>
-	<audio><source src = "audio/sound4.ogg" /></audio>	
+
+	<audio src = "audio/sound1.ogg" id = "aud"></audio>
 
 Score: <span id="score">0</span><br/>
 Total Score: <span id="totalScore">0</span><br/>
-<div id="playground" style="width: 700px; height: 250px; background: black;">
+<div id="playground" style="width: 500px; height: 450px; background: black;">
     <div id="welcomeScreen" style="width: 700px; height: 250px; position: absolute; z-index: 100;">
         <div style="position: absolute; top: 120px; width: 700px; color: white;">
             <div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;"></div><br />
-            <a style="cursor: pointer;" id="startbutton">click here to play Wiretap (yeah!)</a>
+	    
+	    <center><a style="cursor: pointer;" id="startbutton">click here to play Wiretap (yeah!)</a></center>
         </div>
     </div>
 </div>
-<button id = "listen">Listen</button>
 
+		<button id = "listen" style = "position:relative;">Listen</button>
 </body>
 
 </html>
