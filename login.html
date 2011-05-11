@@ -19,15 +19,13 @@ Password: <input type="password" name="password" /><br />
 	$(document).ready(function(){
 	
 	var login = window.location.href.split('=')[1];
-	if(login == '0'){
-		alert("Please Login!");
-	}	
+
 	$("#submit").click(function() {
 		query = $("form").serialize();
 		var user = $("#user").val();
 		$.get("login.php?"+query, function(data){
 		if (data == "1"){
-			window.location = "http://www.edenveilrecords.com/EFH/index.html";		
+			window.location = "index.html";		
 			}
 		else {
 			alert("Incorrect username or password. Please try again.");

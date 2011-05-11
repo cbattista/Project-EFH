@@ -36,11 +36,12 @@ function nextLevel() {
 
 	cueList = cueList.sort(randOrd); //randomize the list
 
+	if (level > 0) {
+		subject.sendLevelData();
+	}
+
 	nextTrial();
 	
-	//subject.inputLevelData(level, score, currentTime.getTime());
-	subject.sendLevelData();
-
 }
 
 function nextTrial() {
@@ -48,6 +49,11 @@ function nextTrial() {
 	$("#paddle").rotate(0);
 	//set cue
 	setCue();
+
+	//send data from the previous trial
+	if (trial > 1) {
+		subject.sendData();
+	}
 
 
 	//Set Speed variables
@@ -81,23 +87,18 @@ function nextTrial() {
 	$("#food").css("top", initTop);
 
 	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
-		//Send to the server which object was sent to the user to be 'delt' with (steak or banana)
 		stim = stimList[trial];
 		subject.inputData(trial, "stim", stim);
 		subject.inputData(trial, "stimFile", stimFile[stim]);
 	}
 	else {
-		//alert('Level Complete');
-		subject.sendData();
 		nextLevel(stimFile, stimList);
 	}
 
 }
 
 function setDifficulty(score){
-	game = "taskswitch";
-
-	$.get("methods/getDifficulty.php?score=" + score + "&game=taskswitch", function(data) { 
+	$.get("getDifficulty.php?score=" + score + "&game=2", function(data) { 
 		diffs = data.split(',');
 		trials = diffs[0];
 		hSpeed = diffs[1];
@@ -161,6 +162,17 @@ function makeCreature(id){
 // --                      the main declaration:                     --
 // --------------------------------------------------------------------
 $(function(){
+	// Get the user info
+	$.get("getSid.php", function(data) { 
+		sid = data;
+		subject = new Subject(sid, 2);
+	});
+
+	// Get the last high score
+	$.get("getHighScore.php?sid=" + sid + "&gid=2", function(data) {
+		totalScore = parseFloat(data);
+	});
+
 
     // Initialize the game:
     $("#playground").playground({height: PLAYGROUND_HEIGHT,
@@ -239,7 +251,6 @@ $(function(){
 	$("#food").css("top", newTop);	
 
 	if (newLeft==revealLeft && sorted==0){
-		//alert("shoveit");
 
 		canSort = 1;
 				

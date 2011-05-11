@@ -57,6 +57,8 @@ if ($login == 1) {
 		$post = $row['post'];
 	}
 
+	$canTrain = 1;
+
 	if ($day == $pre) {
 		$phase = "preGames";
 	}
@@ -66,26 +68,35 @@ if ($login == 1) {
 	elseif (($day > $pre) && ($day < $post)) {
 		$phase = "trainingGames";
 	}
-
-	$query = sprintf("SELECT %s FROM training WHERE tpid = %s", $phase, $tpid);
-
-	$result = mysql_query($query);
-	while($row = mysql_fetch_assoc($result)){
-		$games = $row[$phase];
+	else {
+		$canTrain = 0;
 	}
 
-	$games = explode(",", $games);
+	if ($canTrain==1) {
 
-	$output = "";
+		$query = sprintf("SELECT %s FROM training WHERE tpid = %s", $phase, $tpid);
 
-	foreach ($games as $game) {
-		$query = sprintf("SELECT name, url FROM games WHERE gid = %s", $game);
 		$result = mysql_query($query);
-		while($row = mysql_fetch_assoc($result)) {
-			$name = $row['name'];
-			$url = $row['url'];
-			$output .= sprintf("<a href=\"%s\">%s</a><br/>", $url, $name);
+		while($row = mysql_fetch_assoc($result)){
+			$games = $row[$phase];
 		}
+
+		$games = explode(",", $games);
+
+		$output = "";
+
+		foreach ($games as $game) {
+			$query = sprintf("SELECT name, url FROM games WHERE gid = %s", $game);
+			$result = mysql_query($query);
+			while($row = mysql_fetch_assoc($result)) {
+				$name = $row['name'];
+				$url = $row['url'];
+				$output .= sprintf("<a href=\"%s\">%s</a><br/>", $url, $name);
+			}
+		}
+	}
+	else {
+		$output = "<p>You're all done your training.  Thanks for playing.</p>";
 	}
 
 }
