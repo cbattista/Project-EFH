@@ -1,5 +1,10 @@
 function nextLevel() {
 	
+	if (level > 0) {
+		alert("Level Complete!  Press OK to continue.");
+		subject.sendLevelData();
+	}
+
 	//Set difficulty for next level using scores from completed level
 	setDifficulty(totalScore);
 
@@ -13,32 +18,28 @@ function nextLevel() {
 	stimList = [];	
 	
 	//setting of game variables - eventually should be retrieved from the database
-	for (i=0;i<trials/4;i++) {
+	for (i=0;i<difficulty.trials/4;i++) {
 		stimList = stimList.concat([0, 1, 2, 3]);
 	}
 	
 	stimList.sort(randOrd);
 
-	for (i=0;i<trials;i++){
+	for (i=0;i<difficulty.trials;i++){
 		animalList1 = animalList1.concat([0]);
 		animalList2 = animalList2.concat([1]);
 	}
 	
-	switches = switchFreq / 100 * trials;
+	switches = difficulty.switchFreq / 100 * difficulty.trials;
 
 	for (i=0;i<switches;i++){
 		cueList = cueList.concat([1]);
 	}
 
-	for (i=0;i<trials-switches;i++){
+	for (i=0;i<difficulty.trials-switches;i++){
 		cueList = cueList.concat([0]);
 	}
 
 	cueList = cueList.sort(randOrd); //randomize the list
-
-	if (level > 0) {
-		subject.sendLevelData();
-	}
 
 	nextTrial();
 	
@@ -55,9 +56,8 @@ function nextTrial() {
 		subject.sendData();
 	}
 
-
 	//Set Speed variables
-	hSpeed = 5;
+	difficulty.hSpeed = 5;
 	vSpeed = 0;
 	sorted = 0;
 	canSort = 0;
@@ -86,7 +86,7 @@ function nextTrial() {
 	$("#food").css("left", initLeft);
 	$("#food").css("top", initTop);
 
-	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
+	if (trial < difficulty.trials) { 
 		stim = stimList[trial];
 		subject.inputData(trial, "stim", stim);
 		subject.inputData(trial, "stimFile", stimFile[stim]);
@@ -98,15 +98,19 @@ function nextTrial() {
 }
 
 function setDifficulty(score){
-	$.get("getDifficulty.php?score=" + score + "&game=2", function(data) { 
-		diffs = data.split(',');
-		trials = diffs[0];
-		hSpeed = diffs[1];
-		switchFreq = diffs[2];
-		aswitchFreq = diffs[3];
-	});
+	gString = "getDifficulty.php?score=" + score + "&game=2";
+	$.ajax({url: gString, 
+			success : function(data) { 
+				diffs = data.split(',');
+				difficulty.trials = diffs[0];
+				difficulty.hSpeed = diffs[1];
+				difficulty.switchFreq = diffs[2];
+				difficulty.aswitchFreq = diffs[3];
+			},
+			async: false}
+	);
 	
-	scoreMult = revealLeft / hSpeed * REFRESH_RATE;
+	scoreMult = revealLeft / difficulty.hSpeed * REFRESH_RATE;
 
 }
 
@@ -162,6 +166,7 @@ function makeCreature(id){
 // --                      the main declaration:                     --
 // --------------------------------------------------------------------
 $(function(){
+
 	// Get the user info
 	$.get("getSid.php", function(data) { 
 		sid = data;
@@ -225,12 +230,12 @@ $(function(){
 	
     // this sets the id of the loading bar:
     $().setLoadBar("loadingBar", 400);
+
+	//Start things off
+	nextLevel();
     
     //initialize the start button
     $("#startbutton").click(function(){
-
-		//Start things off
-		nextLevel();
 
         $.playground().startGame(function(){
             $("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove();});
@@ -243,7 +248,7 @@ $(function(){
 	$.playground().registerCallback(function(){
 	
 	// Get position info of the food objects and add x and y component to chang position	
-	var newLeft = parseInt($("#food").css("left")) + hSpeed;	
+	var newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
 	var newTop = parseInt($("#food").css("top")) + vSpeed;
 	
 	//Phase 1: Move obj down the conveyor belt, angle is determined by the difference of vertical and horizontal speed(slope)
@@ -265,10 +270,10 @@ $(function(){
 	else if (newLeft >= maxLeft && newTop < maxTop) {
 		canSort = 0;
 		if (sorted == 0) {
-			hSpeed = 0;
+			difficulty.hSpeed = 0;
 		}
 		else {
-			hSpeed = newHSpeed;
+			difficulty.hSpeed = newhSpeed;
 		}
 		vSpeed = 5;
 	}
@@ -281,22 +286,22 @@ $(function(){
 			ACC = 0;
 		}
 		else {
-			if (hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
+			if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 			$("#creature1").setAnimation(creature1["happy"]);
 			score = (1 - (RT / scoreMult)) * 10;
 			ACC = 1;
 			}
-			else if (hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
+			else if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
 			$("#creature1").setAnimation(creature1["angry"]);
 			score = 0;
 			ACC = 0;
 			}
-			else if (hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
+			else if (difficulty.hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
 			$("#creature2").setAnimation(creature2["happy"]);
 			score = (1 - (RT / scoreMult)) * 10;
 			ACC = 1;
 			}
-			else if (hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
+			else if (difficulty.hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
 			$("#creature2").setAnimation(creature2["angry"]);
 			score = 0;
 			ACC = 0;
@@ -322,7 +327,7 @@ $(function(){
             case 65: //this is left! (a)
 				if (canSort==1) {
 					sorted = 1;
-					newHSpeed = -4;
+					newhSpeed = -4;
 					canSort = 0;
 					$("#paddle").rotate(315);
 					d = new Date();
@@ -334,7 +339,7 @@ $(function(){
             case 68: //this is right! (d)
 				if (canSort == 1) {
 					sorted = 1;
-					newHSpeed = 4;
+					newhSpeed = 4;
 					canSort = 0;
 					$("#paddle").rotate(45);
 					d = new Date();
