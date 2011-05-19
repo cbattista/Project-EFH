@@ -1,8 +1,8 @@
 function Subject(sid, game) {
 	//function to handle the collection of subject data
-	this.sid = sid;
 	this.data = "";
-	this.gamedata = "";
+	this.leveldata = "";
+	this.sid = sid;
 	this.game = game;
 	this.homebase = "inputData.php";
 	this.trainingDay = 0;	
@@ -13,7 +13,8 @@ function Subject(sid, game) {
 	
 	this.inputData = function(trial, value, score){
 		//add a snippet of data to the client side store
-		this.data = this.data + this.game + "," + trial + "," + "\'" + value + "\'" + "," + "\'" + score + "\'" + "|";
+		
+		this.data = sprintf("%s|%s,%s,'%s','%s'", this.data, this.game, trial, value, score);
 	}
 	
 	this.sendData = function()  {
@@ -22,13 +23,13 @@ function Subject(sid, game) {
 		this.post(senddata);
 	}
 	
-	this.inputLevelData = function(level, score){
+	this.inputLevelData = function(day, score, level){
 		//add a snippet of game data
-		this.leveldata = this.leveldata + score + "," + level + "|";
+		this.leveldata = this.leveldata + this.game + "," + day + "," + score + "," + level + "|";
 	}
 	
 	this.sendLevelData = function() {
-		senddata = {table: "level", sid: this.sid, game: this.game, data: this.leveldata};
+		senddata = {"table": "level", "uid": this.sid, "data": this.leveldata};
 		this.post(senddata);
 	}
 	
@@ -37,6 +38,9 @@ function Subject(sid, game) {
 		function(data){
 			if (data == "success") {
 				this.data = "";
+			}
+			else {
+				alert(data);
 			}
 		}, "text");
 	

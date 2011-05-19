@@ -3,9 +3,9 @@
 $game = $_GET['game'];
 $level = $_GET['score'];
 
-$uname="OH";
-$pw="HELL";
-$database="NO";
+$uname="tbattist_execute";
+$pw="frontalcortex";
+$database="tbattist_EFH";
 
 mysql_connect(localhost, $uname, $pw);
 mysql_select_db($database);
@@ -26,7 +26,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	$t = $row['trials'];
 	$f1 = $row['fac1'];
 	$f2 = $row['fac1'];
-    	$f3 = $row['fac2'];         
+    $f3 = $row['fac2'];         
 }
 
 

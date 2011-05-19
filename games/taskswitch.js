@@ -1,7 +1,10 @@
 function nextLevel() {
-	
+
+
+
 	if (level > 0) {
-		alert("Level Complete!  Press OK to continue.");
+		//alert('Level Complete!  Press OK to continue.');
+		subject.inputLevelData(day,totalScore,level);
 		subject.sendLevelData();
 	}
 
@@ -92,13 +95,14 @@ function nextTrial() {
 		subject.inputData(trial, "stimFile", stimFile[stim]);
 	}
 	else {
-		nextLevel(stimFile, stimList);
+		nextLevel();
 	}
 
 }
 
 function setDifficulty(score){
 	gString = "getDifficulty.php?score=" + score + "&game=2";
+
 	$.ajax({url: gString, 
 			success : function(data) { 
 				diffs = data.split(',');
@@ -167,16 +171,23 @@ function makeCreature(id){
 // --------------------------------------------------------------------
 $(function(){
 
-	// Get the user info
-	$.get("getSid.php", function(data) { 
-		sid = data;
-		subject = new Subject(sid, 2);
-	});
+	//get the subject ID
+	$.ajax({url: "getSid.php", 
+			success : function(data) { 
+				sid = data;
+				subject = new Subject(sid, 2);
+			},
+			async: false}
+	);
 
 	// Get the last high score
-	$.get("getHighScore.php?sid=" + sid + "&gid=2", function(data) {
-		totalScore = parseFloat(data);
-	});
+	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=2", 
+			success : function(data) { 
+				totalScore = parseInt(data);
+			},
+			async: false}
+	);
+
 
 
     // Initialize the game:
@@ -231,14 +242,14 @@ $(function(){
     // this sets the id of the loading bar:
     $().setLoadBar("loadingBar", 400);
 
-	//Start things off
-	nextLevel();
-    
     //initialize the start button
     $("#startbutton").click(function(){
 
         $.playground().startGame(function(){
             $("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove();});
+		//Start things off
+		nextLevel();
+
         });
     });
 
@@ -308,6 +319,8 @@ $(function(){
 			}						
 		}		
 
+		score = score * 10;
+		score = parseInt(score);
 		totalScore += score;
 		$("#totalScore").html(totalScore);
 		$("#score").html(score);

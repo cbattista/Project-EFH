@@ -71,7 +71,7 @@ function nextTrial(){
 function setDifficulty(){
 	game = "response-inhib"
 	
-	$.get("getDifficulty.php?score=" +score+ "&game=ri",function(data){
+	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
 		diffs = data.split(',');
 		trials = diffs[0];
 		dropSpeed = diffs[1];
@@ -109,10 +109,6 @@ function theBox(id){
 
 $(function(){
 
-	//Get the Subject Id
-	$.get("methods/getSid.php",function(data){
-		subject = new Subject(data,'wt');
-	}
 	//Initialize the game:
 	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH, keyTracker: true});
 
@@ -122,8 +118,8 @@ $(function(){
 			.addSprite("background",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/satDefBG.png"}),
 				posx:200,
 				posy:200,
-				width:PLAYGROUND_WIDTH,
-				height:PLAYGROUND_HEIGHT}).end()
+				width:450,
+				height:565}).end()
 			
 			.addGroup("objects",{height:PLAYGROUND_HEIGHT,width:PLAYGROUND_WIDTH})
 		       
@@ -154,7 +150,7 @@ $(function(){
 				height:200});
 
 	//Give the loading bar functionality
-	$().setLoadBar("#loadingbar",400);
+	$().setLoadBar("loadingbar",400);
 
 	//Initialize the start button
 	$("#startbutton").click(function(){

@@ -8,7 +8,7 @@
 <script src='methods/shuffler.js'></script>
 <script src='tsconstants.js'></script>
 <script src='taskswitch.js'></script>
-<script src='common.js'></script>
+<script src='../common.js'></script>
 </head> 
 
 

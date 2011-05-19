@@ -71,7 +71,7 @@ function nextTrial(){
 function setDifficulty(){
 	game = "response-inhib"
 	
-	$.get("getDifficulty.php?score=" +score+ "&game=ri",function(data){
+	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
 		diffs = data.split(',');
 		trials = diffs[0];
 		dropSpeed = diffs[1];
@@ -89,16 +89,16 @@ function theBox(id){
 	var someBox = new Array;
 	
 	someBox["idle"] = new $.gameQuery.Animation({
-		imageURL: "images/SatDef/mystery_box.png"});
+		imageURL: "Project-EFH/images/SatDef/mystery_box.png"});
 
 	someBox["explode"] = new $.gameQuery.Animation({
-		imageURL: "images/SatDef/"+id+"_explosion.png"});
+		imageURL: "Project-EFH/images/SatDef/"+id+"_explosion.png"});
 	
 	someBox["exposed"] = new $.gameQuery.Animation({
-		imageURL: "images/SatDef/"+id+"_exposed.png"});
+		imageURL: "Project-EFH/images/SatDef/"+id+"_exposed.png"});
 	
 	someBox["grounded"] = new $.gameQuery.Animation({
-		imageURL: "images/SatDef/"+id+"_grounded.png"});
+		imageURL: "Project-EFH/images/SatDef/"+id+"_grounded.png"});
 
 	return someBox;
 }
@@ -109,31 +109,27 @@ function theBox(id){
 
 $(function(){
 
-	//Get the Subject Id
-	$.get("methods/getSid.php",function(data){
-		subject = new Subject(data,'wt');
-	}
 	//Initialize the game:
 	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH, keyTracker: true});
 
 	//Initialize the background, actors...
 	$.playground().addGroup("background", {height:PLAYGROUND_HEIGHT,width: PLAYGROUND_WIDTH})
 		
-			.addSprite("background",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/satDefBG.png"}),
+			.addSprite("background",{animation: new $.gameQuery.Animation({imageURL:"Project-EFH/images/SatDef/satDefBG.png"}),
 				posx:200,
 				posy:200,
-				width:PLAYGROUND_WIDTH,
-				height:PLAYGROUND_HEIGHT}).end()
+				width:450,
+				height:565}).end()
 			
 			.addGroup("objects",{height:PLAYGROUND_HEIGHT,width:PLAYGROUND_WIDTH})
 		       
-		       	  .addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/b_box.png"}),
+		       	  .addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"Project-EFH/images/SatDef/b_box.png"}),
 				posx:200,
 				posy:0,
 				width: 100,
 				height:100})
 			
-			  .addSprite("plane",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/plane.png"}),
+			  .addSprite("plane",{animation: new $.gameQuery.Animation({imageURL:"Project-EFH/images/SatDef/plane.png"}),
 				posx:450,
 				posy:0,
 				width:300,
