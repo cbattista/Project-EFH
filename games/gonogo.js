@@ -32,11 +32,12 @@ function nextLevel(){
 function nextTrial(){
 	
 	//Reset State variables
-	hitIt = 0;
-	blast = 0;
+	boxPos = 0;
+	canHit = 0;
+	exploded = 0;
 	dropIt = 1;
 	moveIt = 1;
-	holdYourFire = 0;
+	fired = 0;
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
@@ -122,7 +123,7 @@ $(function(){
 		       
 		       	  .addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/b_box.png"}),
 				posx:(PLAYGROUND_WIDTH - BOX_WIDTH) / 2,
-				posy:0,
+				posy:boxPos,
 				width: BOX_WIDTH,
 				height:BOX_HEIGHT}).end()
 			
@@ -185,27 +186,27 @@ if(moveIt == 1){
 
 
 if(dropIt == 1){
-	//Phase 1: Move Box from Top to binocs 
-	$("#mysteryBox").css("top",newTop);
-	
-	//Phase 2: Move box through the binocs
-	if(newTop >= revealTop && newTop < hideTop){
-		
-		hitIt = 1; //Box is ready to be hit
-		
-		if(blast == 0){ //If the box has not exploded
-			$("#mysteryBox").setAnimation(box["exposed"]);
-		}
-	}
 
-	//Phase 3(optional): move box to the ground
-	if(newTop >= hideTop && newTop < groundPos){
-		hitIt = 0;
+	boxPos += dropSpeed;
+	
+	$("#mysteryBox").css("top", boxPos);
+
+	//if it's in range of the binoculars...
+	if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
+		
+		canHit = 1; //Box is ready to be hit
+		$("#mysteryBox").setAnimation(box["exposed"]);
+		
+	}
+	
+	//if it has passed the range of the binoculars
+	else if(newTop >= hideTop && newTop < groundPos && exploded == 0){
+		canHit = 0;
 		$("#mysteryBox").setAnimation(box["idle"]);
 	}
 		
-	//Phase 4(optional): what happens when the box hits the ground
-	if(newTop == groundPos){
+	//What happens when the box hits the ground
+	else if(newTop == groundPos){
 		
 		//Animate the city
 		$("#city").setAnimation(cityAnim[stim]);
@@ -229,7 +230,7 @@ if(dropIt == 1){
 		$("#score").html(score);
 	}
 	
-	//Phase 5(optioal): The box falls below the screen, giving the animation time to run
+	//The box falls below the screen
 		if( newTop == maxTop){
 			nextTrial();
 		}
@@ -241,13 +242,9 @@ if(dropIt == 1){
 	
 		if(e.keyCode = 32){ //i.e if user hits SPACEBAR (because we are in SPACE and we are DEFENDING it with out BAR...get it)
 		
-			if(hitIt == 0){//If the button press took place outside the binoculates
-			}
-
-			if(hitIt == 1 && holdYourFire == 0){//If button press took place inside the binoculars and you havn't fired already
-				holdYourFire = 1;
-				blast = 1;
-				moveIt = 0; //Stop the box from falling
+			if(canHit == 1 && fired == 0){//If button press took place inside the binoculars and you havn't fired already
+				fired = 1;
+				exploded = 1;
 
 				//Calculate time of button press and gather/send reaction time data
 				var d = new Date();

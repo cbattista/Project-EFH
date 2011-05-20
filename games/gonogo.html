@@ -1,0 +1,32 @@
+
+<!doctype html>
+<html>
+<head>
+<title>Go No-Go Game</title>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script> 
+<script src='source_code/jquery.gamequery-0.5.0.js'></script> 
+<script src='Subject.js'></script>
+<script src='methods/shuffler.js'></script>
+<script src='gnconstants.js'></script>
+<script src='gonogo.js'></script>
+<script src='../common.js'></script>
+<script src='sprintf.js'></script>
+</head>
+
+<body>
+
+Score: <span id="score">0</span><br/>
+Total Score: <span id="totalScore">0</span><br/>
+
+<div id="playground" style="width:450px;height:565px;background:black;">
+	<div id="welcomeScreen" style="width:450px;height:565px;position:absolute;z-index:100;">
+		<div style = "position:absolute;top:120px;width:450px;color:white;">
+			<div id="loadingbar" style="position:relative; left:100px; height:15px; width:0px; background:red;"></div> <br />
+			<center><a style = "cursor:pointer;" id="startbutton">Click here to play Satellite Defender</a></center>
+		</div>
+	</div>
+</div>
+
+</body>
+
+</html>
