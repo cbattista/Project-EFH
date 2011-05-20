@@ -9,6 +9,7 @@
 <script src='tsconstants.js'></script>
 <script src='taskswitch.js'></script>
 <script src='../common.js'></script>
+<script src='sprintf.js'></script>
 </head> 
 
 
@@ -18,6 +19,9 @@
 </p>
 Score: <span id="score">0</span><br/>
 Total Score: <span id="totalScore">0</span><br/>
+
+<span id="console">Console</span><br/>
+
 <div id="playground" style="width: 700px; height: 250px; background: black;">
     <div id="welcomeScreen" style="width: 700px; height: 250px; position: absolute; z-index: 100;">
         <div style="position: absolute; top: 120px; width: 700px; color: white;">

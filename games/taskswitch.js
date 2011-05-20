@@ -1,9 +1,6 @@
 function nextLevel() {
-
-
-
 	if (level > 0) {
-		//alert('Level Complete!  Press OK to continue.');
+		//alert('Level Complete!  Press OK to play the next one.');
 		subject.inputLevelData(day,totalScore,level);
 		subject.sendLevelData();
 	}
@@ -187,8 +184,6 @@ $(function(){
 			},
 			async: false}
 	);
-
-
 
     // Initialize the game:
     $("#playground").playground({height: PLAYGROUND_HEIGHT,

@@ -6,11 +6,7 @@ function Subject(sid, game) {
 	this.game = game;
 	this.homebase = "inputData.php";
 	this.trainingDay = 0;	
-	
-	function startGame(){
-		//make an entry in the begin game table
-	}
-	
+
 	this.inputData = function(trial, value, score){
 		//add a snippet of data to the client side store
 		
@@ -40,7 +36,7 @@ function Subject(sid, game) {
 				this.data = "";
 			}
 			else {
-				alert(data);
+				//$("#console").html(data);
 			}
 		}, "text");
 	
