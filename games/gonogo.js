@@ -38,6 +38,7 @@ function nextTrial(){
 	dropIt = 1;
 	moveIt = 1;
 	fired = 0;
+	burnout = 10;
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
@@ -178,11 +179,6 @@ $.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1",
 		async: false}
 );
 
-	
-if(moveIt == 1){
-	//Get current position info of the box and move it
-	 newTop = parseInt($("#mysteryBox").css("top")) + dropSpeed;
-}
 
 
 if(dropIt == 1){
@@ -190,6 +186,14 @@ if(dropIt == 1){
 	boxPos += dropSpeed;
 	
 	$("#mysteryBox").css("top", boxPos);
+
+	if (exploded == 1) {
+		burnout -= 1;
+	}
+
+	if (burnout == 0) {
+		nextTrial();
+	}
 
 	//if it's in range of the binoculars...
 	if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
@@ -200,13 +204,14 @@ if(dropIt == 1){
 	}
 	
 	//if it has passed the range of the binoculars
-	else if(newTop >= hideTop && newTop < groundPos && exploded == 0){
+	else if(boxPos >= hideTop && boxPos < groundPos && exploded == 0){
+
 		canHit = 0;
 		$("#mysteryBox").setAnimation(box["idle"]);
 	}
 		
 	//What happens when the box hits the ground
-	else if(newTop == groundPos){
+	else if(boxPos == groundPos){
 		
 		//Animate the city
 		$("#city").setAnimation(cityAnim[stim]);
@@ -231,7 +236,7 @@ if(dropIt == 1){
 	}
 	
 	//The box falls below the screen
-		if( newTop == maxTop){
+		if(boxPos == maxTop){
 			nextTrial();
 		}
 	}

@@ -34,12 +34,13 @@ var trials = 30;
 var trial = 0;
 
 //state vars
-var	boxPos = 0;
-var	canHit = 0;
-var	blast = 0;
-var	dropIt = 1;
-var	moveIt = 1;
-var	fired = 0;
+var	boxPos = 0; //the position of the package
+var	canHit = 0; //is the package within explosion range
+var	exploded = 0; //has the package been blown up
+var	dropIt = 1; //should the package be dropping
+var	fired = 0; //has the user fired the defense system yes
+burnout = 20; //how long the exploded package explodes for
+
 
 //Difficulty Variables
 var dropSpeed = 5;
