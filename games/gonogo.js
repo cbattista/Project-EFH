@@ -88,7 +88,7 @@ function theBox(id){
 	var someBox = new Array;
 	
 	someBox["idle"] = new $.gameQuery.Animation({
-		imageURL: "images/SatDef/mystery_box.png"});
+		imageURL: "images/SatDef/package.png"});
 
 	someBox["explode"] = new $.gameQuery.Animation({
 		imageURL: "images/SatDef/"+id+"_explosion.png"});
@@ -290,6 +290,10 @@ if(dropIt == 1){
 				subject.inputData(trial,"RT",RT);
 			}
 
+		
+
 	 	}	
+		//set the state variable to indicate the defense system has been fired
+		fired = 1;
 	});
 }); 
