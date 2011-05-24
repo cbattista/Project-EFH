@@ -1,47 +1,64 @@
 function nextLevel() {
-	if (level > 0) {
-		//alert('Level Complete!  Press OK to play the next one.');
+	if ((level > 0) && (level < levels)) {
 		subject.inputLevelData(day,totalScore,level);
 		subject.sendLevelData();
+		alert('Level Complete!  Press OK to play the next one.');
+
 	}
 
-	//Set difficulty for next level using scores from completed level
-	setDifficulty(totalScore);
+	if (level < levels) {
+		
+		//Set difficulty for next level using scores from completed level
+		setDifficulty(totalScore);
 
-	trial = 0;
+		trial = 0;
 
-	level += 1;
+		level += 1;
 
-	cueList = [];
-	animalList1 = [];
-	animalList2 = [];
-	stimList = [];	
+		cueList = [];
+		animalList1 = [];
+		animalList2 = [];
+		stimList = [];	
 	
-	//setting of game variables - eventually should be retrieved from the database
-	for (i=0;i<difficulty.trials/4;i++) {
-		stimList = stimList.concat([0, 1, 2, 3]);
-	}
+		//setting of game variables - eventually should be retrieved from the database
+		for (i=0;i<difficulty.trials/4;i++) {
+			stimList = stimList.concat([0, 1, 2, 3]);
+		}
 	
-	stimList.sort(randOrd);
+		stimList.sort(randOrd);
 
-	for (i=0;i<difficulty.trials;i++){
-		animalList1 = animalList1.concat([0]);
-		animalList2 = animalList2.concat([1]);
-	}
+		for (i=0;i<difficulty.trials;i++){
+			animalList1 = animalList1.concat([0]);
+			animalList2 = animalList2.concat([1]);
+		}
 	
-	switches = difficulty.switchFreq / 100 * difficulty.trials;
+		switches = difficulty.switchFreq / 100 * difficulty.trials;
 
-	for (i=0;i<switches;i++){
-		cueList = cueList.concat([1]);
+		for (i=0;i<switches;i++){
+			cueList = cueList.concat([1]);
+		}
+
+		for (i=0;i<difficulty.trials-switches;i++){
+			cueList = cueList.concat([0]);
+		}
+
+		cueList = cueList.sort(randOrd); //randomize the list
+
+		nextTrial();
+
 	}
 
-	for (i=0;i<difficulty.trials-switches;i++){
-		cueList = cueList.concat([0]);
+	else {
+		subject.inputLevelData(day,totalScore,level);
+		subject.sendLevelData();
+
+		//now we need to write to the db, indicating the level has been completed
+
+		$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=2&day=" + day, async: false});
+		
+		alert('You are done playing this game for today.  Press OK to return to the game menu');
+		window.location = "../index.html";
 	}
-
-	cueList = cueList.sort(randOrd); //randomize the list
-
-	nextTrial();
 	
 }
 
@@ -170,20 +187,29 @@ $(function(){
 
 	//get the subject ID
 	$.ajax({url: "getSid.php", 
-			success : function(data) { 
-				sid = data;
-				subject = new Subject(sid, 2);
-			},
-			async: false}
+		success : function(data) { 
+			sid = data;
+			subject = new Subject(sid, 2);
+		},
+		async: false}
 	);
 
 	// Get the last high score
 	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=2", 
-			success : function(data) { 
-				totalScore = parseInt(data);
-			},
-			async: false}
+		success : function(data) { 
+			totalScore = parseInt(data);
+		},
+		async: false}
 	);
+
+	$.ajax({url: "getLevels.php?gid=2",
+		success : function(data) {
+			levels = parseInt(data);
+		},
+		async: false}
+	);
+
+	day = getCookie("funkyTrainDay");
 
     // Initialize the game:
     $("#playground").playground({height: PLAYGROUND_HEIGHT,
