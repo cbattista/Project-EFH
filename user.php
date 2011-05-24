@@ -21,12 +21,13 @@ if ($login == 1) {
 
 
 	//get the training schedule for the user
-	$query = sprintf("SELECT currentTraining, start FROM users WHERE name = '%s'", $username);
+	$query = sprintf("SELECT currentTraining, start, uid FROM users WHERE name = '%s'", $username);
 	$result = mysql_query($query);
 
 	while ($row = mysql_fetch_assoc($result)){
 		$tpid = $row['currentTraining'];
 		$start = $row['start'];
+		$sid = $row['uid'];
 	}
 
 
@@ -45,9 +46,12 @@ if ($login == 1) {
 		$today = strtotime(sprintf("%s-%s-%s", $today['year'], $today['mon'], $today['mday']));
 		$day = round($today-$start_day)/60/60/24 + 1;
 	}
+
+
+	//Set cookie to track the day
+		setcookie("funkyTrainDay",$day, time() + 3600);
 	
 	//so we know what day it is, let's determine whether we are in pre, training, or post phase
-
 	$query = sprintf("SELECT pre, post FROM training WHERE tpid = %s", $tpid);
 
 	$result = mysql_query($query);
@@ -79,12 +83,24 @@ if ($login == 1) {
 	$output = "";
 
 	foreach ($games as $game) {
-		$query = sprintf("SELECT name, url FROM games WHERE gid = %s", $game);
+		$query = sprintf("SELECT day FROM completed WHERE gid=%s AND sid=%s", $game, $sid);
 		$result = mysql_query($query);
+		$completed = False;
+
 		while($row = mysql_fetch_assoc($result)) {
-			$name = $row['name'];
-			$url = $row['url'];
-			$output .= sprintf("<a href=\"%s\">%s</a><br/>", $url, $name);
+			if ($day == $row['day']) {
+				$completed = True;
+			}
+		}
+
+		if ($completed != True) {
+			$query = sprintf("SELECT name, url FROM games WHERE gid = %s", $game);
+			$result = mysql_query($query);
+			while($row = mysql_fetch_assoc($result)) {
+				$name = $row['name'];
+				$url = $row['url'];
+				$output .= sprintf("<a href=\"%s\">%s</a><br/>", $url, $name);
+			}
 		}
 	}
 
