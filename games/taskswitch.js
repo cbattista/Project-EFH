@@ -78,6 +78,9 @@ function nextTrial() {
 	vSpeed = 0;
 	sorted = 0;
 	canSort = 0;
+	sortedAt = 0;
+	score = 0;
+	$("#score").html(score);	
 
 	//subject performance
 	totalACC = 0;
@@ -280,7 +283,7 @@ $(function(){
 	$.playground().registerCallback(function(){
 	
 	// Get position info of the food objects and add x and y component to chang position	
-	var newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
+	newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
 	var newTop = parseInt($("#food").css("top")) + vSpeed;
 	
 	//Phase 1: Move obj down the conveyor belt, angle is determined by the difference of vertical and horizontal speed(slope)
@@ -319,28 +322,29 @@ $(function(){
 		}
 		else {
 			if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
-			$("#creature1").setAnimation(creature1["happy"]);
-			score = (1 - (RT / scoreMult)) * 10;
-			ACC = 1;
+				$("#creature1").setAnimation(creature1["happy"]);
+				score = ((maxLeft - sortedAt) / span) * 10;
+				score = parseInt(score);
+				ACC = 1;
 			}
 			else if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
-			$("#creature1").setAnimation(creature1["angry"]);
-			score = 0;
-			ACC = 0;
+				$("#creature1").setAnimation(creature1["angry"]);
+				score = 0;
+				ACC = 0;
 			}
 			else if (difficulty.hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
-			$("#creature2").setAnimation(creature2["happy"]);
-			score = (1 - (RT / scoreMult)) * 10;
-			ACC = 1;
+				$("#creature2").setAnimation(creature2["happy"]);
+				score = ((maxLeft - sortedAt) / span) * 10;
+				score = parseInt(score);
+				ACC = 1;
 			}
 			else if (difficulty.hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
-			$("#creature2").setAnimation(creature2["angry"]);
-			score = 0;
-			ACC = 0;
+				$("#creature2").setAnimation(creature2["angry"]);
+				score = 0;
+				ACC = 0;
 			}						
 		}		
 
-		score = score * 10;
 		score = parseInt(score);
 		totalScore += score;
 		$("#totalScore").html(totalScore);
@@ -367,6 +371,7 @@ $(function(){
 					d = new Date();
 					t2 = d.getTime();
 					RT = t2 - t1;
+					sortedAt = newLeft;
 					subject.inputData(trial, 'RT', RT);
 		            break;
 				}
@@ -379,6 +384,7 @@ $(function(){
 					d = new Date();
 					t2 = d.getTime();
 					RT = t2 - t1;
+					sortedAt = newLeft;
 					subject.inputData(trial, 'RT', RT);
 		            break;
 				}
