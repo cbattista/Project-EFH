@@ -39,12 +39,16 @@ var	canHit = 0; //is the package within explosion range
 var	exploded = 0; //has the package been blown up
 var	dropIt = 1; //should the package be dropping
 var	fired = 0; //has the user fired the defense system yes
-burnout = 20; //how long the exploded package explodes for
+burnout = 40; //how long the exploded package explodes for
 
+//Set Initial Speed/Difficulty Variables
+function Difficulty() {
+	this.trials = 30; //how many trials
+	this.dropSpeed = 5; //how fast the package drops
+	this.nogoes = 0.5; //ratio of nogo trials
+}
 
-//Difficulty Variables
-var dropSpeed = 5;
-var nogoes = 0.5;
+var difficulty = new Difficulty();
 
 //Score Variables
 var totalScore = 0;
@@ -67,7 +71,7 @@ cityAnim["fine"] = new $.gameQuery.Animation({
 cityAnim["b"] = new $.gameQuery.Animation({
 	imageURL: "images/SatDef/city_exploded.png", numberOfFrame: 4, delta: 480, rate: 120, type: $.gameQuery.ANIMATION_HORIZONTAL});
 cityAnim["cp"] = new $.gameQuery.Animation({
-	imageURL: "images/SatDef/city_healed.png", numberOfFrame: 2, delta: 480, rate: 120, type: $.gameQuery.ANIMATION_HORIZONTAL});
+	imageURL: "images/SatDef/city_healed.png", numberOfFrame: 4, delta: 480, rate: 360, type: $.gameQuery.ANIMATION_HORIZONTAL});
 
 var binocAnim = new Array;
 

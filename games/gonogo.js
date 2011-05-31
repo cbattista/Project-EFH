@@ -13,11 +13,17 @@ function nextLevel(){
 	
 	//Generate new stimList
 	stimList = [];	
+	delays = [];
 
-	for(i = 0; i < (nogoes*trials); i++){
+	//setting of game variables - eventually should be retrieved from the database
+	for (i=0;i<difficulty.trials/4;i++) {
+		delays = delays.concat([40, 80, 120, 160]);
+	}
+
+	for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
 		stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
 	
-	for(i = 0; i < (1-nogoes)*trials; i++){
+	for(i = 0; i < (1-difficulty.nogoes)*difficulty.trials; i++){
 		stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
 	stimList.sort(randOrd);
 	
@@ -38,7 +44,7 @@ function nextTrial(){
 	dropIt = 1;
 	moveIt = 1;
 	fired = 0;
-	burnout = 10;
+	burnout = 40;
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
@@ -72,12 +78,12 @@ function setDifficulty(){
 	
 	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
 		diffs = data.split(',');
-		trials = diffs[0];
-		dropSpeed = diffs[1];
-		nogoes = diffs[2];
+		difficulty.trials = diffs[0];
+		difficulty.dropSpeed = diffs[1];
+		difficulty.nogoes = diffs[2];
 	});
 
-	scoreMult = (dropSpeed/nogoes)*REFRESH_RATE;
+	scoreMult = (difficulty.dropSpeed/difficulty.nogoes)*REFRESH_RATE;
 }
 	
 function setCue(){}
@@ -91,14 +97,11 @@ function theBox(id){
 		imageURL: "images/SatDef/package.png"});
 
 	someBox["explode"] = new $.gameQuery.Animation({
-		imageURL: "images/SatDef/"+id+"_explosion.png"});
+		imageURL: "images/SatDef/exploded.png", numberOfFrame: 4, delta: 32, rate: 320, type: $.gameQuery.ANIMATION_VERTICAL});
 	
 	someBox["exposed"] = new $.gameQuery.Animation({
 		imageURL: "images/SatDef/"+id+"_exposed.png"});
 	
-	someBox["grounded"] = new $.gameQuery.Animation({
-		imageURL: "images/SatDef/"+id+"_grounded.png"});
-
 	return someBox;
 }
 
@@ -107,6 +110,32 @@ function theBox(id){
 // ---------------------------------------------------------------------
 
 $(function(){
+
+	//get the subject ID
+	$.ajax({url: "getSid.php", 
+		success : function(data) { 
+			sid = data;
+			subject = new Subject(sid, 1);
+		},
+		async: false}
+	);
+
+	// Get the last high score
+	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1", 
+		success : function(data) { 
+			totalScore = parseInt(data);
+		},
+		async: false}
+	);
+
+	$.ajax({url: "getLevels.php?gid=1",
+		success : function(data) {
+			levels = parseInt(data);
+		},
+		async: false}
+	);
+
+	day = getCookie("funkyTrainDay");
 
 	//Initialize the game:
 	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH, keyTracker: true});
@@ -122,7 +151,7 @@ $(function(){
 			
 			.addGroup("objects",{height:PLAYGROUND_HEIGHT,width:PLAYGROUND_WIDTH})
 		       
-		       	  .addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/b_box.png"}),
+		       	  .addSprite("mysteryBox",{animation: new $.gameQuery.Animation({imageURL:"images/SatDef/package.png"}),
 				posx:(PLAYGROUND_WIDTH - BOX_WIDTH) / 2,
 				posy:boxPos,
 				width: BOX_WIDTH,
@@ -183,7 +212,7 @@ $.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1",
 
 if(dropIt == 1){
 
-	boxPos += dropSpeed;
+	boxPos += difficulty.dropSpeed;
 	
 	$("#mysteryBox").css("top", boxPos);
 
@@ -213,20 +242,17 @@ if(dropIt == 1){
 	//What happens when the box hits the ground
 	else if(boxPos == groundPos){
 		
+		score = 0;
+
 		//Animate the city
 		$("#city").setAnimation(cityAnim[stim]);
 
 		//Adjust score based upon user's decision
 		if(stim == "cp"){
 			//Adjust game score
-			score = (1 - (dropSpeed/scoreMult))*10;
+			score = (1 - (difficulty.dropSpeed/scoreMult))*10;
 
 			correct += 1;
-		}
-
-		if(stim == "b"){
-			//Adjust game score
-			score =  0;
 		}
 
 		totalScore += score;
@@ -245,7 +271,7 @@ if(dropIt == 1){
 	//This is where the keybinding occurs
 	$(document).keydown(function(e){
 	
-		if(e.keyCode = 32){ //i.e if user hits SPACEBAR (because we are in SPACE and we are DEFENDING it with out BAR...get it)
+		if(e.keyCode = 32){
 		
 			if(canHit == 1 && fired == 0){//If button press took place inside the binoculars and you havn't fired already
 				fired = 1;
@@ -262,6 +288,9 @@ if(dropIt == 1){
 
 				//Animate the explosion
 				$("#mysteryBox").setAnimation(box["explode"]);
+
+				score =  0;
+
 				
 				//Evaluate users decision
 				if(stim == "b"){
@@ -269,12 +298,6 @@ if(dropIt == 1){
 					score = (1 - (RT/scoreMult))*-.1;
 					
 					correct += 1;
-
-				}
-
-				if(stim == "cp"){
-					//Adjust game score
-					score =  0;
 
 				}
 				
