@@ -45,6 +45,9 @@ function nextTrial(){
 	moveIt = 1;
 	fired = 0;
 	burnout = 40;
+	score = 0;
+
+	$("#score").html(score);
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
@@ -231,7 +234,7 @@ if(dropIt == 1){
 		//Adjust score based upon user's decision
 		if(stim == "cp"){
 			//Adjust game score
-			score = (1 - (difficulty.dropSpeed/scoreMult))*10;
+			score = 10;
 
 			correct += 1;
 		}
@@ -276,7 +279,10 @@ if(dropIt == 1){
 				//Evaluate users decision
 				if(stim == "b"){
 					//Adjust game score
-					score = (1 - (RT/scoreMult))*-.1;
+					span = hideTop - revealTop;
+					dist = hideTop - boxPos;
+					score =  (dist / span) * 10 ;
+					score = parseInt(score);
 					
 					correct += 1;
 
