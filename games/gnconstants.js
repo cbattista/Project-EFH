@@ -65,9 +65,9 @@ var cityAnim = new Array;
 cityAnim["fine"] = new $.gameQuery.Animation({
 	imageURL: "images/SatDef/city_fine.png"});
 cityAnim["b"] = new $.gameQuery.Animation({
-	imageURL: "images/SatDef/b_city.png"});
+	imageURL: "images/SatDef/city_exploded.png", numberOfFrame: 4, delta: 480, rate: 120, type: $.gameQuery.ANIMATION_HORIZONTAL});
 cityAnim["cp"] = new $.gameQuery.Animation({
-	imageURl: "images/SatDef/cp_city.png"});
+	imageURL: "images/SatDef/city_healed.png", numberOfFrame: 2, delta: 480, rate: 120, type: $.gameQuery.ANIMATION_HORIZONTAL});
 
 var binocAnim = new Array;
 
