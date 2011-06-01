@@ -19,10 +19,12 @@ function nextLevel() {
 		animalList1 = [];
 		animalList2 = [];
 		stimList = [];	
-	
+		delays = [];	
+
 		//setting of game variables - eventually should be retrieved from the database
 		for (i=0;i<difficulty.trials/4;i++) {
 			stimList = stimList.concat([0, 1, 2, 3]);
+			delays = delays.concat([20, 40, 60, 80]);
 		}
 	
 		stimList.sort(randOrd);
@@ -74,7 +76,7 @@ function nextTrial() {
 	}
 
 	//Set Speed variables
-	difficulty.hSpeed = 5;
+	difficulty.hSpeed = 0;
 	vSpeed = 0;
 	sorted = 0;
 	canSort = 0;
@@ -91,6 +93,8 @@ function nextTrial() {
 	
 	stim = stimList[trial];
 	food = stimFile[stim];
+	delay = delays[trial];
+
 	
 	creature1 = makeCreature(animalFile[animalList1[trial]]);
    	creature2 = makeCreature(animalFile[animalList2[trial]]);
@@ -105,6 +109,7 @@ function nextTrial() {
 
 	$("#food").css("left", initLeft);
 	$("#food").css("top", initTop);
+	$("#food").toggle();
 
 	if (trial < difficulty.trials) { 
 		stim = stimList[trial];
@@ -282,6 +287,13 @@ $(function(){
 	//
 	$.playground().registerCallback(function(){
 	
+
+	delay -= 1;
+	if (delay == 0) {
+		difficulty.hSpeed = 5;
+		$("#food").toggle();
+	}
+
 	// Get position info of the food objects and add x and y component to chang position	
 	newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
 	var newTop = parseInt($("#food").css("top")) + vSpeed;
