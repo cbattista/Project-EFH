@@ -63,7 +63,7 @@ function nextTrial(){
 	t1 = d.getTime();
 
 	//Reset Position of the box, hide it
-	$("#mysteryBox").toggle();
+	$("#mysteryBox").hide();
 	$("#mysteryBox").css("top",initTop);
 
 	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
@@ -200,7 +200,7 @@ $(function(){
 
 		if (delay == 0) {
 			dropIt = 1;
-			$("#mysteryBox").toggle();
+			$("#mysteryBox").show();
 		}
 
 		if(dropIt == 1){
