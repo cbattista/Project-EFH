@@ -17,7 +17,7 @@ function nextLevel(){
 
 	//setting of game variables - eventually should be retrieved from the database
 	for (i=0;i<difficulty.trials/4;i++) {
-		delays = delays.concat([40, 80, 120, 160]);
+		delays = delays.concat([10, 20, 30, 40]);
 	}
 
 	for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
@@ -41,7 +41,7 @@ function nextTrial(){
 	boxPos = 0;
 	canHit = 0;
 	exploded = 0;
-	dropIt = 1;
+	dropIt = 0;
 	moveIt = 1;
 	fired = 0;
 	burnout = 40;
@@ -51,7 +51,8 @@ function nextTrial(){
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
-	
+	delay = delays[trial];//delay before package drops	
+
 	//Reset animations for next trial
 	box = theBox(stim);
 	$("#mysteryBox").setAnimation(box["idle"]);
@@ -61,7 +62,8 @@ function nextTrial(){
 	var d = new Date();
 	t1 = d.getTime();
 
-	//Reset Position of the box and plane
+	//Reset Position of the box, hide it
+	$("#mysteryBox").toggle();
 	$("#mysteryBox").css("top",initTop);
 
 	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
@@ -188,69 +190,76 @@ $(function(){
 	 });
 	});
 		        
-// --------------------------------------------------------------------------------
-// --                          Time Passage                                      --
-// --------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------
+	// --                          Time Passage                                      --
+	// --------------------------------------------------------------------------------
 
-$.playground().registerCallback(function(){
+	$.playground().registerCallback(function(){
 
-if(dropIt == 1){
+		delay -= 1;
 
-	boxPos += difficulty.dropSpeed;
-	
-	$("#mysteryBox").css("top", boxPos);
-
-	if (exploded == 1) {
-		burnout -= 1;
-	}
-
-	if (burnout == 0) {
-		nextTrial();
-	}
-
-	//if it's in range of the binoculars...
-	if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
-		
-		canHit = 1; //Box is ready to be hit
-		$("#mysteryBox").setAnimation(box["exposed"]);
-		
-	}
-	
-	//if it has passed the range of the binoculars
-	else if(boxPos >= hideTop && boxPos < groundPos && exploded == 0){
-
-		canHit = 0;
-		$("#mysteryBox").setAnimation(box["idle"]);
-	}
-		
-	//What happens when the box hits the ground
-	else if(boxPos == groundPos){
-		
-		score = 0;
-
-		//Animate the city
-		$("#city").setAnimation(cityAnim[stim]);
-
-		//Adjust score based upon user's decision
-		if(stim == "cp"){
-			//Adjust game score
-			score = 10;
-
-			correct += 1;
+		if (delay == 0) {
+			dropIt = 1;
+			$("#mysteryBox").toggle();
 		}
 
-		totalScore += score;
-		//Append score to HTML
-		$("#totalScore").html(totalScore);
-		$("#score").html(score);
-	}
+		if(dropIt == 1){
+
+			boxPos += difficulty.dropSpeed;
 	
-	//The box falls below the screen
-		if(boxPos == maxTop){
-			nextTrial();
+			$("#mysteryBox").css("top", boxPos);
+
+			if (exploded == 1) {
+				burnout -= 1;
+			}
+
+			if (burnout == 0) {
+				nextTrial();
+			}
+
+			//if it's in range of the binoculars...
+			if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
+		
+				canHit = 1; //Box is ready to be hit
+				$("#mysteryBox").setAnimation(box["exposed"]);
+		
+			}
+	
+			//if it has passed the range of the binoculars
+			else if(boxPos >= hideTop && boxPos < groundPos && exploded == 0){
+
+				canHit = 0;
+				$("#mysteryBox").setAnimation(box["idle"]);
+			}
+		
+			//What happens when the box hits the ground
+			else if(boxPos == groundPos){
+		
+				score = 0;
+
+				//Animate the city
+				$("#city").setAnimation(cityAnim[stim]);
+
+				//Adjust score based upon user's decision
+				if(stim == "cp"){
+					//Adjust game score
+					score = 10;
+
+					correct += 1;
+				}
+
+				totalScore += score;
+				//Append score to HTML
+				$("#totalScore").html(totalScore);
+				$("#score").html(score);
+			}
+	
+			//The box falls below the screen
+			if(boxPos == maxTop){
+				nextTrial();
+			}
 		}
-	}
-},REFRESH_RATE);
+	},REFRESH_RATE);
 
 	//This is where the keybinding occurs
 	$(document).keydown(function(e){
