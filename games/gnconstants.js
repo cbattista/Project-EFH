@@ -33,15 +33,15 @@ var level = 0;
 var trials = 30;
 var trial = 0;
 
-//state vars
-var	boxPos = 0; //the position of the package
-var	canHit = 0; //is the package within explosion range
-var	exploded = 0; //has the package been blown up
-var	dropIt = 1; //should the package be dropping
-var	fired = 0; //has the user fired the defense system yes
-burnout = 40; //how long the exploded package explodes for
+//State Variables
+var	boxPos = 0; //the position of the package, initial pos is the top of the screen
+var	canHit = 0; //1:= Package is in explosion range; 0:= Package is outside explosion range
+var	exploded = 0; //1:= The Package has been hit 0:= The package has not been hit 
+var	dropIt = 1; //1:= The box drops 0:= The box stops
+var	fired = 0; //1:= The user has fired his weapon 0:= The user has not yet fired his weapon
+var 	burnout = 40; //Length of the box-explosion animation. Larger value increases this time
 
-//Set Initial Speed/Difficulty Variables
+//Create Difficulty class with appropriate difficulty fields
 function Difficulty() {
 	this.trials = 30; //how many trials
 	this.dropSpeed = 5; //how fast the package drops
@@ -56,14 +56,15 @@ var score = 0;
 var scoreMult = 2;
 
 //Other User information
-var correct = 0;
+var correct = 0; //How many correct responses the user gave
 var buttonPress = 0; //How many times the user blasted the right object
 var totalRT = 0;//agregate Reaction Time for a level
 var averageRT = 0;//Average Reaction time for a level
 
+//Create subject object
 var subject = new Subject(666,1);
 
-//Animations for stuff
+//Animations for objects
 var cityAnim = new Array;
 
 cityAnim["fine"] = new $.gameQuery.Animation({

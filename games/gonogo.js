@@ -19,7 +19,6 @@ function nextLevel(){
 	for (i=0;i<difficulty.trials/4;i++) {
 		delays = delays.concat([10, 20, 30, 40]);
 	}
-
 	for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
 		stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
 	
@@ -217,7 +216,7 @@ $(function(){
 				nextTrial();
 			}
 
-			//if it's in range of the binoculars...
+			//If the package is in the range of the binoculars...
 			if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
 		
 				canHit = 1; //Box is ready to be hit
@@ -225,14 +224,14 @@ $(function(){
 		
 			}
 	
-			//if it has passed the range of the binoculars
+			//If the package is outside the range of the binoculars
 			else if(boxPos >= hideTop && boxPos < groundPos && exploded == 0){
 
 				canHit = 0;
 				$("#mysteryBox").setAnimation(box["idle"]);
 			}
 		
-			//What happens when the box hits the ground
+			//What happens when the box hits the ground...
 			else if(boxPos == groundPos){
 		
 				score = 0;
@@ -242,14 +241,15 @@ $(function(){
 
 				//Adjust score based upon user's decision
 				if(stim == "cp"){
-					//Adjust game score
+					//Step 1: Adjust game score
 					score = 10;
 
 					correct += 1;
 				}
 
 				totalScore += score;
-				//Append score to HTML
+				
+				//Step 2: Append score to HTML
 				$("#totalScore").html(totalScore);
 				$("#score").html(score);
 			}
@@ -266,16 +266,16 @@ $(function(){
 	
 		if(e.keyCode = 32){
 		
-			if(canHit == 1 && fired == 0){//If button press took place inside the binoculars and you havn't fired already
-				fired = 1;
-				exploded = 1;
+			if(canHit == 1 && fired == 0){//If button press took place inside the binoculars and user hasn't fired his weapon already
+				fired = 1;//1:= User can not longer fire his weapon
+				exploded = 1;//1:= Box has been hit
 
 				//Calculate time of button press and gather/send reaction time data
 				var d = new Date();
 				t2 = d.getTime();
 				RT = t2 - t1;
-				totalRT += RT
-				buttonPress += 1
+				totalRT += RT;
+				buttonPress += 1;
 		
 				subject.inputData(trial,'RT',RT);
 
@@ -312,7 +312,7 @@ $(function(){
 		
 
 	 	}	
-		//set the state variable to indicate the defense system has been fired
+		//If we want to punish user for not pressing the right button leave as it is.  If that does not matter then delete the next line.
 		fired = 1;
 	});
 }); 
