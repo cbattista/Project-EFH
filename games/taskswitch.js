@@ -21,7 +21,8 @@ function nextLevel() {
 		stimList = [];	
 		delays = [];	
 
-		//setting of game variables - eventually should be retrieved from the database
+		//Setting of game variables - eventually should be retrieved from the database
+		
 		for (i=0;i<difficulty.trials/4;i++) {
 			stimList = stimList.concat([0, 1, 2, 3]);
 			delays = delays.concat([20, 40, 60, 80]);
@@ -34,7 +35,7 @@ function nextLevel() {
 			animalList2 = animalList2.concat([1]);
 		}
 	
-		switches = difficulty.switchFreq / 100 * difficulty.trials;
+		switches = difficulty.switchFreq / 100 * difficulty.trials; //How many times the food changes in a level
 
 		for (i=0;i<switches;i++){
 			cueList = cueList.concat([1]);
@@ -54,12 +55,12 @@ function nextLevel() {
 		subject.inputLevelData(day,totalScore,level);
 		subject.sendLevelData();
 
-		//now we need to write to the db, indicating the level has been completed
+		//Now we need to write to the db, indicating that the level has been completed
 
 		$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=2&day=" + day, async: false});
 		
 		alert('You are done playing this game for today.  Press OK to return to the game menu');
-		window.location = "../index.html";
+		window.location = "../index.html";//Send user back to his/her homepage
 	}
 	
 }
@@ -77,7 +78,7 @@ function nextTrial() {
 
 	//Set Speed variables
 	difficulty.hSpeed = 0;
-	vSpeed = 0;
+	difficulty.vSpeed = 0;
 	sorted = 0;
 	canSort = 0;
 	sortedAt = 0;
@@ -121,7 +122,7 @@ function nextTrial() {
 	}
 
 }
-
+//Function which sends the user's score to the DB, and gathers the difficulty variables for the next trial 
 function setDifficulty(score){
 	gString = "getDifficulty.php?score=" + score + "&game=2";
 
@@ -163,7 +164,8 @@ function setCue(){
 		rule['pinkcirc'] = ['pt'];
 	}
 }
-	
+
+//Create Animations for each creature
 function makeCreature(id){
 	creature = new Array;
     creature["idle"] = new $.gameQuery.Animation({
@@ -209,7 +211,8 @@ $(function(){
 		},
 		async: false}
 	);
-
+	
+	//Get Level data. FInd which level they start at today 
 	$.ajax({url: "getLevels.php?gid=2",
 		success : function(data) {
 			levels = parseInt(data);
@@ -283,55 +286,73 @@ $(function(){
     });
 
 
-	//--------------------------------PASSAGE OF TIME----------------------------------------------------------------------
-	//
+	//----------------------------------------------------------------------------------------------------
+	//--                                Passage of Time                                                 --
+	//----------------------------------------------------------------------------------------------------
 	$.playground().registerCallback(function(){
 	
 
+	//Phase 1: Delay the food, keep user off guard
 	delay -= 1;
+
+	//Phase 2: Enough Delay! Now the food moves through the pipe
 	if (delay == 0) {
 		difficulty.hSpeed = 5;
 		$("#food").toggle();
 	}
 
-	// Get position info of the food objects and add x and y component to chang position	
-	newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
-	var newTop = parseInt($("#food").css("top")) + vSpeed;
+		// Get position info of the food objects and add x and y component to change position	
+		newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
+		var newTop = parseInt($("#food").css("top")) + difficulty.vSpeed;
 	
-	//Phase 1: Move obj down the conveyor belt, angle is determined by the difference of vertical and horizontal speed(slope)
+	//Phase 3: Move obj down the conveyor belt. Angle is determined by the difference of vertical and horizontal speed(slope)
 	$("#food").css("left", newLeft);
 	$("#food").css("top", newTop);	
-
+	
+	//Phase 4: Food comes out the pipe and moves across the conveyor belt
 	if (newLeft==revealLeft && sorted==0){
-
+		
+		//User can use his paddle
 		canSort = 1;
-				
+		
+		//Test user's reaction time		
 		t = new Date();
 		t1 = t.getTime();
 		
+		//When the food comes out the pipe, set its animation (could be done before)
 		myURL = "images/Animal_Feeder/" + stimFile[stimList[trial]] + ".png";
-		theFood = new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/" + stimFile[stimList[trial]] + ".png"});
+		theFood = new $.gameQuery.Animation({imageURL: myURL});
 		$("#food").setAnimation(theFood)
 
 	}
-	else if (newLeft >= maxLeft && newTop < maxTop) {
-		canSort = 0;
-		if (sorted == 0) {
-			difficulty.hSpeed = 0;
+	
+	//Phase 5: User either makes a decision or does not
+	
+		//If the user makes no decision...
+		else if (newLeft >= maxLeft && newTop < maxTop) {
+			canSort = 0;
+
+			if (sorted == 0) {
+				difficulty.hSpeed = 0;}
+			
+			else {
+				difficulty.hSpeed = difficulty.newHSpeed;}
+			
+			//The food falls off the belt
+			difficulty.vSpeed = 5;
 		}
-		else {
-			difficulty.hSpeed = newhSpeed;
-		}
-		vSpeed = 5;
-	}
-	else if (newTop == maxTop) {
+	
+		else if (newTop == maxTop) {
 		
 		if (sorted == 0) {
-            $("#creature1").setAnimation(creature1["angry"]);
+        	        
+			$("#creature1").setAnimation(creature1["angry"]);
 			$("#creature2").setAnimation(creature2["angry"]);
+			
 			score = 0;
 			ACC = 0;
 		}
+		//If user makes a decision, Judge their decision and change animation to show whether it was correct or not
 		else {
 			if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 				$("#creature1").setAnimation(creature1["happy"]);
@@ -356,7 +377,8 @@ $(function(){
 				ACC = 0;
 			}						
 		}		
-
+		
+		//Set score based on user's decision
 		score = parseInt(score);
 		totalScore += score;
 		$("#totalScore").html(totalScore);
@@ -364,6 +386,7 @@ $(function(){
 		subject.inputData(trial, "score", score);
 		subject.inputData(trial, "ACC", ACC);
 	}
+	//Allow creature animation to run	
 	else if (newTop > (maxTop + 100)) {
 		nextTrial();
 	}	
@@ -377,28 +400,35 @@ $(function(){
             case 65: //this is left! (a)
 				if (canSort==1) {
 					sorted = 1;
-					newhSpeed = -4;
+					difficulty.newHSpeed = -4;
 					canSort = 0;
 					$("#paddle").rotate(315);
+
+					//Get Reaction Time data and send it to the server
 					d = new Date();
 					t2 = d.getTime();
 					RT = t2 - t1;
-					sortedAt = newLeft;
 					subject.inputData(trial, 'RT', RT);
-		            break;
-				}
+					
+					sortedAt = newLeft;
+		           	 break;
+			 	}
+
             case 68: //this is right! (d)
 				if (canSort == 1) {
 					sorted = 1;
-					newhSpeed = 4;
+					difficulty.newHSpeed = 4;
 					canSort = 0;
 					$("#paddle").rotate(45);
+					
+					//Get Reaction Time data and send it to the server
 					d = new Date();
 					t2 = d.getTime();
 					RT = t2 - t1;
-					sortedAt = newLeft;
 					subject.inputData(trial, 'RT', RT);
-		            break;
+
+					sortedAt = newLeft;
+		           	 break;
 				}
         }
     });
