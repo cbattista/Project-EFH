@@ -22,9 +22,8 @@ Password: <input type="password" name="password" /><br />
 
 	$("#submit").click(function() {
 		query = $("form").serialize();
-		var user = $("#user").val();
 		$.get("login.php?"+query, function(data){
-		if (data == "1"){
+		if (data == 1){
 			window.location = "index.html";		
 			}
 		else {
