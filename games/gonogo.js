@@ -182,6 +182,7 @@ $(function(){
 	$("#startbutton").click(function(){
 		
 		//Start the game
+		start = 1;
 		nextLevel();
 		
 	 $.playground().startGame(function(){
@@ -241,6 +242,7 @@ $(function(){
 
 				//Adjust score based upon user's decision
 				if(stim == "cp"){
+			
 					//Step 1: Adjust game score
 					score = 10;
 
@@ -262,11 +264,16 @@ $(function(){
 	},REFRESH_RATE);
 
 	//This is where the keybinding occurs
+
 	$(document).keydown(function(e){
+	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
+	if(start == 1){
 	
-		if(e.keyCode = 32){
+	   if(fired == 0){ //If the user has not fired his weapon
+
+		if(e.keyCode == 65 && canHit == 1){ //If the user presses the right key ('a') when the package is inside the binoculars
 		
-			if(canHit == 1 && fired == 0){//If button press took place inside the binoculars and user hasn't fired his weapon already
+				keyPress = 1; //User pressed the right key
 				fired = 1;//1:= User can not longer fire his weapon
 				exploded = 1;//1:= Box has been hit
 
@@ -307,12 +314,17 @@ $(function(){
 				
 				subject.inputData(trial,"score",score);
 				subject.inputData(trial,"RT",RT);
-			}
-
-		
-
+			
 	 	}	
-		//If we want to punish user for not pressing the right button leave as it is.  If that does not matter then delete the next line.
+
+		else {
+			keyPress = 0;}
+
+		//If user presses the wrong key, he will no longer be able to fire his weapon
 		fired = 1;
+
+		subject.inputData(trial,"keyPress",keyPress);
+	     }
+	   }
 	});
 }); 
