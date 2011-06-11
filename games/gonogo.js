@@ -269,11 +269,8 @@ $(function(){
 	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
 	if(start == 1){
 	
-	   if(fired == 0){ //If the user has not fired his weapon
-
-		if(e.keyCode == 65 && canHit == 1){ //If the user presses the right key ('a') when the package is inside the binoculars
+		if(e.keyCode == 65 && canHit == 1 && fired == 0){ //If the user presses the right key ('a') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
 		
-				keyPress = 1; //User pressed the right key
 				fired = 1;//1:= User can not longer fire his weapon
 				exploded = 1;//1:= Box has been hit
 
@@ -317,14 +314,11 @@ $(function(){
 			
 	 	}	
 
-		else {
-			keyPress = 0;}
-
 		//If user presses the wrong key, he will no longer be able to fire his weapon
 		fired = 1;
 
-		subject.inputData(trial,"keyPress",keyPress);
+		//Send record of user's keypress to the DB
+		subject.inputData(trial,"keyCode", e.keyCode);
 	     }
-	   }
 	});
 }); 

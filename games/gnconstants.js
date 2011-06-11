@@ -40,7 +40,6 @@ var	exploded = 0; //1:= The Package has been hit 0:= The package has not been hi
 var	dropIt = 1; //1:= The box drops 0:= The box stops
 var	fired = 0; //1:= The user has fired his weapon 0:= The user has not yet fired his weapon
 var 	burnout = 40; //Length of the box-explosion animation. Larger value increases this time
-var	keyPress = 0; // 1:= user pressed the right key 0:= User pressed the wrong key or pressed the right key at the wrong time
 var 	start = 0; //1:= The game has started 0:= The game has not started
 
 //Create Difficulty class with appropriate difficulty fields
