@@ -1,7 +1,8 @@
 //Constants that will never change/Constants that only need to be stated once
 var PLAYGROUND_HEIGHT = 640;
 var PLAYGROUND_WIDTH = 480;
-var REFRESH_RATE = 40; //ms between frame change callbacks 
+var FPS = 24;
+var REFRESH_RATE = 1000 / FPS; //ms between frame change callbacks 
 
 var BINOC_WIDTH = 371;
 var BINOC_HEIGHT = 212;
@@ -32,6 +33,7 @@ var box = new Array();
 var level = 0;
 var trials = 30;
 var trial = 0;
+var trialDur = 36;
 
 //State Variables
 var	boxPos = 0; //the position of the package, initial pos is the top of the screen
@@ -39,14 +41,17 @@ var	canHit = 0; //1:= Package is in explosion range; 0:= Package is outside expl
 var	exploded = 0; //1:= The Package has been hit 0:= The package has not been hit 
 var	dropIt = 1; //1:= The box drops 0:= The box stops
 var	fired = 0; //1:= The user has fired his weapon 0:= The user has not yet fired his weapon
-var 	burnout = 40; //Length of the box-explosion animation. Larger value increases this time
-var 	start = 0; //1:= The game has started 0:= The game has not started
+var burnout = 40; //Length of the box-explosion animation. Larger value increases this time
+var impact = 0; //1:= the package has hit the ground 0:= the package has not hit the ground
 
 //Create Difficulty class with appropriate difficulty fields
 function Difficulty() {
+	this.trialDur = 48; //how many frames a trial should last for
 	this.trials = 30; //how many trials
-	this.dropSpeed = 5; //how fast the package drops
+	this.dropSpeed = PLAYGROUND_HEIGHT / trialDur; //how fast the package drops
 	this.nogoes = 0.5; //ratio of nogo trials
+	this.impactDelay = 24;
+	this.binocSpeed = this.dropSpeed / 2; //how fast the package drops through the binoculars
 }
 
 var difficulty = new Difficulty();
