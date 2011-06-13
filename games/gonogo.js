@@ -138,9 +138,12 @@ function theBox(id){
 	
 	return someBox;
 }
+
+
 //------------------------------------------------------------------
 //--                       The Key Handler
 //------------------------------------------------------------------
+
 function key_handler(e){
 	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
 	
@@ -163,7 +166,7 @@ function key_handler(e){
 
 				score =  0;
 
-				burnout = ((groundPos - boxPos) / grounPos  * difficulty.trialDur) + difficulty.impactDelay; 
+				burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
 
 				
 				//Evaluate users decision
