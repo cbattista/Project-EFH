@@ -72,12 +72,14 @@ function nextTrial(){
 	fired = 0;
 	burnout = 40;
 	score = 0;
+	impact = 0;
 
 	$("#score").html(score);
 
 	trial = trial + 1;
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
-	delay = delays[trial];//delay before package drops	
+	delay = delays[trial];//delay before package drops
+	impactDelay = difficulty.impactDelay;//reset impact delay
 
 	//Reset animations for next trial
 	box = theBox(stim);
@@ -110,7 +112,8 @@ function setDifficulty(){
 	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
 		diffs = data.split(',');
 		difficulty.trials = diffs[0];
-		difficulty.dropSpeed = diffs[1];
+		difficulty.dropSpeed += diffs[1];
+		difficulty.binocSpeed = this.dropSpeed / 2;
 		difficulty.nogoes = diffs[2];
 	});
 
@@ -134,6 +137,66 @@ function theBox(id){
 		imageURL: "images/SatDef/"+id+"_exposed.png"});
 	
 	return someBox;
+}
+//------------------------------------------------------------------
+//--                       The Key Handler
+//------------------------------------------------------------------
+function key_handler(e){
+	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
+	
+		if(e.keyCode == 65 && canHit == 1 && fired == 0){ //If the user presses the right key ('a') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
+		
+				fired = 1;//1:= User can not longer fire his weapon
+				exploded = 1;//1:= Box has been hit
+
+				//Calculate time of button press and gather/send reaction time data
+				var d = new Date();
+				t2 = d.getTime();
+				RT = t2 - t1;
+				totalRT += RT;
+				buttonPress += 1;
+		
+				subject.inputData(trial,'RT',RT);
+
+				//Animate the explosion
+				$("#mysteryBox").setAnimation(box["explode"]);
+
+				score =  0;
+
+				burnout = ((groundPos - boxPos) / grounPos  * difficulty.trialDur) + difficulty.impactDelay; 
+
+				
+				//Evaluate users decision
+				if(stim == "b"){
+					//Adjust game score
+					span = hideTop - revealTop;
+					dist = hideTop - boxPos;
+					score =  (dist / span) * 10 ;
+					score = parseInt(score);
+					
+					correct += 1;
+
+				}
+				
+				totalScore += score;
+				
+				//Append score to HTML
+				$("#totalScore").html(totalScore);
+				$("#score").html(score);
+
+				//Send trial data to server
+				
+				subject.inputData(trial,"score",score);
+				subject.inputData(trial,"RT",RT);
+			
+	 	}	
+
+		//If user presses the wrong key, he will no longer be able to fire his weapon
+		fired = 1;
+
+		//Send record of user's keypress to the DB
+		subject.inputData(trial,"keyCode", e.keyCode);
+	     
 }
 
 // ---------------------------------------------------------------------
@@ -209,9 +272,9 @@ $(function(){
 
 	//Initialize the start button
 	$("#startbutton").click(function(){
-		
-		//Start the game
-		start = 1;
+		//Bind Key Events
+		$(document).keydown(key_handler);
+
 		nextLevel();
 		
 	 $.playground().startGame(function(){
@@ -234,11 +297,12 @@ $(function(){
 
 		if(dropIt == 1){
 
-			boxPos += difficulty.dropSpeed;
+			dropSpeed = difficulty.dropSpeed;
 	
 			$("#mysteryBox").css("top", boxPos);
 
 			if (exploded == 1) {
+				dropSpeed = difficulty.binocSpeed;
 				burnout -= 1;
 			}
 
@@ -248,7 +312,7 @@ $(function(){
 
 			//If the package is in the range of the binoculars...
 			if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
-		
+				dropSpeed = difficulty.binocSpeed;
 				canHit = 1; //Box is ready to be hit
 				$("#mysteryBox").setAnimation(box["exposed"]);
 		
@@ -262,8 +326,9 @@ $(function(){
 			}
 		
 			//What happens when the box hits the ground...
-			else if(boxPos == groundPos){
-		
+			else if(boxPos >= groundPos && impact == 0){
+				impact = 1;		
+
 				score = 0;
 
 				//Animate the city
@@ -285,69 +350,18 @@ $(function(){
 				$("#score").html(score);
 			}
 	
-			//The box falls below the screen
-			if(boxPos == maxTop){
-				nextTrial();
+			else if(impact == 1) {
+				impactDelay -= 1;
+				
+				if (impactDelay == 0) {
+					subject.inputData(trial, "impact", 1)
+					nextTrial();
+				}			
 			}
+			boxPos += dropSpeed;
+			$("#mysteryBox").css("top", boxPos);
+				
 		}
 	},REFRESH_RATE);
-
-	//This is where the keybinding occurs
-
-	$(document).keydown(function(e){
-	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
-	if(start == 1){
-	
-		if(e.keyCode == 65 && canHit == 1 && fired == 0){ //If the user presses the right key ('a') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
-		
-				fired = 1;//1:= User can not longer fire his weapon
-				exploded = 1;//1:= Box has been hit
-
-				//Calculate time of button press and gather/send reaction time data
-				var d = new Date();
-				t2 = d.getTime();
-				RT = t2 - t1;
-				totalRT += RT;
-				buttonPress += 1;
-		
-				subject.inputData(trial,'RT',RT);
-
-				//Animate the explosion
-				$("#mysteryBox").setAnimation(box["explode"]);
-
-				score =  0;
-
-				
-				//Evaluate users decision
-				if(stim == "b"){
-					//Adjust game score
-					span = hideTop - revealTop;
-					dist = hideTop - boxPos;
-					score =  (dist / span) * 10 ;
-					score = parseInt(score);
-					
-					correct += 1;
-
-				}
-				
-				totalScore += score;
-				
-				//Append score to HTML
-				$("#totalScore").html(totalScore);
-				$("#score").html(score);
-
-				//Send trial data to server
-				
-				subject.inputData(trial,"score",score);
-				subject.inputData(trial,"RT",RT);
-			
-	 	}	
-
-		//If user presses the wrong key, he will no longer be able to fire his weapon
-		fired = 1;
-
-		//Send record of user's keypress to the DB
-		subject.inputData(trial,"keyCode", e.keyCode);
-	     }
-	});
 }); 
+
