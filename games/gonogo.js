@@ -1,38 +1,65 @@
 function nextLevel(){
 
-	//Set difficulty for next level using scores from completed level
-	//setDifficulty(totalScore);
-
-	trial = 0;
-
-	level += 1;
-
-	//Reset score variables
-	correct = 0;
-	buttonPress = 0;
-	
-	//Generate new stimList
-	stimList = [];	
-	delays = [];
-
-	//setting of game variables - eventually should be retrieved from the database
-	for (i=0;i<difficulty.trials/4;i++) {
-		delays = delays.concat([10, 20, 30, 40]);
+	//At the end of the each level send level data to server
+	if( (level > 0) && (level < levels) ){
+		subject.inputLevelData(day, totalScore, level);
+		subject.sendLevelData();
+		alert('Level Complete! Press OK to play the next one.');	
 	}
-	for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
-		stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
 	
-	for(i = 0; i < (1-difficulty.nogoes)*difficulty.trials; i++){
-		stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
-	stimList.sort(randOrd);
+	//At the beginning of a new level, reset game variables
+	if( level < levels ){
 	
-	//Initiate new trial
-	nextTrial();
-	
-	//subject.inputLevelData(level, score, currentTime.getTime());
-	//subject.sendLevelData();
+		//Set difficulty for next level using scores from completed level
+		//setDifficulty(totalScore);
 
+		trial = 0;
+
+		level += 1;
+
+		//Reset score variables
+		correct = 0;
+		buttonPress = 0;
+		
+		//Generate new stimList
+		stimList = [];	
+		delays = [];
+
+		//setting of game variables - eventually should be retrieved from the database
+		for (i=0;i<difficulty.trials/4;i++) {
+			delays = delays.concat([10, 20, 30, 40]);
+		}
+		for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
+			stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
+	
+		for(i = 0; i < (1-difficulty.nogoes)*difficulty.trials; i++){
+			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
+		
+		stimList.sort(randOrd);
+		
+		alert(stimList);
+	
+		//Initiate new trial
+		nextTrial();
+	
+		//subject.inputLevelData(level, score, currentTime.getTime());
+		//subject.sendLevelData();
+
+	}
+
+	else{
+	
+	subject.inputLevelData( day, totalScore, level);
+	subject.sendLevelData();
+
+	//Now to write to the DB
+	$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=1&day=" + day, async: false});
+	
+	alert('You are done Playing this game for today. Press OK to return to the game menu');
+	window.location = "../index.html";
+	}
 }
+
 
 function nextTrial(){
 	
@@ -132,13 +159,15 @@ $(function(){
 		async: false}
 	);
 
+	//Get the level the user should start at
 	$.ajax({url: "getLevels.php?gid=1",
 		success : function(data) {
 			levels = parseInt(data);
 		},
 		async: false}
 	);
-
+	
+	//Find out what day of the program the user is on
 	day = getCookie("funkyTrainDay");
 
 	//Initialize the game:
