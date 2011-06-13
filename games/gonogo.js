@@ -119,48 +119,48 @@ function key_handler(e){
 	
 		if(e.keyCode == 65 && canHit == 1 && fired == 0){ //If the user presses the right key ('a') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
 		
-				fired = 1;//1:= User can not longer fire his weapon
-				exploded = 1;//1:= Box has been hit
+			fired = 1;//1:= User can not longer fire his weapon
+			exploded = 1;//1:= Box has been hit
 
-				//Calculate time of button press and gather/send reaction time data
-				var d = new Date();
-				t2 = d.getTime();
-				RT = t2 - t1;
-				totalRT += RT;
-				buttonPress += 1;
-		
-				subject.inputData(trial,'RT',RT);
+			//Calculate time of button press and gather/send reaction time data
+			var d = new Date();
+			t2 = d.getTime();
+			RT = t2 - t1;
+			totalRT += RT;
+			buttonPress += 1;
+	
+			subject.inputData(trial,'RT',RT);
 
-				//Animate the explosion
-				$("#mysteryBox").setAnimation(box["explode"]);
+			//Animate the explosion
+			$("#mysteryBox").setAnimation(box["explode"]);
 
-				score =  0;
+			score =  0;
 
-				burnout = ((groundPos - boxPos) / grounPos  * difficulty.trialDur) + difficulty.impactDelay; 
+			burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
 
+			
+			//Evaluate users decision
+			if(stim == "b"){
+				//Adjust game score
+				span = hideTop - revealTop;
+				dist = hideTop - boxPos;
+				score =  (dist / span) * 10 ;
+				score = parseInt(score);
 				
-				//Evaluate users decision
-				if(stim == "b"){
-					//Adjust game score
-					span = hideTop - revealTop;
-					dist = hideTop - boxPos;
-					score =  (dist / span) * 10 ;
-					score = parseInt(score);
-					
-					correct += 1;
+				correct += 1;
 
-				}
-				
-				totalScore += score;
-				
-				//Append score to HTML
-				$("#totalScore").html(totalScore);
-				$("#score").html(score);
+			}
+			
+			totalScore += score;
+			
+			//Append score to HTML
+			$("#totalScore").html(totalScore);
+			$("#score").html(score);
 
-				//Send trial data to server
-				
-				subject.inputData(trial,"score",score);
-				subject.inputData(trial,"RT",RT);
+			//Send trial data to server
+			
+			subject.inputData(trial,"score",score);
+			subject.inputData(trial,"RT",RT);
 			
 	 	}	
 
