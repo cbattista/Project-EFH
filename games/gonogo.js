@@ -85,7 +85,8 @@ function setDifficulty(){
 	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
 		diffs = data.split(',');
 		difficulty.trials = diffs[0];
-		difficulty.dropSpeed = diffs[1];
+		difficulty.dropSpeed += diffs[1];
+		difficulty.binocSpeed = this.dropSpeed / 2;
 		difficulty.nogoes = diffs[2];
 	});
 
