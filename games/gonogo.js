@@ -141,7 +141,6 @@ function theBox(id){
 //------------------------------------------------------------------
 //--                       The Key Handler
 //------------------------------------------------------------------
-
 function key_handler(e){
 	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
 	
@@ -166,6 +165,7 @@ function key_handler(e){
 
 				burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
 
+				burnout = parseInt(burnout);
 				
 				//Evaluate users decision
 				if(stim == "b"){
@@ -327,7 +327,7 @@ $(function(){
 			}
 		
 			//What happens when the box hits the ground...
-			else if(boxPos >= groundPos && impact == 0){
+			else if(boxPos >= groundPos && impact == 0 && exploded == 0){
 				impact = 1;		
 
 				score = 0;
