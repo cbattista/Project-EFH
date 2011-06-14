@@ -37,8 +37,6 @@ function nextLevel(){
 		
 		stimList.sort(randOrd);
 		
-		alert(stimList);
-	
 		//Initiate new trial
 		nextTrial();
 	
