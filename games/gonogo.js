@@ -9,9 +9,8 @@ function nextLevel(){
 	
 	//At the beginning of a new level, reset game variables
 	if( level < levels ){
-	
 		//Set difficulty for next level using scores from completed level
-		//setDifficulty(totalScore);
+		setDifficulty(totalScore);
 
 		trial = 0;
 
@@ -47,20 +46,19 @@ function nextLevel(){
 
 	else{
 	
-	subject.inputLevelData( day, totalScore, level);
-	subject.sendLevelData();
+		subject.inputLevelData( day, totalScore, level);
+		subject.sendLevelData();
 
-	//Now to write to the DB
-	$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=1&day=" + day, async: false});
+		//Now to write to the DB
+		$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=1&day=" + day, async: false});
 	
-	alert('You are done Playing this game for today. Press OK to return to the game menu');
-	window.location = "../index.html";
+		alert('You are done Playing this game for today. Press OK to return to the game menu');
+		window.location = "../index.html";
 	}
 }
 
 
 function nextTrial(){
-	
 	//Reset State variables
 	boxPos = 0;
 	canHit = 0;
@@ -92,7 +90,7 @@ function nextTrial(){
 	$("#mysteryBox").hide();
 	$("#mysteryBox").css("top",initTop);
 
-	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
+	if (trial < difficulty.trials) {
 		
 		//Send trial info to server
 		subject.inputData(trial, "stim", stim);
@@ -105,14 +103,12 @@ function nextTrial(){
 
 }
 function setDifficulty(){
-	game = "response-inhib"
-	
-	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
+	$.get("getDifficulty.php?score=" +score+ "&game=1",function(data){
 		diffs = data.split(',');
-		difficulty.trials = diffs[0];
-		difficulty.dropSpeed += diffs[1];
-		difficulty.binocSpeed = this.dropSpeed / 2;
-		difficulty.nogoes = diffs[2];
+		difficulty.trials = parseInt(diffs[0]);
+		difficulty.dropSpeed += parseInt(diffs[1]);
+		difficulty.binocSpeed = difficulty.dropSpeed / 2;
+		difficulty.nogoes = parseInt(diffs[2]);
 	});
 
 	scoreMult = (difficulty.dropSpeed/difficulty.nogoes)*REFRESH_RATE;
@@ -172,6 +168,7 @@ function key_handler(e){
 					//Adjust game score
 					span = hideTop - revealTop;
 					dist = hideTop - boxPos;
+
 					score =  (dist / span) * 10 ;
 					score = parseInt(score);
 					
@@ -275,7 +272,6 @@ $(function(){
 	$("#startbutton").click(function(){
 		//Bind Key Events
 		$(document).keydown(key_handler);
-
 		nextLevel();
 		
 	 $.playground().startGame(function(){
@@ -290,7 +286,6 @@ $(function(){
 	$.playground().registerCallback(function(){
 
 		delay -= 1;
-
 		if (delay == 0) {
 			dropIt = 1;
 			$("#mysteryBox").show();
@@ -299,7 +294,7 @@ $(function(){
 		if(dropIt == 1){
 
 			dropSpeed = difficulty.dropSpeed;
-	
+			
 			$("#mysteryBox").css("top", boxPos);
 
 			if (exploded == 1) {
