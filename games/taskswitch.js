@@ -76,7 +76,7 @@ function nextTrial() {
 		subject.sendData();
 	}
 
-	//Set Speed variables
+	//Set speed variables
 	difficulty.hSpeed = 0;
 	difficulty.vSpeed = 0;
 	sorted = 0;
@@ -220,6 +220,15 @@ $(function(){
 		async: false}
 	);
 
+	//Get game instructions
+	$.ajax({url : "getInstructions.php?gid=2",
+		success : function(data){
+			instructions = data;	
+		},
+		async: false}
+
+	);
+
 	day = getCookie("funkyTrainDay");
 
     // Initialize the game:
@@ -273,6 +282,11 @@ $(function(){
 	
     // this sets the id of the loading bar:
     $().setLoadBar("loadingBar", 400);
+
+    //initialize the instructions button
+    $("#instructions").click(function(){
+		    alert(instructions);
+	});
 
     //initialize the start button
     $("#startbutton").click(function(){
