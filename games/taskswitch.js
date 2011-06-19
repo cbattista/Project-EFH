@@ -91,6 +91,7 @@ function nextTrial() {
 
 	//Increment trial number each time this function is called
 	trial = trial + 1;
+	$("#trial").html(trial+"/48");
 	
 	stim = stimList[trial];
 	food = stimFile[stim];
