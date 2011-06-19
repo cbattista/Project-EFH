@@ -73,6 +73,7 @@ function nextTrial(){
 	$("#score").html(score);
 
 	trial = trial + 1;
+	$("#trial").html(trial+"/48");
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
 	delay = delays[trial];//delay before package drops
 	impactDelay = difficulty.impactDelay;//reset impact delay
