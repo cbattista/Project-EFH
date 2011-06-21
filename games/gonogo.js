@@ -83,6 +83,8 @@ function nextTrial(){
 	$("#mysteryBox").setAnimation(box["idle"]);
 
 	$("#city").setAnimation(cityAnim["fine"]);
+
+	setPoints(score);
 	
 	var d = new Date();
 	t1 = d.getTime();
@@ -117,14 +119,19 @@ function setDifficulty(){
 
 //Function that handles the points animation
 function setPoints(points){
-
-	if (points > 0){
-		$("#points").html("+ "+ points);}
 	
-	else if(points < 0){
-		$("#points").html("- "+ points);}
+	if (points > 0){
+		var sign = "+ ";	
+		var str = sprintf("<h1 style = \"color:red;font-size:20px;\">%s %s</h1>",sign,points);
+		$("#points").html(str);}
+	
+	if (points < 0){
+		var sign = "- ";
+		var str = sprintf("<h1 style = \"color:red;font-size:20px;\">%s %s</h1>",sign,points);
+		$("#points").html(str);}
+	
 
-	else if (points == 0){
+	if (points == 0){
 		$("#points").html("");}
 
 	$("#points").css("top",boxPos -50);//Show the points above the mysteryBox
