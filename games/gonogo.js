@@ -83,6 +83,8 @@ function nextTrial(){
 	$("#mysteryBox").setAnimation(box["idle"]);
 
 	$("#city").setAnimation(cityAnim["fine"]);
+
+	setPoints(score);
 	
 	var d = new Date();
 	t1 = d.getTime();
@@ -114,8 +116,26 @@ function setDifficulty(){
 
 	scoreMult = (difficulty.dropSpeed/difficulty.nogoes)*REFRESH_RATE;
 }
+
+//Function that handles the points animation
+function setPoints(points){
 	
-function setCue(){}
+	if (points > 0){
+		var sign = "+ ";	
+		var str = sprintf("<h1 style = \"color:red;font-size:20px;\">%s %s</h1>",sign,points);
+		$("#points").html(str);}
+	
+	if (points < 0){
+		var sign = "- ";
+		var str = sprintf("<h1 style = \"color:red;font-size:20px;\">%s %s</h1>",sign,points);
+		$("#points").html(str);}
+	
+
+	if (points == 0){
+		$("#points").html("");}
+
+	$("#points").css("top",boxPos -50);//Show the points above the mysteryBox
+}
 
 //Create an array of animations 
 function theBox(id){
@@ -176,7 +196,9 @@ function key_handler(e){
 					correct += 1;
 
 				}
-				
+
+				setPoints(score);
+
 				totalScore += score;
 				
 				//Append score to HTML
@@ -272,7 +294,13 @@ $(function(){
 				posx:(PLAYGROUND_WIDTH - BINOC_WIDTH) / 2,
 				posy:BINOC_POS,
 				width:BINOC_WIDTH,
-				height:BINOC_HEIGHT});
+				height:BINOC_HEIGHT})
+			
+			.addSprite("points",{animation: new $.gameQuery.Animation({imageURL: "images/points.png"}),
+				posx:(PLAYGROUND_WIDTH - POINTS_WIDTH)/2,
+				posy: (boxPos - 50),
+				width: POINTS_WIDTH,
+				height: POINTS_HEIGHT});
 
 	//Give the loading bar functionality
 	$().setLoadBar("loadingbar",400);
@@ -353,6 +381,8 @@ $(function(){
 
 					correct += 1;
 				}
+
+				setPoints(score);
 
 				totalScore += score;
 				
