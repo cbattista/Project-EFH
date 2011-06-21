@@ -13,6 +13,8 @@ var CITY_HEIGHT = 250;
 var BOX_WIDTH = 32;
 var BOX_HEIGHT = 32;
 
+var POINTS_WIDTH = 50;
+var POINTS_HEIGHT = 50;
 //Stage Variables
 
 //Stages of the plane
