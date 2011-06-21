@@ -160,20 +160,6 @@ function key_handler(e){
 
 				score =  0;
 
-<<<<<<< HEAD
-			burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
-
-			
-			//Evaluate users decision
-			if(stim == "b"){
-				//Adjust game score
-				span = hideTop - revealTop;
-				dist = hideTop - boxPos;
-				score =  (dist / span) * 10 ;
-				score = parseInt(score);
-				
-				correct += 1;
-=======
 				burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
 
 				burnout = parseInt(burnout);
@@ -188,20 +174,19 @@ function key_handler(e){
 					score = parseInt(score);
 					
 					correct += 1;
->>>>>>> e80ed69ac4b7c8fb281173178b92804d4e86a3be
 
-			}
-			
-			totalScore += score;
-			
-			//Append score to HTML
-			$("#totalScore").html(totalScore);
-			$("#score").html(score);
+				}
+				
+				totalScore += score;
+				
+				//Append score to HTML
+				$("#totalScore").html(totalScore);
+				$("#score").html(score);
 
-			//Send trial data to server
-			
-			subject.inputData(trial,"score",score);
-			subject.inputData(trial,"RT",RT);
+				//Send trial data to server
+				
+				subject.inputData(trial,"score",score);
+				subject.inputData(trial,"RT",RT);
 			
 	 	}	
 
@@ -327,27 +312,17 @@ $(function(){
 			
 			$("#mysteryBox").css("top", boxPos);
 
-			//package 
 			if (exploded == 1) {
 				dropSpeed = difficulty.binocSpeed;
 				burnout -= 1;
-				if (burnout == 0) {
-					nextTrial();
-				}
 			}
 
-			//package has hit the ground
-			else if(impact == 1) {
-				impactDelay -= 1;
-				
-				if (impactDelay == 0) {
-					subject.inputData(trial, "impact", 1)
-					nextTrial();
-				}			
+			if (burnout == 0) {
+				nextTrial();
 			}
 
 			//If the package is in the range of the binoculars...
-			else if(boxPos >= revealTop && boxPos < hideTop){
+			if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
 				dropSpeed = difficulty.binocSpeed;
 				canHit = 1; //Box is ready to be hit
 				$("#mysteryBox").setAnimation(box["exposed"]);
@@ -355,7 +330,7 @@ $(function(){
 			}
 	
 			//If the package is outside the range of the binoculars
-			else if(boxPos >= hideTop && boxPos < groundPos){
+			else if(boxPos >= hideTop && boxPos < groundPos && exploded == 0){
 
 				canHit = 0;
 				$("#mysteryBox").setAnimation(box["idle"]);
@@ -386,7 +361,14 @@ $(function(){
 				$("#score").html(score);
 			}
 	
-
+			else if(impact == 1) {
+				impactDelay -= 1;
+				
+				if (impactDelay == 0) {
+					subject.inputData(trial, "impact", 1)
+					nextTrial();
+				}			
+			}
 			boxPos += dropSpeed;
 			$("#mysteryBox").css("top", boxPos);
 				
