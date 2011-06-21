@@ -1,41 +1,64 @@
 function nextLevel(){
 
-	//Set difficulty for next level using scores from completed level
-	//setDifficulty(totalScore);
-
-	trial = 0;
-
-	level += 1;
-
-	//Reset score variables
-	correct = 0;
-	buttonPress = 0;
-	
-	//Generate new stimList
-	stimList = [];	
-	delays = [];
-
-	//setting of game variables - eventually should be retrieved from the database
-	for (i=0;i<difficulty.trials/4;i++) {
-		delays = delays.concat([10, 20, 30, 40]);
+	//At the end of the each level send level data to server
+	if( (level > 0) && (level < levels) ){
+		subject.inputLevelData(day, totalScore, level);
+		subject.sendLevelData();
+		alert('Level Complete! Press OK to play the next one.');	
 	}
-	for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
-		stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
 	
-	for(i = 0; i < (1-difficulty.nogoes)*difficulty.trials; i++){
-		stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
-	stimList.sort(randOrd);
-	
-	//Initiate new trial
-	nextTrial();
-	
-	//subject.inputLevelData(level, score, currentTime.getTime());
-	//subject.sendLevelData();
+	//At the beginning of a new level, reset game variables
+	if( level < levels ){
+		//Set difficulty for next level using scores from completed level
+		setDifficulty(totalScore);
 
+		trial = 0;
+
+		level += 1;
+
+		//Reset score variables
+		correct = 0;
+		buttonPress = 0;
+		
+		//Generate new stimList
+		stimList = [];	
+		delays = [];
+
+		//setting of game variables - eventually should be retrieved from the database
+		for (i=0;i<difficulty.trials/4;i++) {
+			delays = delays.concat([10, 20, 30, 40]);
+		}
+		for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
+			stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
+	
+		for(i = 0; i < (1-difficulty.nogoes)*difficulty.trials; i++){
+			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
+		
+		stimList.sort(randOrd);
+		
+		//Initiate new trial
+		nextTrial();
+	
+		//subject.inputLevelData(level, score, currentTime.getTime());
+		//subject.sendLevelData();
+
+	}
+
+	else{
+	
+		subject.inputLevelData( day, totalScore, level);
+		subject.sendLevelData();
+
+		//Now to write to the DB
+		$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=1&day=" + day, async: false});
+	
+		alert('You are done Playing this game for today. Press OK to return to the game menu');
+		window.location = "../index.html";
+	}
 }
 
+
 function nextTrial(){
-	
 	//Reset State variables
 	boxPos = 0;
 	canHit = 0;
@@ -50,6 +73,7 @@ function nextTrial(){
 	$("#score").html(score);
 
 	trial = trial + 1;
+	$("#trial").html(trial+"/48");
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
 	delay = delays[trial];//delay before package drops
 	impactDelay = difficulty.impactDelay;//reset impact delay
@@ -67,7 +91,7 @@ function nextTrial(){
 	$("#mysteryBox").hide();
 	$("#mysteryBox").css("top",initTop);
 
-	if (trial < stimList.length) { //Trial lasts until we run out of fruit 
+	if (trial < difficulty.trials) {
 		
 		//Send trial info to server
 		subject.inputData(trial, "stim", stim);
@@ -80,14 +104,12 @@ function nextTrial(){
 
 }
 function setDifficulty(){
-	game = "response-inhib"
-	
-	$.get("getDifficulty.php?score=" +score+ "&game=response-inhib",function(data){
+	$.get("getDifficulty.php?score=" +score+ "&game=1",function(data){
 		diffs = data.split(',');
-		difficulty.trials = diffs[0];
-		difficulty.dropSpeed += diffs[1];
-		difficulty.binocSpeed = this.dropSpeed / 2;
-		difficulty.nogoes = diffs[2];
+		difficulty.trials = parseInt(diffs[0]);
+		difficulty.dropSpeed += parseInt(diffs[1]);
+		difficulty.binocSpeed = difficulty.dropSpeed / 2;
+		difficulty.nogoes = parseInt(diffs[2]);
 	});
 
 	scoreMult = (difficulty.dropSpeed/difficulty.nogoes)*REFRESH_RATE;
@@ -111,6 +133,8 @@ function theBox(id){
 	
 	return someBox;
 }
+
+
 //------------------------------------------------------------------
 //--                       The Key Handler
 //------------------------------------------------------------------
@@ -119,23 +143,24 @@ function key_handler(e){
 	
 		if(e.keyCode == 65 && canHit == 1 && fired == 0){ //If the user presses the right key ('a') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
 		
-			fired = 1;//1:= User can not longer fire his weapon
-			exploded = 1;//1:= Box has been hit
+				fired = 1;//1:= User can not longer fire his weapon
+				exploded = 1;//1:= Box has been hit
 
-			//Calculate time of button press and gather/send reaction time data
-			var d = new Date();
-			t2 = d.getTime();
-			RT = t2 - t1;
-			totalRT += RT;
-			buttonPress += 1;
-	
-			subject.inputData(trial,'RT',RT);
+				//Calculate time of button press and gather/send reaction time data
+				var d = new Date();
+				t2 = d.getTime();
+				RT = t2 - t1;
+				totalRT += RT;
+				buttonPress += 1;
+		
+				subject.inputData(trial,'RT',RT);
 
-			//Animate the explosion
-			$("#mysteryBox").setAnimation(box["explode"]);
+				//Animate the explosion
+				$("#mysteryBox").setAnimation(box["explode"]);
 
-			score =  0;
+				score =  0;
 
+<<<<<<< HEAD
 			burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
 
 			
@@ -148,6 +173,22 @@ function key_handler(e){
 				score = parseInt(score);
 				
 				correct += 1;
+=======
+				burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
+
+				burnout = parseInt(burnout);
+				
+				//Evaluate users decision
+				if(stim == "b"){
+					//Adjust game score
+					span = hideTop - revealTop;
+					dist = hideTop - boxPos;
+
+					score =  (dist / span) * 10 ;
+					score = parseInt(score);
+					
+					correct += 1;
+>>>>>>> e80ed69ac4b7c8fb281173178b92804d4e86a3be
 
 			}
 			
@@ -195,6 +236,7 @@ $(function(){
 		async: false}
 	);
 
+	//Get the level the user should start at
 	$.ajax({url: "getLevels.php?gid=1",
 		success : function(data) {
 			levels = parseInt(data);
@@ -202,6 +244,15 @@ $(function(){
 		async: false}
 	);
 
+	//Get Instructions for the game
+	$.ajax({url: "getInstructions.php?gid=1",
+		success : function(data) {
+			instructions = data;
+		},
+		async: false}
+	);
+	
+	//Find out what day of the program the user is on
 	day = getCookie("funkyTrainDay");
 
 	//Initialize the game:
@@ -241,11 +292,16 @@ $(function(){
 	//Give the loading bar functionality
 	$().setLoadBar("loadingbar",400);
 
+	//Give the instructions button functionality
+	$("#instructions").click(function(){
+			alert(instructions);
+			});
+
+
 	//Initialize the start button
 	$("#startbutton").click(function(){
 		//Bind Key Events
 		$(document).keydown(key_handler);
-
 		nextLevel();
 		
 	 $.playground().startGame(function(){
@@ -260,7 +316,6 @@ $(function(){
 	$.playground().registerCallback(function(){
 
 		delay -= 1;
-
 		if (delay == 0) {
 			dropIt = 1;
 			$("#mysteryBox").show();
@@ -269,7 +324,7 @@ $(function(){
 		if(dropIt == 1){
 
 			dropSpeed = difficulty.dropSpeed;
-	
+			
 			$("#mysteryBox").css("top", boxPos);
 
 			//package 
@@ -307,7 +362,7 @@ $(function(){
 			}
 		
 			//What happens when the box hits the ground...
-			else if(boxPos >= groundPos && impact == 0){
+			else if(boxPos >= groundPos && impact == 0 && exploded == 0){
 				impact = 1;		
 
 				score = 0;

@@ -7,8 +7,8 @@ $pass = $_GET['password'];
 
 //If both fields are unempty, continue
 if ($username != "" && $pass != ""){
-	$con = mysql_connect(localhost, $uname, $password);
 
+	$con = mysql_connect(localhost, $uname, $password);
 
 	if (!$con){
 		die('Could not connect: ' . mysql_error());
@@ -17,6 +17,7 @@ if ($username != "" && $pass != ""){
 	mysql_select_db($database);
 
 	$query = sprintf("SELECT password FROM users WHERE name = '%s'",$username);
+	
 
 	$result = mysql_query($query);
 
