@@ -272,17 +272,27 @@ $(function(){
 	
 			$("#mysteryBox").css("top", boxPos);
 
+			//package 
 			if (exploded == 1) {
 				dropSpeed = difficulty.binocSpeed;
 				burnout -= 1;
+				if (burnout == 0) {
+					nextTrial();
+				}
 			}
 
-			if (burnout == 0) {
-				nextTrial();
+			//package has hit the ground
+			else if(impact == 1) {
+				impactDelay -= 1;
+				
+				if (impactDelay == 0) {
+					subject.inputData(trial, "impact", 1)
+					nextTrial();
+				}			
 			}
 
 			//If the package is in the range of the binoculars...
-			if(boxPos >= revealTop && boxPos < hideTop && exploded == 0){
+			else if(boxPos >= revealTop && boxPos < hideTop){
 				dropSpeed = difficulty.binocSpeed;
 				canHit = 1; //Box is ready to be hit
 				$("#mysteryBox").setAnimation(box["exposed"]);
@@ -290,7 +300,7 @@ $(function(){
 			}
 	
 			//If the package is outside the range of the binoculars
-			else if(boxPos >= hideTop && boxPos < groundPos && exploded == 0){
+			else if(boxPos >= hideTop && boxPos < groundPos){
 
 				canHit = 0;
 				$("#mysteryBox").setAnimation(box["idle"]);
@@ -321,14 +331,7 @@ $(function(){
 				$("#score").html(score);
 			}
 	
-			else if(impact == 1) {
-				impactDelay -= 1;
-				
-				if (impactDelay == 0) {
-					subject.inputData(trial, "impact", 1)
-					nextTrial();
-				}			
-			}
+
 			boxPos += dropSpeed;
 			$("#mysteryBox").css("top", boxPos);
 				
