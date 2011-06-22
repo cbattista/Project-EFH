@@ -16,18 +16,14 @@ var BOX_HEIGHT = 32;
 var POINTS_WIDTH = 100;
 var POINTS_HEIGHT = 100;
 var POINTS_OFFSET = 40;
-//Stage Variables
-
-//Stages of the plane
-var bombDrop = PLAYGROUND_WIDTH/2;
 
 //Various stages of the box
 var maxTop = 800;//how far the box is allowed to fall (larger value increases animation time) 
 var revealTop = 130;//When the box is in the binoc's sights
 var hideTop = 250;//when the box falls out of sight
-var cityTop = PLAYGROUND_HEIGHT - 110; //The top of the city, when the box falls below it
 var groundPos = PLAYGROUND_HEIGHT;
 var initTop = 0;
+var pointDir = 1; //which direction the points will float
 
 //Intitalize the box array to hold the animatons
 var box = new Array();

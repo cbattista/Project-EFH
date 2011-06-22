@@ -119,8 +119,6 @@ function setDifficulty(){
 
 //Function that handles the points animation
 function setPoints(points){
-	
-	pointsPos = boxPos - POINTS_OFFSET;
 
 	if (points > 0){
 		var sign = "+ ";	
@@ -197,6 +195,8 @@ function key_handler(e){
 					score = parseInt(score);
 					
 					correct += 1;
+					pointsPos = boxPos - POINTS_OFFSET;
+					pointDir = 1;
 
 				}
 
@@ -383,6 +383,8 @@ $(function(){
 					score = 10;
 
 					correct += 1;
+					pointsPos = PLAYGROUND_HEIGHT - CITY_HEIGHT;
+					pointDir = -1;
 				}
 
 				setPoints(score);
@@ -403,7 +405,7 @@ $(function(){
 				}			
 			}
 			boxPos += dropSpeed;
-			pointsPos += (difficulty.pointSpeed);
+			pointsPos += (difficulty.pointSpeed * pointDir);
 			$("#mysteryBox").css("top", boxPos);
 			$("#points").css("top", pointsPos);
 				
