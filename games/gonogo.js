@@ -68,6 +68,7 @@ function nextTrial(){
 	fired = 0;
 	burnout = 40;
 	score = 0;
+	setPoints(score);
 	impact = 0;
 
 	$("#score").html(score);
@@ -133,7 +134,7 @@ function setPoints(points){
 
 	if (points == 0){
 		$("#points").html("");}
-
+	
 	//$("#points").fadeOut(1000);
   		//$("#points").remove();	
 }

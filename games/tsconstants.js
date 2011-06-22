@@ -1,7 +1,22 @@
 // GAME SIZE AND FRAMERATE
-var 	PLAYGROUND_WIDTH    = 640;
-var 	PLAYGROUND_HEIGHT    = 480;
-var 	REFRESH_RATE        = 40; //ms between frame change callbacks
+var 	PLAYGROUND_WIDTH    	= 640;
+var 	PLAYGROUND_HEIGHT    	= 480;
+var 	REFRESH_RATE        	= 40; //ms between frame change callbacks
+
+//Sprite Positions
+	
+	//points
+	var	POINTS_WIDTH		= 200;	
+	var	POINTS_HEIGHT		= 200;
+	var	POINTS_OFFSET		= 50;
+	
+	//creatures
+	var	CREATURE1_POSX		= 40;
+	var	CREATURE1_POSY		= 220;
+	
+	var	CREATURE2_POSX		= 400;
+	var	CREATURE2_POSY		= 220;
+
 
 //Set start positions of food
 var 	initLeft = 30;

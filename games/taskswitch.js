@@ -165,7 +165,38 @@ function setCue(){
 		rule['pinkcirc'] = ['pt'];
 	}
 }
+//Function that handles the points animation
+function setPoints(points){
+	
+	//If the food goes to creature 1, the points appear above creature 1, if the points appear about creature 2...
+	if( difficulty.hSpeed < 0){
+	
+	$("#points").css("left",CREATURE1_POSX);
+	$("#points").css("top",CREATURE1_POSY - POINTS_OFFSET);}
 
+	if (difficulty.hSpeed > 0){
+		
+		$("#points").css("left",CREATURE2_POSX);
+		$("#points").css("top",CREATURE2_POSY - POINTS_OFFSET);}
+
+	//Depending on the sign of his score, change html accordingly
+	if (points > 0){
+		var sign = "+ ";	
+		var str = sprintf("<center><h1>%s %s</h1></center>",sign,points);
+		$("#points").html(str);}
+	
+	if (points < 0){
+		var sign = "- ";
+		var str = sprintf("<center><h1>%s %s</h1></center>",sign,points);
+		$("#points").html(str);}
+	
+
+	if (points == 0){
+		$("#points").html("");}
+	
+	//Animate 
+	$("#points").fadeTo(1000,0,function(){$(this).remove();});
+}
 //Create Animations for each creature
 function makeCreature(id){
 	creature = new Array;
@@ -261,14 +292,14 @@ $(function(){
 	.addGroup("actors", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT})
 
 		.addSprite("creature1",{animation: creature1["idle"],
-			 posx: 40,
-		     	 posy: 220,
+			 posx: CREATURE1_POSX,
+		     	 posy: CREATURE1_POSY,
 		         width: 200,
 		         height: 250})
 
 		.addSprite("creature2",{animation: creature2["idle"],
-			 posx: 400,		     
-			 posy: 220,
+			 posx: CREATURE2_POSX,		     
+			 posy: CREATURE2_POSY,
 		         width: 200,
 		         height: 250}).end()
 
@@ -278,7 +309,13 @@ $(function(){
 			posx:initLeft,
 			posy:initTop,
 			width: 62,
-			height: 53});
+			height: 53})
+
+		.addSprite("points", {animation : new $.gameQuery.Animation({imageURL: "images/points.png"}),
+			posx: initLeft,
+			posy: initTop,
+			width: POINTS_WIDTH,
+			height: POINTS_HEIGHT});
 
 	
     // this sets the id of the loading bar:
@@ -318,7 +355,7 @@ $(function(){
 
 		// Get position info of the food objects and add x and y component to change position	
 		newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
-		var newTop = parseInt($("#food").css("top")) + difficulty.vSpeed;
+		newTop = parseInt($("#food").css("top")) + difficulty.vSpeed;
 	
 	//Phase 3: Move obj down the conveyor belt. Angle is determined by the difference of vertical and horizontal speed(slope)
 	$("#food").css("left", newLeft);
@@ -396,6 +433,7 @@ $(function(){
 		//Set score based on user's decision
 		score = parseInt(score);
 		totalScore += score;
+		setPoints(score);
 		$("#totalScore").html(totalScore);
 		$("#score").html(score);
 		subject.inputData(trial, "score", score);
