@@ -83,6 +83,7 @@ function nextTrial() {
 	canSort = 0;
 	sortedAt = 0;
 	score = 0;
+
 	$("#score").html(score);	
 
 	//subject performance
@@ -91,7 +92,7 @@ function nextTrial() {
 
 	//Increment trial number each time this function is called
 	trial = trial + 1;
-	$("#trial").html(trial+"/48");
+	$("#trial").html(trial+"/"+difficulty.trials);
 	
 	stim = stimList[trial];
 	food = stimFile[stim];
@@ -194,9 +195,9 @@ function setPoints(points){
 	if (points == 0){
 		$("#points").html("");}
 	
-	//Animate
-	//$("#points").show(); 
-	//$("#points").fadeTo(1000,0,function(){$(this).hide();});
+	//Animate and reset animation for next call
+	$("#points").fadeOut(1500,function(){$(this).html("");});
+	$("#points").fadeIn('fast');
 }
 //Create Animations for each creature
 function makeCreature(id){
