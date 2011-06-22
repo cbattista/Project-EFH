@@ -120,21 +120,24 @@ function setDifficulty(){
 //Function that handles the points animation
 function setPoints(points){
 	
+	pointsPos = boxPos - POINTS_OFFSET;
+
 	if (points > 0){
 		var sign = "+ ";	
-		var str = sprintf("<h1 style = \"color:red;font-size:20px;\">%s %s</h1>",sign,points);
+		var str = sprintf("<h1>%s %s</h1>",sign,points);
 		$("#points").html(str);}
 	
 	if (points < 0){
 		var sign = "- ";
-		var str = sprintf("<h1 style = \"color:red;font-size:20px;\">%s %s</h1>",sign,points);
+		var str = sprintf("<h1>%s %s</h1>",sign,points);
 		$("#points").html(str);}
 	
 
 	if (points == 0){
 		$("#points").html("");}
 
-	$("#points").css("top",boxPos -50);//Show the points above the mysteryBox
+	//$("#points").fadeOut(1000);
+  		//$("#points").remove();	
 }
 
 //Create an array of animations 
@@ -297,8 +300,8 @@ $(function(){
 				height:BINOC_HEIGHT})
 			
 			.addSprite("points",{animation: new $.gameQuery.Animation({imageURL: "images/points.png"}),
-				posx:(PLAYGROUND_WIDTH - POINTS_WIDTH)/2,
-				posy: (boxPos - 50),
+				posx:(PLAYGROUND_WIDTH - BOX_WIDTH)/2,
+				posy: (boxPos - POINTS_OFFSET),
 				width: POINTS_WIDTH,
 				height: POINTS_HEIGHT});
 
@@ -400,7 +403,9 @@ $(function(){
 				}			
 			}
 			boxPos += dropSpeed;
+			pointsPos += (difficulty.pointSpeed);
 			$("#mysteryBox").css("top", boxPos);
+			$("#points").css("top", pointsPos);
 				
 		}
 	},REFRESH_RATE);

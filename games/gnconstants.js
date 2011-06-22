@@ -15,6 +15,7 @@ var BOX_HEIGHT = 32;
 
 var POINTS_WIDTH = 100;
 var POINTS_HEIGHT = 100;
+var POINTS_OFFSET = 40;
 //Stage Variables
 
 //Stages of the plane
@@ -39,6 +40,7 @@ var trialDur = 60;
 
 //State Variables
 var	boxPos = 0; //the position of the package, initial pos is the top of the screen
+var pointsPos = boxPos - POINTS_OFFSET;
 var	canHit = 0; //1:= Package is in explosion range; 0:= Package is outside explosion range
 var	exploded = 0; //1:= The Package has been hit 0:= The package has not been hit 
 var	dropIt = 1; //1:= The box drops 0:= The box stops
@@ -54,6 +56,7 @@ function Difficulty() {
 	this.nogoes = 0.5; //ratio of nogo trials
 	this.impactDelay = 24;
 	this.binocSpeed = this.dropSpeed / 2; //how fast the package drops through the binoculars
+	this.pointSpeed = this.binocSpeed / 2;
 }
 
 var difficulty = new Difficulty();
