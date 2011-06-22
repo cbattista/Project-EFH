@@ -84,8 +84,6 @@ function nextTrial(){
 	$("#mysteryBox").setAnimation(box["idle"]);
 
 	$("#city").setAnimation(cityAnim["fine"]);
-
-	setPoints(score);
 	
 	var d = new Date();
 	t1 = d.getTime();
@@ -135,8 +133,6 @@ function setPoints(points){
 	if (points == 0){
 		$("#points").html("");}
 	
-	//$("#points").fadeOut(1000);
-  		//$("#points").remove();	
 }
 
 //Create an array of animations 
