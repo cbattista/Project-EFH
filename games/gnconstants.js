@@ -13,8 +13,8 @@ var CITY_HEIGHT = 250;
 var BOX_WIDTH = 32;
 var BOX_HEIGHT = 32;
 
-var POINTS_WIDTH = 100;
-var POINTS_HEIGHT = 100;
+var POINTS_WIDTH = 200;
+var POINTS_HEIGHT = 200;
 var POINTS_OFFSET = 40;
 
 //Various stages of the box

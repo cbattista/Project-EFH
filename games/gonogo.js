@@ -133,6 +133,10 @@ function setPoints(points){
 	if (points == 0){
 		$("#points").html("");}
 	
+	//Animate then reset animation for next call
+	$("#points").fadeOut(3000,function(){$(this).html("");});
+	$("#points").fadeIn(50);
+	
 }
 
 //Create an array of animations 
