@@ -194,8 +194,9 @@ function setPoints(points){
 	if (points == 0){
 		$("#points").html("");}
 	
-	//Animate 
-	$("#points").fadeTo(1000,0,function(){$(this).remove();});
+	//Animate
+	//$("#points").show(); 
+	//$("#points").fadeTo(1000,0,function(){$(this).hide();});
 }
 //Create Animations for each creature
 function makeCreature(id){
