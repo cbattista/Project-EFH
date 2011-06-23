@@ -28,10 +28,10 @@ function nextLevel(){
 		for (i=0;i<difficulty.trials/4;i++) {
 			delays = delays.concat([10, 20, 30, 40]);
 		}
-		for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
+		for(i = 0; i < ((1-difficulty.nogoes)*difficulty.trials); i++){
 			stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
 	
-		for(i = 0; i < (1-difficulty.nogoes)*difficulty.trials; i++){
+		for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
 			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
 		
 		stimList.sort(randOrd);
@@ -111,7 +111,7 @@ function setDifficulty(userScore){
 			difficulty.trials = parseInt(diffs[0]);
 			difficulty.dropSpeed += parseInt(diffs[1]);
 			difficulty.binocSpeed = difficulty.dropSpeed / 2;
-			difficulty.nogoes = parseInt(diffs[2]);
+			difficulty.nogoes = parseInt(diffs[2]) / 100;
 
 		},
 		async: false}
