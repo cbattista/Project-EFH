@@ -11,7 +11,6 @@ function nextLevel(){
 	if( level < levels ){
 		//Set difficulty for next level using scores from completed level
 		setDifficulty(totalScore);
-		alert(difficulty.trials);
 
 		trial = 0;
 
@@ -36,7 +35,6 @@ function nextLevel(){
 			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
 		
 		stimList.sort(randOrd);
-		alert(stimList);
 		//Initiate new trial
 		nextTrial();
 	
@@ -75,7 +73,7 @@ function nextTrial(){
 	$("#score").html(score);
 
 	trial = trial + 1;
-	$("#trial").html(trial+"/48");
+	$("#trial").html(trial+"/" + difficulty.trials);
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
 	delay = delays[trial];//delay before package drops
 	impactDelay = difficulty.impactDelay;//reset impact delay
@@ -119,7 +117,6 @@ function setDifficulty(userScore){
 		async: false}
 	);
 
-	scoreMult = (difficulty.dropSpeed/difficulty.nogoes)*REFRESH_RATE;
 }
 
 //Function that handles the points animation
