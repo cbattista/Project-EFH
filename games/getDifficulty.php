@@ -24,8 +24,8 @@ $result = mysql_query($query);
 while ($row = mysql_fetch_assoc($result)) {
 	$t = $row['trials'];
 	$f1 = $row['fac1'];
-	$f2 = $row['fac1'];
-    	$f3 = $row['fac2'];         
+	$f2 = $row['fac2'];
+    	$f3 = $row['fac3'];         
 }
 
 
