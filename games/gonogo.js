@@ -11,6 +11,7 @@ function nextLevel(){
 	if( level < levels ){
 		//Set difficulty for next level using scores from completed level
 		setDifficulty(totalScore);
+		alert(difficulty.trials);
 
 		trial = 0;
 
@@ -35,7 +36,7 @@ function nextLevel(){
 			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
 		
 		stimList.sort(randOrd);
-		
+		alert(stimList);
 		//Initiate new trial
 		nextTrial();
 	
@@ -104,14 +105,19 @@ function nextTrial(){
 	}
 
 }
-function setDifficulty(){
-	$.get("getDifficulty.php?score=" +score+ "&game=1",function(data){
-		diffs = data.split(',');
-		difficulty.trials = parseInt(diffs[0]);
-		difficulty.dropSpeed += parseInt(diffs[1]);
-		difficulty.binocSpeed = difficulty.dropSpeed / 2;
-		difficulty.nogoes = parseInt(diffs[2]);
-	});
+function setDifficulty(userScore){
+	
+	$.ajax({url: "getDifficulty.php?score="+userScore+"&game=1", 
+		success : function(data) { 
+			diffs = data.split(',');
+			difficulty.trials = parseInt(diffs[0]);
+			difficulty.dropSpeed += parseInt(diffs[1]);
+			difficulty.binocSpeed = difficulty.dropSpeed / 2;
+			difficulty.nogoes = parseInt(diffs[2]);
+
+		},
+		async: false}
+	);
 
 	scoreMult = (difficulty.dropSpeed/difficulty.nogoes)*REFRESH_RATE;
 }
