@@ -30,7 +30,6 @@ function nextLevel() {
 	
 		stimList.sort(randOrd);
 		
-		alert(stimList);
 		for (i=0;i<difficulty.trials;i++){
 			animalList1 = animalList1.concat([0]);
 			animalList2 = animalList2.concat([1]);
@@ -47,6 +46,43 @@ function nextLevel() {
 		}
 
 		cueList = cueList.sort(randOrd); //randomize the list
+		alert(cueList);
+
+		//Rearrange cueList
+		var blockStart = 0;
+		var blockCounter = 0;//Used to iterate through the blockArray
+		var blockArray = randomBlock(difficulty.cueBlockMin, difficulty.cueBlockMax, difficulty.trials/difficulty.cueBlockMin);
+		var blockLength = blockArray[blockCounter];//Length of each block
+		alert(blockArray);
+		
+		//Iterate through each member of the cueList and check for the following conditions
+		for(i=0; i<cueList.length;i++){
+			
+			//The first member of the cueList starts the block.
+			if( (cueList[blockStart] != cueList[i]) && ( (i - blockStart) < blockLength)){
+				cueList[i] = cueList[blockStart];
+			}
+
+			//When we get to the end of a block, either swap the value or do nothing. Then make its position the start of a new block andget the size of the new block. 
+			else if ((i - blockStart) == blockLength) {
+
+				if(cueList[blockStart] == cueList[i]){ 
+				
+					if(cueList[i] == 1){
+						cueList[i] = 0;}
+				
+					else if (cueList[i] == 0){
+						cueList[i] = 1;}
+				}
+
+				blockStart = i;
+				blockCounter += 1;
+				blockLength = blockArray[blockCounter];
+
+			}	
+		}
+
+		alert(cueList);
 
 		//Set animations to show by default. Why this is required is a mystery...
 		$("#points").show();
@@ -136,10 +172,10 @@ function setDifficulty(score){
 	$.ajax({url: gString, 
 			success : function(data) { 
 				diffs = data.split(',');
-				difficulty.trials = diffs[0];
-				difficulty.hSpeed = diffs[1];
-				difficulty.switchFreq = diffs[2];
-				difficulty.aswitchFreq = diffs[3];
+				difficulty.trials = parseInt(diffs[0]);//How many trials in a level
+				difficulty.hSpeed = parseInt(diffs[1]);//Speed of food as it comes out the pipe
+				difficulty.cueBlockMin = parseInt(diffs[2]);//Minimum number of trials in a block of the same cue
+				difficulty.cueBlockMax = parseInt(diffs[3]);//Maximum number of trials in a block of the same cue
 			},
 			async: false}
 	);
@@ -170,6 +206,18 @@ function setCue(){
 		rule['bluetri'] = ['bc'];
 		rule['pinkcirc'] = ['pt'];
 	}
+}
+
+//Function that generates an array of random numbers in our cue block size range
+function randomBlock(min,max,length){
+	numbers = new Array();
+	
+	for(i=0; i<length;i++){
+		numbers[i] = Math.floor(Math.random()* (max - min + 1)) + min;
+	}
+
+	return numbers;
+
 }
 //Function that handles the points animation
 function setPoints(points){
