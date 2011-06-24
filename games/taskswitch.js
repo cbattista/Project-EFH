@@ -29,7 +29,8 @@ function nextLevel() {
 		}
 	
 		stimList.sort(randOrd);
-
+		
+		alert(stimList);
 		for (i=0;i<difficulty.trials;i++){
 			animalList1 = animalList1.concat([0]);
 			animalList2 = animalList2.concat([1]);
@@ -46,6 +47,10 @@ function nextLevel() {
 		}
 
 		cueList = cueList.sort(randOrd); //randomize the list
+
+		//Set animations to show by default. Why this is required is a mystery...
+		$("#points").show();
+		$("#food").show();
 
 		nextTrial();
 
