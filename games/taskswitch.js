@@ -34,23 +34,19 @@ function nextLevel() {
 			animalList1 = animalList1.concat([0]);
 			animalList2 = animalList2.concat([1]);
 		}
-	
-		switches = difficulty.switchFreq / 100 * difficulty.trials; //How many times the food changes in a level
-
-		for (i=0;i<switches;i++){
-			cueList = cueList.concat([1]);
-		}
-
-		for (i=0;i<difficulty.trials-switches;i++){
-			cueList = cueList.concat([0]);
-		}
-
-		cueList = cueList.sort(randOrd); //randomize the list
-
-		var blockArray = randomBlock(difficulty.cueBlockMin, difficulty.cueBlockMax, difficulty.trials/difficulty.cueBlockMin);
 		
-		cueList = makeBlockedCueList(cueList,blockArray);
+		//--------------------------------------------------------
+		//--          The Epic Construction of...               --
+		//--                THE CUE LIST                        --
+		//--------------------------------------------------------
 
+		var blockList = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials);
+
+		var list = makeCues(blockList);
+
+		cueList = makeCueList(list);
+	
+		alert(cueList);
 
 		//Set animations to show by default. Why this is required is a mystery...
 		$("#points").show();
@@ -155,11 +151,8 @@ function setDifficulty(score){
 //This function will set the cue
 function setCue(){
 
-	cueSwitch = cueList[trial];
-	if (cueSwitch == 1) {
-		cueFile.reverse();
-	}
-	cue = cueFile[0];
+	cue = cueFile[cueList[trial]];
+
 	$("#cue").html(cue);
 
 	if (cue == "S"){
@@ -174,54 +167,6 @@ function setCue(){
 		rule['bluetri'] = ['bc'];
 		rule['pinkcirc'] = ['pt'];
 	}
-}
-
-//Function that generates an array of random numbers in our cue block size range
-function randomBlock(min,max,length1){
-	numbers = new Array();
-	
-	for(i=0; i<length1;i++){
-		numbers[i] = Math.floor(Math.random()* (max - min + 1)) + min;
-	}
-
-	return numbers;
-}
-
-//Function that generates the cue list from a array of chosen numbers
-function makeBlockedCueList(list, blockArray){
-	
-		var blockStart = 0; //Where the block starts
-		var blockCounter = 0; //Interate through the array of block sizes
-		var blockLength = blockArray[blockCounter]
-
-		for(i=0; i<list.length;i++){
-			
-			//The first member of the list starts the block.
-			if( (list[blockStart] != list[i]) && ( (i - blockStart) < blockLength)){
-				list[i] = list[blockStart];
-			}
-
-			//When we get to the end of a block, either swap the value or do nothing. 
-			else if ((i - blockStart) == blockLength) {
-
-				if(list[blockStart] == list[i]){ 
-				
-					if(list[i] == 1){
-						list[i] = 0;}
-				
-					else if (list[i] == 0){
-						list[i] = 1;}
-				}
-
-				blockStart = i;
-				blockCounter += 1;
-				blockLength = blockArray[blockCounter];
-
-			}	
-		}
-
-		return list;
-
 }
 
 //Function that handles the points animation
