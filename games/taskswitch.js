@@ -42,18 +42,11 @@ function nextLevel() {
 
 		var blockList = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials);
 
-<<<<<<< HEAD
 		var list = makeCues(blockList);
 
 		cueList = makeCueList(list);
 	
 		alert(cueList);
-=======
-		var blockArray = randomBlock(difficulty.cueBlockMin, difficulty.cueBlockMax, difficulty.trials/difficulty.cueBlockMin);
-		
-		cueList = makeBlockedCueList(cueList,blockArray);
-
->>>>>>> b5631e0d059fa0c021707e56b96afdc8b89f90cb
 
 		//Set animations to show by default. Why this is required is a mystery...
 		$("#points").show();
