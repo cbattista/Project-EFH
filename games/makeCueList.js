@@ -1,77 +1,77 @@
-//Function that generates 2 random solutions to a linear diophantine equation. 
-//The numbers in the solution are the blocks
-//The first solution is for the 1's and the second is for the 0's
-//This is so we get two arrays of blocks such that there are
-//an equal number of 0 and 1's in the concat of the two arrays
-function randomBlock(min,max,length){
+/*Process: 
+ * 	1) Make a specified number of blocks each with the minimum number of cues
+ * 	2) Generate a random number and a random index and add cues until the 
+ * 	desired sum is generated (trials/2)
+ *	3) In the construction this process is done twice to get an array of cue0 and
+ *	an array of cue1...
+ *	4)numberOfBlocks much be choosen carefully. min*numberOfBlocks must
+ *	be less then trials/2. The amount of randomness will increases the more trials we
+ *	have and will vary depending on the trial:numberOfBlocks ratio
+ */
+function randomBlock(min,max,trials,numberOfBlocks,cue){
 	
-	var numbers = new Array();
+	var block = new Array();
 
-	var blockList = new Array();
+	var list = new Array();
 
-	var sum = 0;
-	
-	var counter = 0;
-	
-	for(i=0;i<2;i++){
-	
-		while (sum < length/2){
-
-			if(sum < (length/2 - max) ){
+	for(i=0;i<numberOfBlocks;i++){
 		
-				numbers[counter] = Math.floor(Math.random()*(max - min)) + min;}
+		for(j=0;j<min;j++){
 		
-			else {
-				numbers[counter] = (length/2 - sum) }
+			list[j] = cue;
+		}
 
-			sum += numbers[counter];
+		block[i] = list;
+		list = new Array();
+	}
 
-			counter += 1;
+	var sum = min*numberOfBlocks;
+
+	var random = 0;
+
+	var index = 0;
+
+	while(sum < (trials/2) ){
+	
+		random = Math.ceil(Math.random()*(max - min));
+
+		if( (sum + random) <= (trials/2) ){
+			
+			index = Math.floor(Math.random()*(numberOfBlocks));
+
+			if(block[index].length <= (max - random)){
+			
+				for(i=0;i<random;i++){
+					
+					block[index] = block[index].concat([cue]);
+				}
+				
+				sum += random;
+			}	
 		}
 		
-		blockList[i] = numbers;
-
-		numbers = new Array();
-		counter = 0
-		sum = 0;
 	}
-	return blockList;
+
+
+	return block;
 }
 
-//Now use the list of block sizes to create a new array of 0's and 1's
+
+//Now use the above construction to genereate a new array which 
+//alternates between blocks of 0's and 1's
 function makeCues(list){
 
 	var cues0 = list[0];
 	var cues1 = list[1];
 
-	var list0 = new Array();
-	var list1 = new Array();
-
 	var newList = new Array();
-	
+
 	for(i=0;i<cues0.length;i++){
 		
-		for(j=0;j<cues0[i];j++){
-			
-			list0[j] = 0;	
-		}
-
-		newList[2*i] = list0;
-		list0 = new Array();
-	
+		newList[2*i] = cues0[i];
+		newList[2*i + 1] = cues1[i];
 	}
 
-	for(i=0;i<cues1.length;i++){
-	
-		for(j=0;j<cues1[i];j++){
-			
-			list1[j] = 1;
-		}
-
-		newList[2*i + 1] = list1;
-		list1 = new Array();
-	}
-	
 	return newList;
 }
 

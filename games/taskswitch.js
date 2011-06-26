@@ -40,13 +40,17 @@ function nextLevel() {
 		//--                THE CUE LIST                        --
 		//--------------------------------------------------------
 
-		var blockList = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials);
+		var blockList = new Array();
 
+		blockList[0] = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,0);
+
+		blockList[1] = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,1);
+		
 		var list = makeCues(blockList);
 
 		cueList = makeCueList(list);
-	
-		alert(cueList);
+
+		$("#console").html(cueList.join());
 
 		//Set animations to show by default. Why this is required is a mystery...
 		$("#points").show();
