@@ -59,10 +59,7 @@ function randomBlock(min,max,trials,numberOfBlocks,cue){
 
 //Now use the above construction to genereate a new array which 
 //alternates between blocks of 0's and 1's
-function makeCues(list){
-
-	var cues0 = list[0];
-	var cues1 = list[1];
+function makeCues(cues0,cues1){
 
 	var newList = new Array();
 

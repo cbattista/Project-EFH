@@ -40,13 +40,11 @@ function nextLevel() {
 		//--                THE CUE LIST                        --
 		//--------------------------------------------------------
 
-		var blockList = new Array();
+		var blocksOf0 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,0);
 
-		blockList[0] = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,0);
-
-		blockList[1] = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,1);
+		var blocksOf1 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,1);
 		
-		var list = makeCues(blockList);
+		var list = makeCues(blocksOf0,blocksOf1);
 
 		cueList = makeCueList(list);
 
