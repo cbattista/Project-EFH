@@ -121,6 +121,8 @@ function nextTrial() {
 	$("#food").css("top", initTop);
 	$("#food").toggle();
 
+	$("#points").hide();
+
 	if (trial < difficulty.trials) { 
 		stim = stimList[trial];
 		subject.inputData(trial, "stim", stim);
@@ -199,10 +201,12 @@ function setPoints(points){
 
 	if (points == 0){
 		$("#points").html("");}
+
+	$("#points").show();
 	
 	//Animate and reset animation for next call
-	$("#points").fadeOut(1500,function(){$(this).html("");});
-	$("#points").fadeIn('fast');
+	//$("#points").fadeOut(1500,function(){$(this).html("");});
+	//$("#points").fadeIn('fast');
 }
 //Create Animations for each creature
 function makeCreature(id){
