@@ -39,10 +39,11 @@ function nextLevel() {
 		//--          The Epic Construction of...               --
 		//--                THE CUE LIST                        --
 		//--------------------------------------------------------
+		var blockNumber = makeBlockNumber(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials);
 
-		var blocksOf0 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,0);
+		var blocksOf0 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,blockNumber,0);
 
-		var blocksOf1 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,2,1);
+		var blocksOf1 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,blockNumber,1);
 		
 		var list = makeCues(blocksOf0,blocksOf1);
 

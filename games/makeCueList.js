@@ -1,13 +1,23 @@
 /*Process: 
- * 	1) Make a specified number of blocks each with the minimum number of cues
- * 	2) Generate a random number and a random index and add cues until the 
- * 	desired sum is generated (trials/2)
- *	3) In the construction this process is done twice to get an array of cue0 and
- *	an array of cue1...
- *	4)numberOfBlocks much be choosen carefully. min*numberOfBlocks must
- *	be less then trials/2. The amount of randomness will increases the more trials we
- *	have and will vary depending on the trial:numberOfBlocks ratio
+ * 	1) number of blocks of each cue is the averages of the remainders left after division by cueBlockMin and cueBlockMax. This achieves the nicest distribution of differently sized blocks (in my opinion) 
+ *
+ * 	2) Make the above number of block each with the minimum number of cues. This guarentees that each block will have the minimum number of cues
+ *
+ * 	3) Generate a random number and a random index and add cues until the desired sum is generated (trials/n where n is the number of different cues (this generality has not be built in yet, but should be possible))
+ *
+ *	4)Trial number must be be divisiable by the number of different cues. Even better if its a 'nice' number with lots of factors (such as 12,24,48,...,12k)
  */
+
+function makeBlockNumber(min,max,trials){
+
+	var quotientMin = Math.floor((trials/2)/min);
+	var quotientMax = Math.floor((trials/2)/max);
+
+	var avgQuotient = Math.ceil( (quotientMax + quotientMin)/2 );
+
+	return avgQuotient;
+}
+
 function randomBlock(min,max,trials,numberOfBlocks,cue){
 	
 	var block = new Array();
