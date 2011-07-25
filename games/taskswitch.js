@@ -39,6 +39,11 @@ function nextLevel() {
 		//--          The Epic Construction of...               --
 		//--                THE CUE LIST                        --
 		//--------------------------------------------------------
+
+		var numberOfCues = 2;
+
+		if ( (difficulty.trials/numberOfCues)%1 == 1%1){ //Check if the numberOfCues evenly divides the number of trials
+
 		var blockNumber = makeBlockNumber(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials);
 
 		var blocksOf0 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,blockNumber,0);
@@ -48,6 +53,12 @@ function nextLevel() {
 		var list = makeCues(blocksOf0,blocksOf1);
 
 		cueList = makeCueList(list);
+
+		}
+
+		else {
+			alert("Number of trials must be divisible by the number of cues!");
+		}
 
 		$("#console").html(cueList.join());
 
