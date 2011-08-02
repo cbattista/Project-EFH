@@ -15,7 +15,7 @@ else if ($gid) {
 	$output = game_score($gid);
 	}
 else if ($sid) {
-	$output = user_score($gid);
+	$output = user_score($sid);
 	}
 
 else{
@@ -25,9 +25,6 @@ else{
 echo $output;
 
 function user_game_score($gid, $sid){
-	mysql_connect(localhost, $uname, $password);
-	mysql_select_db($database);
-
 	$query = sprintf("SELECT highScore FROM history WHERE gid = %s AND sid = %s ORDER BY trainingDay ASC", $gid, $sid); 
 
 	$result = mysql_query($query);
@@ -46,27 +43,32 @@ function user_game_score($gid, $sid){
 function game_score($gid){	
 	$query = sprintf("SELECT DISTINCT(sid) FROM history WHERE gid = %s", $gid);
 	$result = mysql_query($query);
-	$output = "<tr><td>user</td><td>score</td></tr>";
-	while ($row = mysql_fetch_assoc($results)) {
-		$score = user_game_score($gid, $row['$sid']);
-		$query = sprintf("SELECT name FROM users WHERE uid = %s", $sid);
-		$name = mysql_result(mysql_query($query));
-		$output = sprintf("%s<tr><td>%s</td><td>%s</td><tr/>", $output, $name, $score);
+	$output = "<table><tr><th>user</th><th>score</th></tr>";
+	while ($row = mysql_fetch_assoc($result)) {
+		$score = user_game_score($gid, $row['sid']);
+		$query = sprintf("SELECT name FROM users WHERE uid = %s", $row['sid']);
+		$row = mysql_fetch_object(mysql_query($query));
+		$name = $row->name;
+		$output .= sprintf("<tr><td>%s</td><td>%s</td><tr/>", $name, $score);
 	}
+	$output .= "</table>";
+
 	return $output;
 }
 
 function user_score($sid) {
-	$query = sprintf("SELECT DISTINCT(sid) FROM history WHERE gid = %s", $gid);
+	$query = sprintf("SELECT DISTINCT(gid) FROM history WHERE sid = %s", $sid);
 	$result = mysql_query($query);
-	$output = "<tr><td>game</td><td>score</td></tr>";
-	while ($row = mysql_fetch_assoc($results)) {
+	$output = "<table><tr><td>game</td><td>score</td></tr>";
+	while ($row = mysql_fetch_assoc($result)) {
 		$score = user_game_score($row['gid'], $sid);
 		$query = sprintf("SELECT name FROM games WHERE gid = %s", $row['gid']);
-		$name = mysql_result(mysql_query($query));
-		$output = sprintf("%s<tr><td>%s</td><td>%s</td><tr/>", $output, $name, $score);
+		$row = mysql_fetch_object(mysql_query($query));
+		$name = $row->name;
+		$output .= sprintf("<tr><td>%s</td><td>%s</td><tr/>", $name, $score);
 	}
-
+	$output .= "</table>";
+	
 	return $output;
 }
 
