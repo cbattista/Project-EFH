@@ -1,0 +1,24 @@
+<html>
+
+<head>
+<script type= "text/javascript" src = "games/source_code/Jquery.js"></script>
+
+</head>
+
+<body>
+
+	<div id = "highScores"></div>
+
+	<script type = "text/javascript">
+
+		$.get("games/getHighScore.php?gid="+highScore , function(data){
+
+			$("#highScores").html(data);
+
+	});
+
+	</script>
+
+</body>
+
+</html>

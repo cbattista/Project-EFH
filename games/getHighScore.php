@@ -43,7 +43,7 @@ function user_game_score($gid, $sid){
 function game_score($gid){	
 	$query = sprintf("SELECT DISTINCT(sid) FROM history WHERE gid = %s", $gid);
 	$result = mysql_query($query);
-	$output = "<table><tr><th>user</th><th>score</th></tr>";
+	$output = "<table border = \"1\"><tr><th>user</th><th>score</th></tr>";
 	while ($row = mysql_fetch_assoc($result)) {
 		$score = user_game_score($gid, $row['sid']);
 		$query = sprintf("SELECT name FROM users WHERE uid = %s", $row['sid']);
@@ -59,7 +59,7 @@ function game_score($gid){
 function user_score($sid) {
 	$query = sprintf("SELECT DISTINCT(gid) FROM history WHERE sid = %s", $sid);
 	$result = mysql_query($query);
-	$output = "<table><tr><td>game</td><td>score</td></tr>";
+	$output = "<table border = \"1\"><tr><td>game</td><td>score</td></tr>";
 	while ($row = mysql_fetch_assoc($result)) {
 		$score = user_game_score($row['gid'], $sid);
 		$query = sprintf("SELECT name FROM games WHERE gid = %s", $row['gid']);

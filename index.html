@@ -19,8 +19,11 @@
 
 	<div class = "links">
 	<a id ="logout" href = "login.html">Logout</a>
+	<a id ="highScores" href = "highScores.html">High Scores</a>
 	</div>
 	</center>
+
+	<div id = "scoreTable"></div>
 
 
 <script type="text/javascript">
@@ -43,7 +46,6 @@
 			var username=getCookie("funkyTrainUser");
 			$("#welcome").html("Welcome, " + username);
 			
-
 			$.get("user.php", function(data){
 				if (data != "0") {
 					$("#games").html(data);
@@ -56,6 +58,10 @@
 				}
 
 			}); 
+
+			$.get("games/getHighScore.php?sid=1", function(data){
+				$("#scoreTable").html(data);
+			});
 
 		$("#logout").click(function() {
 			var exdate=new Date();
