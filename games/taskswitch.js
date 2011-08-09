@@ -66,6 +66,9 @@ function nextLevel() {
 		$("#points").show();
 		$("#food").show();
 
+		setHealth("#creature1", 3);
+		setHealth("#creature2", 3);
+
 		nextTrial();
 
 	}
@@ -241,6 +244,7 @@ function makeCreature(id){
 		delta: 200,
 		rate: 400,
 		type: $.gameQuery.ANIMATION_HORIZONTAL});
+
 	return creature;
 }
 
@@ -320,11 +324,38 @@ $(function(){
 		         width: 200,
 		         height: 250})
 
+
+		.addSprite("creature1_health_back", {animation : new $.gameQuery.Animation({imageURL: "images/health.png"}),
+			posx: CREATURE1_POSX -2,
+			posy: CREATURE1_POSY + 243,
+			width : 200,
+			height: 10})
+
+
+		.addSprite("creature1_health", {animation : new $.gameQuery.Animation({imageURL: "images/health.png"}),
+			posx: CREATURE1_POSX,
+			posy: CREATURE1_POSY + 245,
+			width : 200,
+			height: 10})
+
 		.addSprite("creature2",{animation: creature2["idle"],
 			 posx: CREATURE2_POSX,		     
 			 posy: CREATURE2_POSY,
 		         width: 200,
-		         height: 250}).end()
+		         height: 250})
+
+		.addSprite("creature2_health_back", {animation : new $.gameQuery.Animation({imageURL: "images/health.png"}),
+			posx: CREATURE2_POSX - 2,
+			posy: CREATURE2_POSY + 243,
+			width : 200,
+			height: 10})
+
+		.addSprite("creature2_health", {animation : new $.gameQuery.Animation({imageURL: "images/health.png"}),
+			posx: CREATURE2_POSX,
+			posy: CREATURE2_POSY + 245,
+			width : 200,
+			height: 10}).end()
+
 
 	.addGroup("item", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT})
 		
@@ -423,6 +454,8 @@ $(function(){
         	        
 			$("#creature1").setAnimation(creature1["angry"]);
 			$("#creature2").setAnimation(creature2["angry"]);
+			decHealth("#creature1");
+			decHealth("#creature2");
 			
 			score = 0;
 			ACC = 0;
@@ -431,23 +464,27 @@ $(function(){
 		else {
 			if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 				$("#creature1").setAnimation(creature1["happy"]);
+				incHealth("#creature1");
 				score = ((maxLeft - sortedAt) / span) * 10;
 				score = parseInt(score);
 				ACC = 1;
 			}
 			else if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
 				$("#creature1").setAnimation(creature1["angry"]);
+				decHealth("#creature1");
 				score = 0;
 				ACC = 0;
 			}
 			else if (difficulty.hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
 				$("#creature2").setAnimation(creature2["happy"]);
+				incHealth("#creature2");
 				score = ((maxLeft - sortedAt) / span) * 10;
 				score = parseInt(score);
 				ACC = 1;
 			}
 			else if (difficulty.hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
 				$("#creature2").setAnimation(creature2["angry"]);
+				decHealth("#creature2");
 				score = 0;
 				ACC = 0;
 			}						
