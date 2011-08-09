@@ -36,6 +36,8 @@ function nextLevel(){
 		
 		stimList.sort(randOrd);
 		//Initiate new trial
+
+		setHealth("#city", 3);
 		nextTrial();
 	
 		//subject.inputLevelData(level, score, currentTime.getTime());
@@ -296,6 +298,18 @@ $(function(){
 				posy:PLAYGROUND_HEIGHT - CITY_HEIGHT,
 				width:PLAYGROUND_WIDTH,
 				height:CITY_HEIGHT})
+
+			.addSprite("city_health_back", {animation : new $.gameQuery.Animation({imageURL: "images/health.png"}),
+				posx: 8,
+				posy: PLAYGROUND_HEIGHT - 22,
+				width : PLAYGROUND_WIDTH - 20,
+				height: 10})
+
+			.addSprite("city_health", {animation : new $.gameQuery.Animation({imageURL: "images/health.png"}),
+				posx: 10,
+				posy: PLAYGROUND_HEIGHT - 20,
+				width : PLAYGROUND_WIDTH - 20,
+				height: 10})
 			
 			.addSprite("binoculars",{animation: binocAnim["idle"],
 				posx:(PLAYGROUND_WIDTH - BINOC_WIDTH) / 2,
@@ -389,6 +403,10 @@ $(function(){
 					correct += 1;
 					pointsPos = PLAYGROUND_HEIGHT - CITY_HEIGHT;
 					pointDir = -1;
+					incHealth("#city");
+				}
+				else {
+					decHealth("#city");
 				}
 
 				setPoints(score);
@@ -405,6 +423,7 @@ $(function(){
 				
 				if (impactDelay == 0) {
 					subject.inputData(trial, "impact", 1)
+					
 					nextTrial();
 				}			
 			}
