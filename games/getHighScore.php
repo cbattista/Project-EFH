@@ -4,6 +4,7 @@ include "../db.php";
 
 $gid = $_GET['gid'];
 $sid = $_GET['sid'];
+$limit = $_GET['limit'];
 
 mysql_connect('localhost', $uname, $password);
 mysql_select_db($database);
@@ -11,6 +12,11 @@ mysql_select_db($database);
 if ($gid && $sid) {
 	$output = user_game_score($gid, $sid);	
 }
+
+else if ($gid && $limit){
+	$output = score_table();
+}
+
 else if ($gid) {
 	$output = game_score($gid);
 	}
@@ -18,9 +24,7 @@ else if ($sid) {
 	$output = user_score($sid);
 	}
 
-else{
-	$output = score_table();
-}
+
 
 echo $output;
 
@@ -49,7 +53,7 @@ function game_score($gid){
 		$query = sprintf("SELECT name FROM users WHERE uid = %s", $row['sid']);
 		$row = mysql_fetch_object(mysql_query($query));
 		$name = $row->name;
-		$output .= sprintf("<tr><td>%s</td><td>%s</td><tr/>", $name, $score);
+		$output .= sprintf("<tr><td>%s</td><td>%s</td></tr>", $name, $score);
 	}
 	$output .= "</table>";
 
@@ -65,15 +69,28 @@ function user_score($sid) {
 		$query = sprintf("SELECT name FROM games WHERE gid = %s", $row['gid']);
 		$row = mysql_fetch_object(mysql_query($query));
 		$name = $row->name;
-		$output .= sprintf("<tr><td>%s</td><td>%s</td><tr/>", $name, $score);
+		$output .= sprintf("<tr><td>%s</td><td>%s</td></tr>", $name, $score);
 	}
 	$output .= "</table>";
 	
 	return $output;
 }
 
-function score_table(){
-	return 0;
+
+function score_table($gid,$limit){
+
+	$query = sprintf("SELECT highScore FROM history WHERE gid = %s ORDER BY highScore ASC LIMIT = %s",$gid,$limit);
+	$result = mysql_query($query);
+	$output = "<table border = \"1\"><tr><td>user</td><td>score</td></tr>";
+	while ($row = mysql_fetch_assoc($result)){
+		$score = $row['highScore'];
+		$query = sprintf("SELECT name FROM users WHERE uid = %s",$row['sid']);
+		$row = mysql_fetch_object(mysql_query($query));
+		$name = $row->name;
+		$output .= sprintf("<tr><td>%s</td><td>%s</td></tr>",$name,$score);
+	}
+	$output .= "</table>";
+	return $output;
 }
 
 ?>
