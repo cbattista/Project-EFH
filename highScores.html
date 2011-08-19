@@ -18,10 +18,12 @@
 	</center>
 	
 	<script type = "text/javascript">
+	
+	var limit = 10;//Change value depending on how many results you would like returned
 
 	for(i=1;i<=2;i++){
 		var div = "#highScores"+i;
-		var query = "games/getHighScore.php?gid="+i+"&limit=10";
+		var query = "games/getHighScore.php?gid="+i+"&limit="+limit;
 
 		$.ajax({
 			url: query,
