@@ -2,20 +2,34 @@
 
 <head>
 <script type= "text/javascript" src = "games/source_code/Jquery.js"></script>
-
 </head>
 
 <body>
 
-	<div id = "highScores"></div>
-
+	<center>
+	<div>
+		<h2><u>Alien Zoo Keeper</u></h2>
+		<div id = "highScores1"></div>
+	</div>
+	<div>
+		<h2><u>Satilite Defender</u></h2>
+		<div id = "highScores2"></div>
+	</div>
+	</center>
+	
 	<script type = "text/javascript">
 
-		$.get("games/getHighScore.php?gid="+highScore , function(data){
+	for(i=1;i<=2;i++){
+		var div = "#highScores"+i;
+		var query = "games/getHighScore.php?gid="+i+"&limit=10";
 
-			$("#highScores").html(data);
-
-	});
+		$.ajax({
+			url: query,
+			success: function(result){
+				$(div).html(result);},
+			async: false
+			});
+	}
 
 	</script>
 

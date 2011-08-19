@@ -14,7 +14,7 @@ if ($gid && $sid) {
 }
 
 else if ($gid && $limit){
-	$output = score_table();
+	$output = score_table($gid,$limit);
 }
 
 else if ($gid) {
@@ -79,7 +79,7 @@ function user_score($sid) {
 
 function score_table($gid,$limit){
 
-	$query = sprintf("SELECT highScore FROM history WHERE gid = %s ORDER BY highScore ASC LIMIT = %s",$gid,$limit);
+	$query = sprintf("SELECT * FROM history WHERE gid = %s ORDER BY highScore DESC LIMIT %s ",$gid,$limit);
 	$result = mysql_query($query);
 	$output = "<table border = \"1\"><tr><td>user</td><td>score</td></tr>";
 	while ($row = mysql_fetch_assoc($result)){
@@ -89,8 +89,12 @@ function score_table($gid,$limit){
 		$name = $row->name;
 		$output .= sprintf("<tr><td>%s</td><td>%s</td></tr>",$name,$score);
 	}
+
 	$output .= "</table>";
+
 	return $output;
+
 }
+
 
 ?>
