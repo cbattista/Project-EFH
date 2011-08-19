@@ -23,8 +23,10 @@
 	</div>
 	</center>
 
-	<div id = "scoreTable"></div>
-
+	<div class = "scores">
+		<h3><u>Your High Scores</u></h3>
+		<div id = "scoreTable"></div>
+	</div>
 
 <script type="text/javascript">
 	function getCookie(c_name)
@@ -59,7 +61,15 @@
 
 			}); 
 
-			$.get("games/getHighScore.php?sid=1", function(data){
+			var sid = 0;
+			$.ajax({url:"games/getSid.php?user=\'"+username+"\'", 
+				success: function(result){
+					sid = result;},
+				
+				async: false 
+			});
+			
+			$.get("games/getHighScore.php?sid="+sid, function(data){
 				$("#scoreTable").html(data);
 			});
 
