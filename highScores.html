@@ -7,32 +7,21 @@
 <body>
 
 	<center>
-	<div>
-		<h2><u>Alien Zoo Keeper</u></h2>
-		<div id = "highScores1"></div>
-	</div>
-	<div>
-		<h2><u>Satilite Defender</u></h2>
-		<div id = "highScores2"></div>
-	</div>
+		<div id = "highScores"></div>
 	</center>
-	
+
 	<script type = "text/javascript">
 	
 	var limit = 10;//Change value depending on how many results you would like returned
 
-	for(i=1;i<=2;i++){
-		var div = "#highScores"+i;
-		var query = "games/getHighScore.php?gid="+i+"&limit="+limit;
+	var query = "games/getHighScore.php?limit="+limit;
 
 		$.ajax({
 			url: query,
 			success: function(result){
-				$(div).html(result);},
+				$("#highScores").html(result);},
 			async: false
 			});
-	}
-
 	</script>
 
 </body>

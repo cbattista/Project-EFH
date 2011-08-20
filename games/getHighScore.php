@@ -107,7 +107,6 @@ function high_score_table($limit){
 		$output .= "</table>";
 		}
 	}
-	//$output .= "</center>"
 	return $output;
 }
 ?>
