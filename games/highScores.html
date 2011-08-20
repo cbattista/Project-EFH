@@ -1,20 +1,26 @@
 <html>
 
 <head>
-<script type= "text/javascript" src = "games/source_code/Jquery.js"></script>
+<script type= "text/javascript" src = "source_code/Jquery.js"></script>
 </head>
 
 <body>
 
 	<center>
+	<div>
+		<h2>High Scores</h2>
 		<div id = "highScores"></div>
+	</div>
 	</center>
+
+`
 
 	<script type = "text/javascript">
 	
-	var limit = 10;//Change value depending on how many results you would like returned
+		var url = location.href.split('=');
+		var gid = parseInt(url[1]);
 
-	var query = "games/getHighScore.php?limit="+limit;
+		var query = "getHighScore.php?gid="+gid;
 
 		$.ajax({
 			url: query,

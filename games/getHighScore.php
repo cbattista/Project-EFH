@@ -4,17 +4,13 @@ include "../db.php";
 
 $gid = $_GET['gid'];
 $sid = $_GET['sid'];
-$limit = $_GET['limit'];
+$limit = 10;
 
 mysql_connect('localhost', $uname, $password);
 mysql_select_db($database);
 
 if ($gid && $sid) {
 $output = user_game_score($gid, $sid);
-}
-
-else if ($limit){
-$output = high_score_table($limit);
 }
 
 else if ($gid) {
@@ -24,9 +20,16 @@ else if ($sid) {
 $output = user_score($sid);
 }
 
-
+else{
+$output = high_score_table($limit);
+}
 
 echo $output;
+
+//-----------------------------------------------------------------
+//--			Functions				 --
+//-----------------------------------------------------------------
+
 
 function user_game_score($gid, $sid){
 $query = sprintf("SELECT highScore FROM history WHERE gid = %s AND sid = %s ORDER BY trainingDay ASC", $gid, $sid);
@@ -63,7 +66,7 @@ return $output;
 function user_score($sid) {
 $query = sprintf("SELECT DISTINCT(gid) FROM history WHERE sid = %s", $sid);
 $result = mysql_query($query);
-$output = "<table border = \"1\"><tr><td>game</td><td>score</td></tr>";
+$output = "<table border = \"1\"><tr><td><b>Game</b></td><td><b>Score</b></td></tr>";
 while ($row = mysql_fetch_assoc($result)) {
 $score = user_game_score($row['gid'], $sid);
 $query = sprintf("SELECT name FROM games WHERE gid = %s", $row['gid']);
@@ -91,7 +94,7 @@ function high_score_table($limit){
 		while ($row2 = mysql_fetch_assoc($r2)){
 		
 			$game = $row2['name'];
-			$output .= sprintf("<h3><u>%s</u></h3><table border = \"1\"><tr><td>user</td><td>score</td></tr>",$game);
+			$output .= sprintf("<h4>%s</h4><table border = \"1\"><tr><td><b>User</b></td><td><b>Score</b></td></tr>",$game);
 
 			$q3 = sprintf("SELECT * FROM history WHERE gid = %s ORDER BY highScore DESC LIMIT %s ",$gid,$limit);
 			$r3 = mysql_query($q3);
