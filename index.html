@@ -2,6 +2,7 @@
 <head>
 	
 <script type = "text/javascript" src = "games/source_code/Jquery.js"></script>
+<link href="mainPages.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -19,12 +20,14 @@
 
 	<div class = "links">
 	<a id ="logout" href = "login.html">Logout</a>
-	<a id ="highScores" href = "highScores.html">High Scores</a>
 	</div>
 	</center>
 
 	<div class = "scores">
 		<h3><u>Your High Scores</u></h3>
+		<div id = "userScores"></div>
+
+		<h3><u>Top Scores</u></h3>
 		<div id = "scoreTable"></div>
 	</div>
 
@@ -70,7 +73,11 @@
 			});
 			
 			$.get("games/getHighScore.php?sid="+sid, function(data){
-				$("#scoreTable").html(data);
+				$("#userScores").html(data);
+			});
+
+			$.get("games/getHighScore.php", function(data){
+				$("#scoreTable").html(data);		
 			});
 
 		$("#logout").click(function() {

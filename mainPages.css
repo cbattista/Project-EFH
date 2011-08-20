@@ -1,32 +1,19 @@
 body,html{
 	background-color:#d0e4fe;
 }
-h1{
-	text-align:center;
-	color:#ee3442;
-	position: relative;
-	top:30px;
+
+.scores{
+	padding-right:10px;
+	border-right-style: solid;
+	border-right-width: 5px;
+	position:absolute;
+	top: 0px;
+
 }
-#login{
-	position:relative;
-	top: 50px;
-	text-align:center;
-	z-index:4;	
-}
-a {}
-#gamelist{
-	position:relative;
-	top:50px;
-	text-align:center;
+h3{
 	color:green;
 }
-#playStats{
-	position:relative;
-}
-#userBrain{
-	position:relative;
-	display: block;
-	margin-left:auto;
-	margin-right:auto;
-	
+
+h4{
+	color:blue
 }
