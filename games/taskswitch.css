@@ -3,17 +3,7 @@
 	font-size: 20px; 
 }
 
-.gameInfo{
-	padding-right: 10px;
-	border-right-style:solid;
-	max-width:20%;
-	top:0px;
-	position:relative;
+div.center{
+	min-width:700px;
+	min-height:450px;
 }
-
-.game{
-	position: absolute;
-	top:10px;
-	left: 300px;
-}
-

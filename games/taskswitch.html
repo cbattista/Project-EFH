@@ -13,12 +13,16 @@
 <script src='sprintf.js'></script>
 <script src='makeCueList.js'></script>
 <link href="taskswitch.css" rel="stylesheet" type="text/css" />
+<link href="games.css" rel="stylesheet" type="text/css" />
 </head> 
 
 
 <body> 
 
-<div class = "gameInfo">
+<div class = "container">
+
+<div class = "left">
+
 	<div id = "controls">
 		<h3>Controls</h3>
 		<p>'a' for left, 'd' for right</p>
@@ -32,28 +36,36 @@
 		<span id="console">Messages</span><br/>
 	</div>
 	
+</div>
+
+<div class = "center">
+	
+	<div id = "game">
+		<h1> Animal Feeder </h1>
+		<div id="playground" style="width: 700px; height: 250px; background: black;">
+	    		<div id="welcomeScreen" style="width: 700px; height: 250px; position: absolute; z-index: 100;">
+	        		<div style="position: absolute; top: 120px; width: 700px; color: white;">
+        		        	<div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;"></div><br />
+				<center>
+			    		<button style="cursor: pointer;" id="startbutton">Play</button>
+			    		<button style ="cursor: pointer;" id = "instructions">Instructions</button>
+				</center>
+        			</div>
+    	    		</div>
+		</div>
+	</div>
+
+</div>
+
+<div class = "right">
+
 	<div class = "links">
 		<h3> Links </h3>
 		<a href="highScores.html?gid=2">High Scores</a>
-
 	</div>
 </div>
 
-<div class = "game">
-	<h1> Animal Feeder </h1>
-	<div id="playground" style="width: 700px; height: 250px; background: black;">
-	    <div id="welcomeScreen" style="width: 700px; height: 250px; position: absolute; z-index: 100;">
-	        <div style="position: absolute; top: 120px; width: 700px; color: white;">
-        	    <div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;"></div><br />
-		    <center>
-			    <button style="cursor: pointer;" id="startbutton">Play</button>
-			    <button style ="cursor: pointer;" id = "instructions">Instructions</button> 
-	  	  </center>
-        	</div>
-    	    </div>
-	</div>
 </div>
-
 
 </body>
 
