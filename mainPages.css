@@ -1,14 +1,40 @@
 body,html{
-	background-color:#d0e4fe;
+	margin:0;
+	padding:0;
 }
 
-.scores{
-	padding-right:10px;
+div.left{
+	background-color:#a0c6ee;
+	float:left;
 	border-right-style: solid;
-	border-right-width: 5px;
-	position:absolute;
-	top: 0px;
+	height:100%;
+	width:18%;
+	padding-left:5px;
+}
 
+div.center{
+	background-color:#d0e4fe;
+	height:100%;
+	width:60%;
+	float:left;
+
+}
+
+div.right{
+	background-color:#a0c6ee;
+	height:100%;
+	width:20%;
+	float:left;
+	border-left-style: solid;
+	padding-left:5px;
+
+
+}
+
+div.container{
+	width:100%;
+	margin:0;
+	padding:0;
 }
 h3{
 	color:green;
