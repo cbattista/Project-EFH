@@ -40,7 +40,7 @@ if ($login == 1) {
 		$query = sprintf("UPDATE users SET start=\"%s-%s-%s\" WHERE name = '%s'", $today['year'], $today['mon'], $today['mday'], $username);
 		mysql_query($query);
 	} else {
-		//we have already started and need to determine the day
+		// if we have already started we need to determine the day
 		date_default_timezone_set("Canada/Eastern");
 		$start_day = strtotime($start);
 		$today = strtotime(sprintf("%s-%s-%s", $today['year'], $today['mon'], $today['mday']));
@@ -94,12 +94,11 @@ if ($login == 1) {
 		}
 
 		if ($completed != True) {
-			$query = sprintf("SELECT name, url FROM games WHERE gid = %s", $game);
+			$query = sprintf("SELECT name FROM games WHERE gid = %s", $game);
 			$result = mysql_query($query);
 			while($row = mysql_fetch_assoc($result)) {
 				$name = $row['name'];
-				$url = $row['url'];
-				$output .= sprintf("<a href=\"%s\">%s</a><br/>", $url, $name);
+				$output .= sprintf("<a href=\"games/gamePage.html?gid=%s \">%s</a><br/>", $game, $name);
 			}
 		}
 	}

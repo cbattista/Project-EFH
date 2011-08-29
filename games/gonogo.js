@@ -260,14 +260,6 @@ $(function(){
 		async: false}
 	);
 
-	//Get Instructions for the game
-	$.ajax({url: "getInstructions.php?gid=1",
-		success : function(data) {
-			instructions = data;
-		},
-		async: false}
-	);
-	
 	//Find out what day of the program the user is on
 	day = getCookie("funkyTrainDay");
 
@@ -325,12 +317,6 @@ $(function(){
 
 	//Give the loading bar functionality
 	$().setLoadBar("loadingbar",400);
-
-	//Give the instructions button functionality
-	$("#instructions").click(function(){
-			alert(instructions);
-			});
-
 
 	//Initialize the start button
 	$("#startbutton").click(function(){

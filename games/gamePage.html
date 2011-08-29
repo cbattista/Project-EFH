@@ -1,0 +1,137 @@
+<!doctype html> 
+<html> 
+<head> 
+<title>Game Page!</title> 
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
+<script src='source_code/jquery.gamequery-0.5.0.js'></script> 
+<script src='Subject.js'></script>
+<script src='methods/shuffler.js'></script>
+<script src='gameFuncs.js'></script>
+<script src='../common.js'></script>
+<script src='sprintf.js'></script>
+<script src='makeCueList.js'></script>
+<link href="gamePage.css" rel="stylesheet" type="text/css" />
+</head> 
+
+
+<body> 
+
+<div class = "container">
+
+<div class = "left">
+	
+	<h3> Controls </h3>
+	<div id = "controls"></div>
+
+	<div id = "gameData">
+		<h3> Game Information </h3>
+		Score: <span id="score">0</span><br/>
+		Total Score: <span id="totalScore">0</span><br/>
+		Trial: <span id="trial">0/48</span><br/>
+		<span id="console">Messages</span><br/>
+	</div>
+	
+</div>
+
+<div class = "center">
+	<center>
+	
+	<h1 id = "gameTitle"></h1>
+	<div id = "game">
+		<div id="playground" style = "background-color:black;">
+	    		<div id="welcomeScreen" style= "position: absolute; z-index: 100;">
+	        		<div>
+        		        	<div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;"></div><br />
+			    		<button style="cursor: pointer;" id="startbutton">Play</button>
+			    		<button style ="cursor: pointer;" id = "instructions">Instructions</button>
+        			</div>
+    	    		</div>
+		</div>
+	</div>
+	<div id = "instructDiv">
+			<h2><u>Intructions</u></h2>
+			<p id = "instruct"></p>
+			<button style="cursor: pointer;" id = "backToGame">Back to the Game</button>
+			
+			<script type = "text/javascript">
+				$("#backToGame").click(function(){
+					$("#instructDiv").hide();
+					$("#game").show();
+					}
+				);
+			</script>
+				
+	</div>
+
+	</center>
+
+</div>
+
+<div class = "right">
+	<h3>Links</h3>
+	<div class = "links">
+		<a href="../index.html">Your Home Page</a> <br/>
+		<a href="" id = "highScores">High Scores</a>
+	</div>
+</div>
+
+</div>
+
+<script type = "text/javascript">
+	$(document).ready(function(){
+
+	//Hide the instructions under the game
+	$("#instructDiv").hide();
+	$("#game").show();
+
+	//Get gid from URL
+	var url = location.href.split('=');
+	var gid = parseInt(url[1]);
+
+	//Get game information
+	$.get("getGameInfo.php?gid="+gid,function(data){
+			var gameData = data.split('+');
+			
+			var gameName = gameData[0];
+			var instructions = gameData[1];
+			var controls = gameData[2];
+			var fileName = gameData[3];
+			
+			$("#gameTitle").html(gameName);
+			$("#instructions").click(function(){
+				
+				$("#instruct").html(instructions);
+				$("#game").hide();
+				$("#instructDiv").show();
+				}
+			);		
+
+			//Load constants page, adjust div's, and load game js and css
+			$.ajax({url: fileName+"_constants.js", async: false});
+			
+			$("#welcomeScreen").height(PLAYGROUND_HEIGHT);
+			$("#welcomeScreen").width(PLAYGROUND_WIDTH);
+
+			$.ajax({url:fileName+".js", async: false});
+			$.ajax({url:fileName+".css", async: false});
+		
+			$("#controls").html(controls);
+		
+		}
+	);
+
+	
+	//Set Link to Proper highScore page
+	$("#highScores").attr('href',"highScores.html?gid="+gid);
+
+
+	}
+);
+
+
+
+</script>
+
+</body>
+
+</html>

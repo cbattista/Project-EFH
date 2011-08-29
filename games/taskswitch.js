@@ -271,21 +271,12 @@ $(function(){
 		async: false}
 	);
 	
-	//Get Level data. FInd which level they start at today 
+	//Get Level data. Find which level they start at today 
 	$.ajax({url: "getLevels.php?gid=2",
 		success : function(data) {
 			levels = parseInt(data);
 		},
 		async: false}
-	);
-
-	//Get game instructions
-	$.ajax({url : "getInstructions.php?gid=2",
-		success : function(data){
-			instructions = data;	
-		},
-		async: false}
-
 	);
 
 	day = getCookie("funkyTrainDay");
@@ -294,6 +285,7 @@ $(function(){
     $("#playground").playground({height: PLAYGROUND_HEIGHT,
                                  width: PLAYGROUND_WIDTH,
                                  keyTracker: true});
+
     
     // Initialize the background, items(pipe) and actors(aliens)
     $.playground().addGroup("background", {height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
@@ -374,11 +366,6 @@ $(function(){
 	
     // this sets the id of the loading bar:
     $().setLoadBar("loadingBar", 400);
-
-    //initialize the instructions button
-    $("#instructions").click(function(){
-		    alert(instructions);
-	});
 
     //initialize the start button
     $("#startbutton").click(function(){
