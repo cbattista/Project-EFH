@@ -106,15 +106,23 @@
 				}
 			);		
 
-			//Load constants page, adjust div's, and load game js and css
+			//Load constants page, adjust div's, and load game js
 			$.ajax({url: fileName+"_constants.js", async: false});
 			
 			$("#welcomeScreen").height(PLAYGROUND_HEIGHT);
 			$("#welcomeScreen").width(PLAYGROUND_WIDTH);
 
 			$.ajax({url:fileName+".js", async: false});
-			$.ajax({url:fileName+".css", async: false});
-		
+			
+			//Load the css file
+
+			var headId = document.getElementsByTagName("head")[0];
+			var cssNode = document.createElement('link');
+			cssNode.type = 'text/css';
+			cssNode.rel = 'stylesheet';
+			cssNode.href = fileName+'.css';
+			headId.appendChild(cssNode);
+
 			$("#controls").html(controls);
 		
 		}
