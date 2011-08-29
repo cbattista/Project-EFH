@@ -29,6 +29,21 @@ div.center{
 	padding-right:1%;
 }
 
+div#pad-left{
+	float:left;
+	height:100%;
+}
+
+div#game{
+	float:left;
+	height:100%;
+}
+
+div#pad-right{
+	float:left;
+	height:100%;
+}
+
 div.right{
 	float:left;
 	width:18%;

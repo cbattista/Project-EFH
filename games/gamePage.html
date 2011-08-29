@@ -34,21 +34,25 @@
 </div>
 
 <div class = "center">
-	<center>
 	
-	<h1 id = "gameTitle"></h1>
+	<div id = "pad-left"></div>
+
 	<div id = "game">
+		<center><h1 id = "gameTitle"></h1></center>
 		<div id="playground" style = "background-color:black;">
 	    		<div id="welcomeScreen" style= "position: absolute; z-index: 100;">
 	        		<div>
-        		        	<div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;"></div><br />
+					<div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;"></div><br />
+					<center>
 			    		<button style="cursor: pointer;" id="startbutton">Play</button>
-			    		<button style ="cursor: pointer;" id = "instructions">Instructions</button>
+					<button style ="cursor: pointer;" id = "instructions">Instructions</button>
+					</center>
         			</div>
     	    		</div>
 		</div>
-	</div>
-	<div id = "instructDiv">
+
+		<center>
+		<div id = "instructDiv">
 			<h2><u>Intructions</u></h2>
 			<p id = "instruct"></p>
 			<button style="cursor: pointer;" id = "backToGame">Back to the Game</button>
@@ -56,14 +60,17 @@
 			<script type = "text/javascript">
 				$("#backToGame").click(function(){
 					$("#instructDiv").hide();
-					$("#game").show();
+					$("#playground").show();
 					}
 				);
 			</script>
-				
+		</div>
+		</center>
 	</div>
 
-	</center>
+	<div id = "pad-right"></div>
+	
+</center>
 
 </div>
 
@@ -101,18 +108,26 @@
 			$("#instructions").click(function(){
 				
 				$("#instruct").html(instructions);
-				$("#game").hide();
+				$("#playground").hide();
 				$("#instructDiv").show();
 				}
 			);		
 
 			//Load constants page, adjust div's, and load game js
 			$.ajax({url: fileName+"_constants.js", async: false});
-			
+
+			$("#game").width(PLAYGROUND_WIDTH);
 			$("#welcomeScreen").height(PLAYGROUND_HEIGHT);
 			$("#welcomeScreen").width(PLAYGROUND_WIDTH);
 
 			$.ajax({url:fileName+".js", async: false});
+
+			//Adjust padding of playground to center it
+			var divWidth = $(".center").css("width");
+			var paddingWidth = ((parseInt(divWidth) - PLAYGROUND_WIDTH)/2);
+
+			$("#pad-left").width(paddingWidth);
+			$("#pad-right").width(paddingWidth);
 			
 			//Load the css file
 
