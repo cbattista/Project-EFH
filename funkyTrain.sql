@@ -112,6 +112,8 @@ CREATE TABLE `games` (
   `url` text COLLATE utf8_unicode_ci NOT NULL,
   `notes` longtext COLLATE utf8_unicode_ci NOT NULL,
   `levels` int(11) DEFAULT NULL,
+  `controls` text COLLATE utf8_unicode_ci,
+  `filename` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`gid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -122,7 +124,7 @@ CREATE TABLE `games` (
 
 LOCK TABLES `games` WRITE;
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
-INSERT INTO `games` VALUES (1,'Satellite Defender','games/gonogo.html','In this game you will defend your city from bombs being dropped by invaders.  You can use your city\'s satellite defense system to blow up dropping objects, but be careful because some of the objects are actually care packages from your allies.  But, because the invaders are tricky and just plain evil, they\'ve disguised their bombs as care packages as well.  The only way to tell the difference is to wait until the package drops into range of your x-ray binoculars so that you can see inside.\r\n\r\nYou get points for:\r\nBlowing up bombs before they reach your city\r\nAllowing care packages to reach your city\r\n\r\nYou lose points for:\r\nBlowing up care packages before they reach your city\r\nAllowing bombs to reach your city',5),(2,'Alien Zookeeper','games/taskswitch.html','In this game you are a rookie zookeeper at the world\'s first Alien Zoo.  You are caring for some Triangeloids and some Circlelidians.  Triangeloids and Circleidians are very fussy about what they eat.  Sometimes they only want to eat food that is the same shape as they are, and other times they only want to eat food that is the same colour as they are.  The cue at the top of their cage (the white letter) will tell you how to sort the food.  If the cue is a \'C\' then sort by colour, if the cue is a \'S\' then sort by shape.\r\n\r\nYou get points by...\r\nCorrectly sorting food\r\n\r\nYou lost points by...\r\nIncorrectly sorting food\r\nFailing to sort food at all',2);
+INSERT INTO `games` VALUES (1,'Satellite Defender','games/gonogo.html','In this game you will defend your city from bombs being dropped by invaders.  You can use your city\'s satellite defense system to blow up dropping objects, but be careful because some of the objects are actually care packages from your allies.  But, because the invaders are tricky and just plain evil, they\'ve disguised their bombs as care packages as well.  The only way to tell the difference is to wait until the package drops into range of your x-ray binoculars so that you can see inside.\r\n\r\nYou get points for:\r\nBlowing up bombs before they reach your city\r\nAllowing care packages to reach your city\r\n\r\nYou lose points for:\r\nBlowing up care packages before they reach your city\r\nAllowing bombs to reach your city',5,'Press \'a\' to fire your weapon. Wait until the package is inside the binoculars before making your decision.','gonogo'),(2,'Alien Zookeeper','games/taskswitch.html','In this game you are a rookie zookeeper at the world\'s first Alien Zoo.  You are caring for some Triangeloids and some Circlelidians.  Triangeloids and Circleidians are very fussy about what they eat.  Sometimes they only want to eat food that is the same shape as they are, and other times they only want to eat food that is the same colour as they are.  The cue at the top of their cage (the white letter) will tell you how to sort the food.  If the cue is a \'C\' then sort by colour, if the cue is a \'S\' then sort by shape.\r\n\r\nYou get points by...\r\nCorrectly sorting food\r\n\r\nYou lost points by...\r\nIncorrectly sorting food\r\nFailing to sort food at all',2,'Press \'a\' to move the paddle left, \'d\' to to move the paddle right','taskswitch');
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +292,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'test1','test1',0,'','2011-08-18 21:06:18','2011-06-24'),(2,'test2','test2',0,'','2011-08-19 13:09:47','2011-06-24'),(3,'ricky','ricky',4,'','2011-06-24 16:36:55','2011-05-31'),(4,'katie','katie',4,'','2011-06-24 14:59:12','2011-05-31'),(5,'xian','xian',5,'','2011-06-24 14:29:32','2011-06-24'),(6,'bruce','bruce',5,'','2011-08-19 22:09:04','2011-06-22'),(0,'admin','admin',0,'','2011-06-22 17:29:36','2011-06-22'),(8,'keegan','keegan',5,'0','2011-06-24 13:18:12','2011-06-10');
+INSERT INTO `users` VALUES (1,'test1','test1',0,'','2011-08-23 12:20:06','2011-06-24'),(2,'test2','test2',0,'','2011-08-23 12:28:08','2011-06-24'),(3,'ricky','ricky',4,'','2011-08-23 12:29:09','2011-05-31'),(4,'katie','katie',4,'','2011-08-23 12:28:30','2011-05-31'),(5,'xian','xian',5,'','2011-06-24 14:29:32','2011-06-24'),(6,'bruce','bruce',5,'','2011-08-29 13:41:51','2011-06-22'),(0,'admin','admin',5,'','2011-08-23 23:21:39','2011-08-23'),(8,'keegan','keegan',5,'0','2011-08-23 12:28:16','2011-06-10');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -303,4 +305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-08-19 22:45:24
+-- Dump completed on 2011-08-29 14:20:55
