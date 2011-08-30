@@ -1,7 +1,7 @@
 <!doctype html> 
 <html> 
 <head> 
-<title>Game Page!</title> 
+<title></title> 
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
 <script src='source_code/jquery.gamequery-0.5.0.js'></script> 
 <script src='Subject.js'></script>
@@ -19,13 +19,15 @@
 <div class = "container">
 
 <div class = "left">
+	<center><h1 id = "gameTitle"></h1></center>
+	<h3> Game Information </h3>
 	
 	<h3> Controls </h3>
 	<div id = "controls"></div>
 
+	<h3> Game Info </h3>
 	<div id = "gameData">
-		<h3> Game Information </h3>
-		Score: <span id="score">0</span><br/>
+		Trial Score: <span id="score">0</span><br/>
 		Total Score: <span id="totalScore">0</span><br/>
 		Trial: <span id="trial">0/48</span><br/>
 		<span id="console">Messages</span><br/>
@@ -38,7 +40,6 @@
 	<div id = "pad-left"></div>
 
 	<div id = "game">
-		<center><h1 id = "gameTitle"></h1></center>
 		<div id="playground" style = "background-color:black;">
 	    		<div id="welcomeScreen" style= "position: absolute; z-index: 100;">
 	        		<div>
@@ -105,6 +106,7 @@
 			var fileName = gameData[3];
 			
 			$("#gameTitle").html(gameName);
+			document.title= gameName;
 			$("#instructions").click(function(){
 				
 				$("#instruct").html(instructions);
