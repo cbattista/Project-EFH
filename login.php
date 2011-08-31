@@ -35,8 +35,16 @@ if ($username != "" && $pass != ""){
 
 		mysql_query($update);
 
+		$query = sprintf("SELECT uid FROM users where name = '%s'", $username);
+		$result = mysql_query($query);
+		while ($row = mysql_fetch_assoc($result)) {
+			$uid = $row['uid'];
+		}
+
+		//echo $uid;
 		//Set cookie to track user login
-		setcookie("funkyTrainUser",$username, time() + 3600);
+		setCookie("funkyTrainUser",$username, time() + 3600);
+		setCookie("funkyTrainID", $uid, time() + 3600);
 	}
 	
 	//If password given does not match password in database...

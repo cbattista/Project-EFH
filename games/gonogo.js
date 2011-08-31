@@ -94,9 +94,9 @@ function nextTrial(){
 	$("#mysteryBox").css("top",initTop);
 
 	if (trial < difficulty.trials) {
-		
 		//Send trial info to server
 		subject.inputData(trial, "stim", stim);
+		subject.sendData();
 	}
 	else {
 		//alert('Level Complete');
@@ -123,6 +123,8 @@ function setDifficulty(userScore){
 
 //Function that handles the points animation
 function setPoints(points){
+	subject.inputData(trial, "score", points);
+
 
 	if (points > 0){
 		var sign = "+ ";	
@@ -145,7 +147,8 @@ function setPoints(points){
 }
 
 //Create an array of animations 
-function theBox(id){
+function theBox(id
+){
 
 	var someBox = new Array;
 	
@@ -185,7 +188,7 @@ function key_handler(e){
 				//Animate the explosion
 				$("#mysteryBox").setAnimation(box["explode"]);
 
-				score =  0;
+				score = 0;
 
 				burnout = ((groundPos - boxPos) / groundPos  * difficulty.trialDur) + difficulty.impactDelay; 
 
@@ -216,7 +219,6 @@ function key_handler(e){
 
 				//Send trial data to server
 				
-				subject.inputData(trial,"score",score);
 				subject.inputData(trial,"RT",RT);
 			
 	 	}	
@@ -236,13 +238,8 @@ function key_handler(e){
 $(function(){
 
 	//get the subject ID
-	$.ajax({url: "getSid.php", 
-		success : function(data) { 
-			sid = data;
-			subject = new Subject(sid, 1);
-		},
-		async: false}
-	);
+	sid = getCookie("funkyTrainID");
+	subject = new Subject(sid, 1);	
 
 	// Get the last high score
 	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1", 

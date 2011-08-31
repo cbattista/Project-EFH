@@ -255,13 +255,9 @@ function makeCreature(id){
 $(function(){
 
 	//get the subject ID
-	$.ajax({url: "getSid.php", 
-		success : function(data) { 
-			sid = data;
-			subject = new Subject(sid, 2);
-		},
-		async: false}
-	);
+	
+	sid = getCookie("funkyTrainID");
+	subject = new Subject(sid, 2);
 
 	// Get the last high score
 	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=2", 
