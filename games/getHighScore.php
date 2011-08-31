@@ -4,7 +4,6 @@ include "../db.php";
 
 $gid = $_GET['gid'];
 $sid = $_GET['sid'];
-$limit = 10;
 
 mysql_connect('localhost', $uname, $password);
 mysql_select_db($database);
@@ -21,7 +20,7 @@ $output = user_score($sid);
 }
 
 else{
-$output = high_score_table($limit);
+$output = high_score_table();
 }
 
 echo $output;
@@ -32,44 +31,40 @@ echo $output;
 
 
 function user_game_score($gid, $sid){
-$query = sprintf("SELECT highScore FROM history WHERE gid = %s AND sid = %s ORDER BY trainingDay ASC", $gid, $sid);
+	$query = sprintf("SELECT sum(score) FROM results WHERE game = %s AND uid = %s AND value='score'", $gid, $sid);
+	$result = mysql_query($query);
+	$score = 0;
 
-$result = mysql_query($query);
+	while ($row = mysql_fetch_assoc($result)) {
+		$score = $row['sum(score)'];
+	}
 
-$highScore = 0;
-
-while ($row = mysql_fetch_assoc($result)) {
-$highScore = $row['highScore'];
-}
-
-$output = $highScore;
-
-return $output;
+	$output = $score;
+	return $output;
 }
 
 function game_score($gid){
-$query = sprintf("SELECT DISTINCT(sid) FROM history WHERE gid = %s", $gid);
-$result = mysql_query($query);
-$output = "<table border = \"1\"><tr><th>user</th><th>score</th></tr>";
-while ($row = mysql_fetch_assoc($result)) {
-$score = user_game_score($gid, $row['sid']);
-$query = sprintf("SELECT name FROM users WHERE uid = %s", $row['sid']);
-$row = mysql_fetch_object(mysql_query($query));
-$name = $row->name;
-$output .= sprintf("<tr><td>%s</td><td>%s</td></tr>", $name, $score);
-}
-$output .= "</table>";
-
+	$query = sprintf("SELECT DISTINCT(uid) FROM results WHERE game = %s", $gid);
+	$result = mysql_query($query);
+	$output = "<table border = \"1\"><tr><th>user</th><th>score</th></tr>";
+	while ($row = mysql_fetch_assoc($result)) {
+		$score = user_game_score($gid, $row['uid']);
+		$query = sprintf("SELECT name FROM users WHERE uid = %s", $row['uid']);
+		$row = mysql_fetch_object(mysql_query($query));
+		$name = $row->name;
+		$output .= sprintf("<tr><td>%s</td><td>%s</td></tr>", $name, $score);
+	}
+	$output .= "</table>";
 return $output;
 }
 
 function user_score($sid) {
-$query = sprintf("SELECT DISTINCT(gid) FROM history WHERE sid = %s", $sid);
+$query = sprintf("SELECT DISTINCT(game) FROM results WHERE uid = %s", $sid);
 $result = mysql_query($query);
 $output = "<table border = \"1\"><tr><td><b>Game</b></td><td><b>Score</b></td></tr>";
 while ($row = mysql_fetch_assoc($result)) {
-$score = user_game_score($row['gid'], $sid);
-$query = sprintf("SELECT name FROM games WHERE gid = %s", $row['gid']);
+$score = user_game_score($row['game'], $sid);
+$query = sprintf("SELECT name FROM games WHERE gid = %s", $row['game']);
 $row = mysql_fetch_object(mysql_query($query));
 $name = $row->name;
 $output .= sprintf("<tr><td>%s</td><td>%s</td></tr>", $name, $score);
@@ -79,37 +74,35 @@ $output .= "</table>";
 return $output;
 }
 
-function high_score_table($limit){
+function high_score_table(){
 	
-	$q1 = "SELECT DISTINCT gid FROM history ORDER BY gid ASC";
-	$r1 = mysql_query($q1);
-	$output = "";
-	
-	while ($row1 = mysql_fetch_assoc($r1)){
-		$gid = $row1['gid'];
+	$query = "SELECT game, uid, sum(score) FROM results WHERE value='score' GROUP BY game, uid";
 
-		$q2 = sprintf("SELECT name FROM games WHERE gid = %s",$gid);
-		$r2 = mysql_query($q2);
+	$output = "<table><tr><th>game</th><th>user</th><th>score</th></tr>";
 
-		while ($row2 = mysql_fetch_assoc($r2)){
-		
-			$game = $row2['name'];
-			$output .= sprintf("<h4>%s</h4><table border = \"1\"><tr><td><b>User</b></td><td><b>Score</b></td></tr>",$game);
+	$result = mysql_query($query);
 
-			$q3 = sprintf("SELECT * FROM history WHERE gid = %s ORDER BY highScore DESC LIMIT %s ",$gid,$limit);
-			$r3 = mysql_query($q3);
+	while ($row = mysql_fetch_assoc($result)) {
+		$game = $row['game'];
+		$sid = $row['uid'];
+		$score = $row['sum(score)'];
 
-			while($row3 = mysql_fetch_assoc($r3)){
-				$score = $row3['highScore'];
+		$q = sprintf("SELECT name FROM users WHERE uid = %s",$sid);
+		$result = mysql_query($q);
+		$object = mysql_fetch_object($result);
+		$username = $object->name;
 
-				$q4 = sprintf("SELECT name FROM users WHERE uid = %s",$row3['sid']);
-				$row4 = mysql_fetch_object(mysql_query($q4));
-				$name = $row4->name;
-				$output .= sprintf("<tr><td>%s</td><td>%s</td></tr>",$name,$score);
-			}
-		$output .= "</table>";
-		}
+		$q = sprintf("SELECT name FROM games WHERE gid = %s",$game);
+		$result = mysql_query($q);
+		$object = mysql_fetch_object($result);
+		$gamename = $object->name;
+
+		$output .= sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><tr/>", $gamename, $username, $score);
+
 	}
-	return $output;
+	$output .= "</table>";	
+
+
+return $output;
 }
 ?>
