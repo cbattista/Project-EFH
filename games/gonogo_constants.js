@@ -69,7 +69,7 @@ var totalRT = 0;//agregate Reaction Time for a level
 var averageRT = 0;//Average Reaction time for a level
 
 //Create subject object
-var subject = new Subject(666,1);
+//var subject = new Subject(666,1);
 
 //Animations for objects
 var cityAnim = new Array;
