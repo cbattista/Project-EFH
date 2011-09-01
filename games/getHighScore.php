@@ -89,21 +89,22 @@ function high_score_table(){
 	$result = mysql_query($query);
 
 	while ($row = mysql_fetch_assoc($result)) {
+		
 		$game = $row['game'];
 		$sid = $row['uid'];
 		$score = $row['sum(score)'];
 
 		$q = sprintf("SELECT name FROM users WHERE uid = %s",$sid);
-		$result = mysql_query($q);
-		$object = mysql_fetch_object($result);
+		$res = mysql_query($q);
+		$object = mysql_fetch_object($res);
 		$username = $object->name;
 
 		$q = sprintf("SELECT name FROM games WHERE gid = %s",$game);
-		$result = mysql_query($q);
-		$object = mysql_fetch_object($result);
+		$res = mysql_query($q);
+		$object = mysql_fetch_object($res);
 		$gamename = $object->name;
 
-		$output .= sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><tr/>", $gamename, $username, $score);
+		$output .= sprintf("<tr><td>%s</td><td>%s</td><td>%s</td></tr>", $gamename, $username, $score);
 
 	}
 	$output .= "</table>";	
