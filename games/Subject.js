@@ -9,14 +9,16 @@ function Subject(sid, game) {
 
 	this.inputData = function(trial, value, score){
 		//add a snippet of data to the client side store
-		
 		this.data = sprintf("%s|%s,%s,'%s','%s'", this.data, this.game, trial, value, score);
+		//alert(this.data);
 	}
 	
 	this.sendData = function()  {
 		//send the client side data store to the home base and clear the client store (if successful)
 		senddata = {"table": "results", "uid": this.sid, "data": this.data};
-		this.post(senddata);
+		//alert(this.sid);
+		this.post(senddata);	
+		this.data = "";
 	}
 	
 	this.inputLevelData = function(day, score, level){
@@ -28,17 +30,18 @@ function Subject(sid, game) {
 		senddata = {"table": "level", "uid": this.sid, "data": this.leveldata};
 		this.post(senddata);
 	}
+
 	
 	this.post = function(senddata) {
-		$.post(this.homebase, senddata, 
-		function(data){
-			if (data == "success") {
+		$.ajax({
+		  type: 'POST',
+		  url: this.homebase,
+		  data: senddata,
+		  success: function(data) { 
+				//alert(data);
 				this.data = "";
-			}
-			else {
-				//$("#console").html(data);
-			}
-		}, "text");
+			}, 
+		});
 	
 	}
 }
