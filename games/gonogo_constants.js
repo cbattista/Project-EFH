@@ -58,7 +58,7 @@ function Difficulty() {
 var difficulty = new Difficulty();
 
 //Score Variables
-var totalScore = 0;
+var totalScore = 1;
 var score = 0;
 var scoreMult = 2;
 

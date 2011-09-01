@@ -68,6 +68,7 @@ function nextTrial(){
 	moveIt = 1;
 	fired = 0;
 	burnout = 40;
+	subject.inputData(trial, "score", score);
 	score = 0;
 	setPoints(score);
 	impact = 0;
@@ -123,9 +124,6 @@ function setDifficulty(userScore){
 
 //Function that handles the points animation
 function setPoints(points){
-	subject.inputData(trial, "score", points);
-
-
 	if (points > 0){
 		var sign = "+ ";	
 		var str = sprintf("<h1>%s %s</h1>",sign,points);
@@ -147,8 +145,7 @@ function setPoints(points){
 }
 
 //Create an array of animations 
-function theBox(id
-){
+function theBox(id){
 
 	var someBox = new Array;
 	
@@ -218,9 +215,7 @@ function key_handler(e){
 				$("#score").html(score);
 
 				//Send trial data to server
-				
-				subject.inputData(trial,"RT",RT);
-			
+							
 	 	}	
 
 		//If user presses the wrong key, he will no longer be able to fire his weapon
@@ -240,11 +235,14 @@ $(function(){
 	//get the subject ID
 	sid = getCookie("funkyTrainID");
 	subject = new Subject(sid, 1);	
+	//alert(sid);
 
+	totalScore = 1;
 	// Get the last high score
 	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1", 
 		success : function(data) { 
 			totalScore = parseInt(data);
+			//alert(score);
 		},
 		async: false}
 	);
@@ -253,6 +251,7 @@ $(function(){
 	$.ajax({url: "getLevels.php?gid=1",
 		success : function(data) {
 			levels = parseInt(data);
+			//alert(levels);
 		},
 		async: false}
 	);

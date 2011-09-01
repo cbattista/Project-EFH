@@ -76,14 +76,7 @@
 
 			}); 
 
-			var sid = 0;
-			$.ajax({url:"games/getSid.php?user=\'"+username+"\'", 
-				success: function(result){
-					sid = result;},
-				
-				async: false 
-			});
-			
+			var sid = getCookie("funkyTrainID");
 			$.get("games/getHighScore.php?sid="+sid, function(data){
 				$("#userScores").html(data);
 			});

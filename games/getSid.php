@@ -9,7 +9,7 @@ mysql_select_db($database);
 
 if ($user){
 	
-	$query = sprintf("SELECT uid FROM users WHERE name = %s", $user);
+	$query = sprintf("SELECT uid FROM users WHERE name = '%s'", $user);
 	
 	$result = mysql_query($query);
 
@@ -22,7 +22,7 @@ if ($user){
 }
 
 else{
-	$output = "hello";
+	$output = "duh...by: keegan";
 }
 
 echo $output;

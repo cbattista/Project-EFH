@@ -39,7 +39,13 @@ function user_game_score($gid, $sid){
 		$score = $row['sum(score)'];
 	}
 
-	$output = $score;
+	if ($score) {
+		$output = $score;
+	}
+	else {
+		$output = 0;
+	}
+
 	return $output;
 }
 

@@ -22,13 +22,10 @@ if(isset($_POST['uid'])) {
 		$query = sprintf($qstring, $table, $uid, $line);
 	
 		$result = mysql_query($query);					
-		
-		if ($result) 
-			echo "success";
-		else 
-			echo $query;
-				
-		}
+						
+	}
+	
+	echo "success";
 
 } 
 else { 
