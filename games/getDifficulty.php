@@ -9,7 +9,8 @@ $score = $_GET['score'];
 mysql_connect(localhost, $uname, $password);
 mysql_select_db($database);
 
-$query = sprintf("SELECT level FROM difficulty WHERE game = %s AND minscore <= %s AND maxscore > %s", $game, $score, $score); 
+$query = sprintf("SELECT level FROM difficulty WHERE game = %s AND minscore <= %s ORDER BY minscore DESC LIMIT 1", $game, $score); 
+
 
 $result = mysql_query($query);
 
