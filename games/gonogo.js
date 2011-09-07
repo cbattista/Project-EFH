@@ -37,7 +37,7 @@ function nextLevel(){
 		stimList.sort(randOrd);
 		//Initiate new trial
 
-		setHealth("#city", 3);
+		setHealth("#city", maxHealth);
 		nextTrial();
 	
 		//subject.inputLevelData(level, score, currentTime.getTime());
@@ -192,7 +192,7 @@ function key_handler(e){
 				burnout = parseInt(burnout);
 				
 				//Evaluate users decision
-				if(stim == "b"){
+				if(stim == "b" && ($("#city").data("health") == maxHealth) ){
 					//Adjust game score
 					span = hideTop - revealTop;
 					dist = hideTop - boxPos;
@@ -378,14 +378,15 @@ $(function(){
 
 				//Adjust score based upon user's decision
 				if(stim == "cp"){
-			
-					//Step 1: Adjust game score
-					score = 10;
-
+					var cityHealth = $("#city").data("health");
 					correct += 1;
+					incHealth("#city");
+					
+					//Step 1: Adjust game score
+					if (cityHealth == maxHealth){score = 10;}
+
 					pointsPos = PLAYGROUND_HEIGHT - CITY_HEIGHT;
 					pointDir = -1;
-					incHealth("#city");
 				}
 				else {
 					decHealth("#city");

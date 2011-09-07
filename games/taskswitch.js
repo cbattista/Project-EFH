@@ -66,8 +66,8 @@ function nextLevel() {
 		$("#points").show();
 		$("#food").show();
 
-		setHealth("#creature1", 3);
-		setHealth("#creature2", 3);
+		setHealth("#creature1", maxHealth);
+		setHealth("#creature2", maxHealth);
 
 		nextTrial();
 
@@ -447,9 +447,14 @@ $(function(){
 		else {
 			if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 				$("#creature1").setAnimation(creature1["happy"]);
+				var c1Health = $("#creature1").data("health");
 				incHealth("#creature1");
+
+				if( c1Health == maxHealth){
 				score = ((maxLeft - sortedAt) / span) * 10;
-				score = parseInt(score);
+				score = parseInt(score);}
+
+				else { score = 0;}
 				ACC = 1;
 			}
 			else if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
@@ -460,9 +465,14 @@ $(function(){
 			}
 			else if (difficulty.hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
 				$("#creature2").setAnimation(creature2["happy"]);
+				var c2Health = $("#creature2").data("health");
 				incHealth("#creature2");
+
+				if( c2Health == maxHealth){
 				score = ((maxLeft - sortedAt) / span) * 10;
-				score = parseInt(score);
+				score = parseInt(score);}
+
+				else { score = 0;}
 				ACC = 1;
 			}
 			else if (difficulty.hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
