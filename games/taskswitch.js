@@ -66,8 +66,8 @@ function nextLevel() {
 		$("#points").show();
 		$("#food").show();
 
-		setHealth("#creature1", 3);
-		setHealth("#creature2", 3);
+		setHealth("#creature1", maxHealth);
+		setHealth("#creature2", maxHealth);
 
 		nextTrial();
 
@@ -190,12 +190,13 @@ function setCue(){
 
 //Function that handles the points animation
 function setPoints(points){
-	
+
 	//If the food goes to creature 1, the points appear above creature 1, if the points appear about creature 2...
 	if( difficulty.hSpeed < 0){
 	
-	$("#points").css("left",CREATURE1_POSX);
-	$("#points").css("top",CREATURE1_POSY - POINTS_OFFSET);}
+		$("#points").css("left",CREATURE1_POSX);
+		$("#points").css("top",CREATURE1_POSY - POINTS_OFFSET);}
+	
 
 	if (difficulty.hSpeed > 0){
 		
@@ -447,9 +448,13 @@ $(function(){
 		else {
 			if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 				$("#creature1").setAnimation(creature1["happy"]);
+				var c1Health = $("#creature1").data("health");
 				incHealth("#creature1");
-				score = ((maxLeft - sortedAt) / span) * 10;
-				score = parseInt(score);
+
+				if( c1Health == maxHealth){
+					score = ((maxLeft - sortedAt) / span) * 10;
+					score = parseInt(score);}
+				else{ score = 0;}
 				ACC = 1;
 			}
 			else if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
@@ -460,9 +465,14 @@ $(function(){
 			}
 			else if (difficulty.hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
 				$("#creature2").setAnimation(creature2["happy"]);
+				var c2Health = $("#creature2").data("health");
 				incHealth("#creature2");
-				score = ((maxLeft - sortedAt) / span) * 10;
-				score = parseInt(score);
+				
+				if(c2Health == maxHealth){
+					score = ((maxLeft - sortedAt) / span) * 10;
+					score = parseInt(score);}
+				else { score = 0;}
+
 				ACC = 1;
 			}
 			else if (difficulty.hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
@@ -474,6 +484,7 @@ $(function(){
 		}		
 		
 		//Set score based on user's decision
+
 		score = parseInt(score);
 		totalScore += score;
 		setPoints(score);

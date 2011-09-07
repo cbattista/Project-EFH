@@ -62,6 +62,7 @@ var	stimList = [];
 var	animalList1 = [];
 var	animalList2 = [];
 var	cueList = [];
+var 	maxHealth = 3;
 
 //Score Variables
 var 	sortedAt = 0;//Where the user make his decision
