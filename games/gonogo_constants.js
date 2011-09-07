@@ -33,6 +33,7 @@ var level = 0;
 var trials = 30;
 var trial = 0;
 var trialDur = 60;
+var maxHealth = 3;
 
 //State Variables
 var	boxPos = 0; //the position of the package, initial pos is the top of the screen

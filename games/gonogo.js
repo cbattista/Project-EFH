@@ -28,16 +28,28 @@ function nextLevel(){
 		for (i=0;i<difficulty.trials/4;i++) {
 			delays = delays.concat([10, 20, 30, 40]);
 		}
-		for(i = 0; i < ((1-difficulty.nogoes)*difficulty.trials); i++){
-			stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
-	
-		for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
-			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
 		
-		stimList.sort(randOrd);
+				/*>>> CUE LIST CONSTRUCTION <<<*/
+
+		//Check if difficulty.trials divides the number of different cues evenly (i.e we get an integer upon division)
+	if( (difficulty.trials/2)%1 == 1%1) {
+	 	var blockNumber = makeBlockNumber(3,6,difficulty.trials);
+
+		var bombBlocks = randomBlock(3,6,difficulty.trials,blockNumber,'b');
+		var cpBlocks = randomBlock(3,6,difficulty.trials,blockNumber,'cp');
+		var list = makeCues(bombBlocks,cpBlocks);
+
+		stimList = makeCueList(list);
+	}
+
+	else{
+		$("#console").html("Number of Trials must be divisible by the number of Cues!");
+	}
+
+		
 		//Initiate new trial
 
-		setHealth("#city", 3);
+		setHealth("#city", maxHealth);
 		nextTrial();
 	
 		//subject.inputLevelData(level, score, currentTime.getTime());
@@ -124,19 +136,21 @@ function setDifficulty(userScore){
 
 //Function that handles the points animation
 function setPoints(points){
-	if (points > 0){
-		var sign = "+ ";	
-		var str = sprintf("<h1>%s %s</h1>",sign,points);
-		$("#points").html(str);}
+		
+		if (points > 0){
+			var sign = "+ ";	
+			var str = sprintf("<h1>%s %s</h1>",sign,points);
+			$("#points").html(str);}
 	
-	if (points < 0){
-		var sign = "- ";
-		var str = sprintf("<h1>%s %s</h1>",sign,points);
-		$("#points").html(str);}
+		if (points < 0){
+			var sign = "- ";
+			var str = sprintf("<h1>%s %s</h1>",sign,points);
+			$("#points").html(str);}
 	
 
-	if (points == 0){
-		$("#points").html("");}
+		if (points == 0){
+			$("#points").html("");}
+
 	
 	//Animate then reset animation for next call
 	//$("#points").fadeOut(3000,function(){$(this).html("");});
@@ -192,7 +206,7 @@ function key_handler(e){
 				burnout = parseInt(burnout);
 				
 				//Evaluate users decision
-				if(stim == "b"){
+				if(stim == "b" && ($("#city").data("health") == maxHealth) ){
 					//Adjust game score
 					span = hideTop - revealTop;
 					dist = hideTop - boxPos;
@@ -205,7 +219,6 @@ function key_handler(e){
 					pointDir = 1;
 
 				}
-
 				setPoints(score);
 
 				totalScore += score;
@@ -377,22 +390,23 @@ $(function(){
 				$("#city").setAnimation(cityAnim[stim]);
 
 				//Adjust score based upon user's decision
-				if(stim == "cp"){
-			
-					//Step 1: Adjust game score
-					score = 10;
-
+				if(stim == "cp"){ 
 					correct += 1;
-					pointsPos = PLAYGROUND_HEIGHT - CITY_HEIGHT;
-					pointDir = -1;
 					incHealth("#city");
+						
+					if( $("#city").data("health") == maxHealth) {
+						//Step 1: Adjust game score
+						score = 10;
+						pointsPos = PLAYGROUND_HEIGHT - CITY_HEIGHT;
+						pointDir = -1;
+					}
 				}
 				else {
 					decHealth("#city");
 				}
-
+				
 				setPoints(score);
-
+				
 				totalScore += score;
 				
 				//Step 2: Append score to HTML
