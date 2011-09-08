@@ -28,13 +28,15 @@ function nextLevel(){
 		for (i=0;i<difficulty.trials/4;i++) {
 			delays = delays.concat([10, 20, 30, 40]);
 		}
-		for(i = 0; i < ((1-difficulty.nogoes)*difficulty.trials); i++){
-			stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
-	
-		for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
-			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
-		
-		stimList.sort(randOrd);
+
+		//			-- Stim List Construction -- //
+
+			var blockNumber = makeBlockNumber(2,6,difficulty.trials);
+			var bombBlocks = randomBlock(2,6,difficulty.trials,blockNumber,'b');
+			var cpBlocks = randomBlock(2,6,difficulty.trials,blockNumber,'cp');
+			var list = makeCues(bombBlocks,cpBlocks);
+			stimList = makeCueList(list);
+						
 		//Initiate new trial
 
 		setHealth("#city", maxHealth);
@@ -192,14 +194,14 @@ function key_handler(e){
 				burnout = parseInt(burnout);
 				
 				//Evaluate users decision
-				if(stim == "b" && ($("#city").data("health") == maxHealth) ){
+				if(stim == "b"){ 
 					//Adjust game score
-					span = hideTop - revealTop;
-					dist = hideTop - boxPos;
-
-					score =  (dist / span) * 10 ;
-					score = parseInt(score);
-					
+					if ($("#city").data("health") == maxHealth){
+						span = hidetop - revealtop;
+						dist = hidetop - boxpos;
+						score =  (dist / span) * 10 ;
+						score = parseint(score);
+					}
 					correct += 1;
 					pointsPos = boxPos - POINTS_OFFSET;
 					pointDir = 1;
