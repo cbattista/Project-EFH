@@ -81,6 +81,13 @@ function nextTrial(){
 	delay = delays[trial];//delay before package drops
 	impactDelay = difficulty.impactDelay;//reset impact delay
 
+	if (stim == stimList[trial-1]){
+		subject.inputData(trial, 'switch', 0);
+	}
+	else {
+		subject.inputData(trial, 'switch', 1);
+	}
+	
 	//Reset animations for next trial
 	box = theBox(stim);
 	$("#mysteryBox").setAnimation(box["idle"]);
