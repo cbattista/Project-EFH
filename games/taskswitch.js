@@ -293,7 +293,7 @@ $(function(){
 
 		.addSprite("background", {animation : new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/background.png"})})
 
-		.append("<span id='cue' style = 'color : white; position: absolute; left : 310px; top : 10px; font-size : 40px'></span><br/>").end()
+		.append("<span id='cue' style = 'color : white; position: absolute; left : 310px; top : 150px; font-size : 40px'></span><br/>").end()
 			
 	.addGroup("items", {height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
 
