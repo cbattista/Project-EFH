@@ -433,7 +433,7 @@ $(function(){
 				difficulty.hSpeed = difficulty.newHSpeed;}
 			
 			//The food falls off the belt
-			difficulty.vSpeed = 5;
+			difficulty.vSpeed = 12;
 		}
 	
 		else if (newTop == maxTop) {
