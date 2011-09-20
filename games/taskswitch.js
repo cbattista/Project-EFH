@@ -168,6 +168,15 @@ function setCue(){
 
 	cue = cueFile[cueList[trial]];
 
+	if (cue == cueFile[cueList[trial-1]]){
+		subject.inputData(trial, "switch", 0);
+	}
+	else {
+		subject.inputData(trial, "switch", 1);
+	}
+
+	subject.inputData(trial, "cue", cue);
+
 	$("#cue").html(cue);
 
 	if (cue == "S"){
