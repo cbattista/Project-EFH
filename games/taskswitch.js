@@ -44,23 +44,19 @@ function nextLevel() {
 
 		if ( (difficulty.trials/numberOfCues)%1 == 1%1){ //Check if the numberOfCues evenly divides the number of trials
 
-		var blockNumber = makeBlockNumber(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials);
-
-		var blocksOf0 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,blockNumber,0);
-
-		var blocksOf1 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,blockNumber,1);
-		
-		var list = makeCues(blocksOf0,blocksOf1);
-
-		cueList = makeCueList(list);
+			var blockNumber = makeBlockNumber(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials);
+			var blocksOf0 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,blockNumber,0);
+			var blocksOf1 = randomBlock(difficulty.cueBlockMin,difficulty.cueBlockMax,difficulty.trials,blockNumber,1);
+			var list = makeCues(blocksOf0,blocksOf1);
+			cueList = makeCueList(list);
 
 		}
 
 		else {
-			alert("Number of trials must be divisible by the number of cues!");
-		}
 
-		$("#console").html(cueList.join());
+			("#console").html("Game Error - Cue list generation error!");
+			
+		}
 
 		//Set animations to show by default. Why this is required is a mystery...
 		$("#points").show();
