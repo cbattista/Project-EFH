@@ -84,6 +84,18 @@ function nextLevel() {
 }
 
 function nextTrial() {
+
+	//Check gameOver status
+	var health1 = $("#creature1").data("health");
+	var health2 = $("#creature2").data("health");
+
+	if ( (health1 == 0) || (health2 == 0) ) {
+		
+		gameOver();
+		setHealth("#creature1", maxHealth);
+		setHealth("#creature2", maxHealth);
+	
+	}
 	//reset paddle
 	$("#paddle").rotate(0);
 	//set cue
@@ -373,7 +385,7 @@ $(function(){
     $("#startbutton").click(function(){
 
         $.playground().startGame(function(){
-            $("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove();});
+            $("#welcomeScreen").fadeTo(1000,0,function(){$(this).hide(); $("#loadingBar").remove();});
 		//Start things off
 		nextLevel();
 
@@ -386,6 +398,7 @@ $(function(){
 	//----------------------------------------------------------------------------------------------------
 	$.playground().registerCallback(function(){
 	
+	if (pauseGame == 1){
 
 	//Phase 1: Delay the food, keep user off guard
 	delay -= 1;
@@ -506,12 +519,12 @@ $(function(){
 			nextTrial();
 		}
 	}	
-
+	}
 	}, REFRESH_RATE);
 	
     //this is where the keybinding occurs
     $(document).keydown(function(e){
-
+	if(pauseGame == 1){
         switch(e.keyCode){
             case 65: //this is left! (a)
 				if (canSort==1) {
@@ -547,6 +560,7 @@ $(function(){
 		           	 break;
 				}
         }
+	}
     });
 });
 

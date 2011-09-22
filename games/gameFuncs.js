@@ -34,3 +34,23 @@ function decHealth(target) {
 	}
 
 }
+
+function gameOver(){
+
+	pauseGame = 0;
+
+	trial = 0;
+
+	$("#pauseScreen").show();
+	$("#gameOver").show();
+	$("#resumeButton").html("Try Again");
+	$("#pauseScreen").fadeTo(1000,1);
+	$("#playground").fadeTo(1000,0);
+
+	//Send to the DB the user had a gameOver
+	//subject.inputData(level,"GameOver",1);
+
+
+
+
+}
