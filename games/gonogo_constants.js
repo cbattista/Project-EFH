@@ -37,13 +37,14 @@ var maxHealth = 3;
 
 //State Variables
 var	boxPos = 0; //the position of the package, initial pos is the top of the screen
-var pointsPos = boxPos - POINTS_OFFSET;
+var 	pointsPos = boxPos - POINTS_OFFSET;
 var	canHit = 0; //1:= Package is in explosion range; 0:= Package is outside explosion range
 var	exploded = 0; //1:= The Package has been hit 0:= The package has not been hit 
 var	dropIt = 1; //1:= The box drops 0:= The box stops
 var	fired = 0; //1:= The user has fired his weapon 0:= The user has not yet fired his weapon
-var burnout = 40; //Length of the box-explosion animation. Larger value increases this time
-var impact = 0; //1:= the package has hit the ground 0:= the package has not hit the ground
+var 	burnout = 40; //Length of the box-explosion animation. Larger value increases this time
+var 	impact = 0; //1:= the package has hit the ground 0:= the package has not hit the ground
+var	pauseGame = 0; // 1:= The game is paused 0:= the game is not paused 
 
 //Create Difficulty class with appropriate difficulty fields
 function Difficulty() {

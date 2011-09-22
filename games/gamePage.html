@@ -20,9 +20,8 @@
 
 <div class = "left">
 	<center><h1 id = "gameTitle"></h1></center>
-	<h3> Game Information </h3>
 	
-	<h3> Controls </h3>
+	<h3> Game Controls </h3>
 	<div id = "controls"></div>
 
 	<h3> Game Info </h3>
@@ -32,7 +31,11 @@
 		Trial: <span id="trial">0/48</span><br/>
 		<span id="console">Messages</span><br/>
 	</div>
-	
+
+	<h3> Play Controls</h3>
+	<div id = "buttons">
+		<button id = "pauseGame" style = "cursor:pointer;">Pause Game </button>
+	</div>
 </div>
 
 <div class = "center">
@@ -42,15 +45,30 @@
 	<div id = "game">
 		<div id="playground" style = "background-color:black;">
 	    		<div id="welcomeScreen" style= "position: absolute; z-index: 100;">
-	        		<div>
-					<div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;"></div><br />
+				<div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;">
+				</div><br />
 					<center>
 			    		<button style="cursor: pointer;" id="startbutton">Play</button>
 					<button style ="cursor: pointer;" id = "instructions">Instructions</button>
+					
+				
 					</center>
-        			</div>
-    	    		</div>
-		</div>
+        		</div>
+    	    	</div>
+
+		<center>
+			<div id = "pauseScreen">
+				<div>
+					<button style = "cursor:pointer;" id = "resumeButton">Resume Play </button>
+					<button style = "cursor:pointer;" id = "instructButton">Instructions </button>
+				</div>
+				
+				<div id = "gameOver">
+					<img src = "images/mainPages/game_over.png"></img>
+				</div>
+			</div>
+		</center>
+		
 
 		<center>
 		<div id = "instructDiv">
@@ -62,6 +80,10 @@
 				$("#backToGame").click(function(){
 					$("#instructDiv").hide();
 					$("#playground").show();
+
+					if(pauseGame == 0){
+						$("#pauseScreen").show();
+					}
 					}
 				);
 			</script>
@@ -87,10 +109,10 @@
 
 <script type = "text/javascript">
 	$(document).ready(function(){
-
-	//Hide the instructions under the game
+//Hide the instructions under the game
 	$("#instructDiv").hide();
 	$("#game").show();
+	$("#gameOver").hide();
 
 	//Get gid from URL
 	var url = location.href.split('=');
@@ -107,11 +129,15 @@
 			
 			$("#gameTitle").html(gameName);
 			document.title= gameName;
-			$("#instructions").click(function(){
+			$("#instructions,#instructButton").click(function(){
 				
 				$("#instruct").html(instructions);
 				$("#playground").hide();
 				$("#instructDiv").show();
+
+				if(pauseGame == 0){
+					$("#pauseScreen").hide();
+				}
 				}
 			);		
 
@@ -121,6 +147,9 @@
 			$("#game").width(PLAYGROUND_WIDTH);
 			$("#welcomeScreen").height(PLAYGROUND_HEIGHT);
 			$("#welcomeScreen").width(PLAYGROUND_WIDTH);
+			//I hate to do two screens but its easier this way
+			$("#pauseScreen").width(PLAYGROUND_WIDTH);
+			$("#pauseScreen").height(PLAYGROUND_HEIGHT);
 
 			$.ajax({url:fileName+".js", async: false});
 
@@ -149,6 +178,26 @@
 	//Set Link to Proper highScore page
 	$("#highScores").attr('href',"highScores.html?gid="+gid);
 
+	//Give Pause button functionality
+	$("#pauseGame").click(function(){
+		pauseGame = 0;
+		$("#pauseScreen").show();
+		$("#pauseScreen").fadeTo(1000,1);
+		$("#playground").fadeTo(1000,0);
+
+	});
+
+	//Give Resume Button functionality
+	$("#resumeButton").click(function(){
+			$("#pauseScreen").fadeOut(1000,0).hide();
+			$("#playground").fadeTo(1000,1);
+			//Make 'Try Again' button back into 'Resume Button' just in case its been changed
+			$("#resumeButton").html("Resume Play");
+			$("#gameOver").hide();
+
+			//Delay 3 seconds before starting the game
+			setTimeout("pauseGame = 1", 3000);	
+		});
 
 	}
 );

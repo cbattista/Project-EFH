@@ -36,7 +36,15 @@ div#pad-left{
 
 div#game{
 	float:left;
+	position:relative;
 	height:100%;
+}
+
+div#pauseScreen{
+	position:absolute;
+	opacity: 0;
+	background-color:black;
+	z-index:0;
 }
 
 div#pad-right{
@@ -51,5 +59,11 @@ div.right{
 	padding-left:1%;
 	border-left-style:solid;
 	border-left-width:1%;
+}
+
+div#gameOver{
+	
+	padding-top:50px;	
+
 }
 

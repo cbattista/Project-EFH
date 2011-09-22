@@ -63,6 +63,7 @@ var	animalList1 = [];
 var	animalList2 = [];
 var	cueList = [];
 var 	maxHealth = 3;
+var 	pauseGame = 1;
 
 //Score Variables
 var 	sortedAt = 0;//Where the user make his decision

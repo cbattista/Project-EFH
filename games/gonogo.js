@@ -32,7 +32,7 @@ function nextLevel(){
 			stimList = stimList.concat(['b']);}//b:= bomb cp:= care package
 	
 		for(i = 0; i < (difficulty.nogoes*difficulty.trials); i++){
-			stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
+	stimList = stimList.concat(['cp']);}//b:= bomb cp:= care package
 		
 		stimList.sort(randOrd);
 		//Initiate new trial
@@ -60,6 +60,18 @@ function nextLevel(){
 
 
 function nextTrial(){
+
+	//Check gameOver status
+	var cityHealth = $("#city").data("health");
+
+	if(cityHealth == 0){
+
+		gameOver();
+
+		setHealth("#city",maxHealth);
+		incHealth("#city");
+	
+	}
 	//Reset State variables
 	boxPos = 0;
 	canHit = 0;
@@ -174,7 +186,7 @@ function theBox(id){
 //------------------------------------------------------------------
 function key_handler(e){
 	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
-	
+	if( pauseGame == 1){
 		if(e.keyCode == 65 && canHit == 1 && fired == 0){ //If the user presses the right key ('a') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
 		
 				fired = 1;//1:= User can not longer fire his weapon
@@ -222,15 +234,17 @@ function key_handler(e){
 				$("#score").html(score);
 
 				//Send trial data to server
+
+		}
 							
-	 	}	
+	
 
 		//If user presses the wrong key, he will no longer be able to fire his weapon
 		fired = 1;
 
 		//Send record of user's keypress to the DB
 		subject.inputData(trial,"keyCode", e.keyCode);
-	     
+	}     
 }
 
 // ---------------------------------------------------------------------
@@ -325,10 +339,11 @@ $(function(){
 	$("#startbutton").click(function(){
 		//Bind Key Events
 		$(document).keydown(key_handler);
+		pauseGame = 1;
 		nextLevel();
 		
 	 $.playground().startGame(function(){
-	 	$("#welcomeScreen").fadeTo(1000,0,function(){ $(this).remove(); });
+	 	$("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove(); });
 	 });
 	});
 		        
@@ -337,7 +352,7 @@ $(function(){
 	// --------------------------------------------------------------------------------
 
 	$.playground().registerCallback(function(){
-
+	if( pauseGame == 1 ){
 		delay -= 1;
 		if (delay == 0) {
 			dropIt = 1;
@@ -345,7 +360,6 @@ $(function(){
 		}
 
 		if(dropIt == 1){
-
 			dropSpeed = difficulty.dropSpeed;
 			
 			$("#mysteryBox").css("top", boxPos);
@@ -423,6 +437,7 @@ $(function(){
 			$("#points").css("top", pointsPos);
 				
 		}
+	}
 	},REFRESH_RATE);
 }); 
 
