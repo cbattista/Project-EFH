@@ -101,6 +101,7 @@ function nextTrial() {
 	canSort = 0;
 	sortedAt = 0;
 	score = 0;
+	reaction = 50;
 
 	$("#score").html(score);	
 
@@ -422,21 +423,21 @@ $(function(){
 	
 	//Phase 5: User either makes a decision or does not
 	
-		//If the user makes no decision...
-		else if (newLeft >= maxLeft && newTop < maxTop) {
-			canSort = 0;
+	//If the user makes no decision...
+	else if (newLeft >= maxLeft && newTop < maxTop) {
+		canSort = 0;
 
-			if (sorted == 0) {
-				difficulty.hSpeed = 0;}
-			
-			else {
-				difficulty.hSpeed = difficulty.newHSpeed;}
-			
-			//The food falls off the belt
-			difficulty.vSpeed = 12;
-		}
-	
-		else if (newTop == maxTop) {
+		if (sorted == 0) {
+			difficulty.hSpeed = 0;}
+		
+		else {
+			difficulty.hSpeed = difficulty.newHSpeed;}
+		
+		//The food falls off the belt
+		difficulty.vSpeed = 10;
+	}
+
+	else if (newTop == maxTop) {
 		
 		if (sorted == 0) {
         	        
@@ -456,8 +457,9 @@ $(function(){
 				incHealth("#creature1");
 
 				if( c1Health == maxHealth){
-				score = ((maxLeft - sortedAt) / span) * 10;
-				score = parseInt(score);}
+					score = ((maxLeft - sortedAt) / span) * 10;
+					score = parseInt(score);
+				}
 
 				else { score = 0;}
 				ACC = 1;
@@ -499,7 +501,10 @@ $(function(){
 	}
 	//Allow creature animation to run	
 	else if (newTop > (maxTop + 100)) {
-		nextTrial();
+		reaction -= 1;
+		if (reaction == 0) {
+			nextTrial();
+		}
 	}	
 
 	}, REFRESH_RATE);
