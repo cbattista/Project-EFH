@@ -44,7 +44,6 @@ div#pauseScreen{
 	position:absolute;
 	opacity: 0;
 	background-color:black;
-	z-index:0;
 }
 
 div#pad-right{
@@ -62,8 +61,11 @@ div.right{
 }
 
 div#gameOver{
-	
 	padding-top:50px;	
+}
+
+#gameOverText{
+	color: red;
 
 }
 
