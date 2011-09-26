@@ -3,7 +3,8 @@
 include "db.php";
 
 $username = $_GET['user'];
-$userid = $_GET['userid'];
+$username = $_GET['userid'];
+
 
 $con = mysql_connect(localhost, $uname, $password);
 if (!$con){
@@ -16,11 +17,11 @@ mysql_select_db($database);
 date_default_timezone_set("Canada/Eastern");
 $d = getdate();
 
-$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$userid); 
+$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
 
 mysql_query($update);
 
-$query = sprintf("SELECT uid FROM users where name = '%s'", $userid);
+$query = sprintf("SELECT uid FROM users where name = '%s'", $username);
 
 $result = mysql_query($query);
 
