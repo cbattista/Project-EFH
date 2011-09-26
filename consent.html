@@ -1,0 +1,77 @@
+<html>
+<head>
+<script type = "text/javascript" src = "games/source_code/Jquery.js"></script>
+
+</head>
+<body>
+
+<div id = "LOI">
+<h1>Letter of Information</h1>
+
+<h2>Title of Research: Individual Differences in Executive Function Training</h2>
+
+<h3>Research Investigators:</h3>
+<table>
+<tr><td>Name</td><td>Email</td></tr>
+<tr><td>Christian Battista (Graduate Student)</td><td>cbattist@uwo.ca</td></tr>
+<tr><td>Paula Raben (Honors Thesis Student)</td><td>praben@uwo.ca</td></tr>
+<tr><td>Katie Knapp (Graduate Student)</td><td>katieknapp3@gmail.com</td></tr>
+<tr><td>J Bruce Morton (Associate Professor)</td><td>jbrucemorton@gmail.com</td></tr>
+</table>
+
+<p>
+The purpose of this study is to investigate the source of individual differences in
+executive functioning. Executive functions are higher-order cognitive abilities involved
+in the regulation of attention and behavior. Individuals differ in how effectively they can
+regulate their attention and behavior. This study investigates the role of training in
+bringing about these differences.
+</p>
+<p>
+In this study, adult individuals will receive six hours of training in the regulation
+of attention and the retention of information for short periods of time. Participants will
+complete 6 one-hour computer-based training sessions, two per week for 3 weeks.
+Participants will complete the training on-line through their own personal computer, and
+will receive 6 study hour credits. Of interest is whether these executive functioning skills
+improve with a short amount of intensive practice and generalize to other tasks that are
+cognitively demanding.
+</p>
+<p>
+If you have questions about this research, and/or if you want to obtain copies of
+the results of this research upon its completion, please contact Dr. J Bruce Morton (519-
+661-2111, x84795; jbrucemorton@gmail.com).
+</p>
+<p>
+If you have any questions about the conduct of this study or your rights as a research
+participant you may contact the Director, Office of Research Ethics, The University of Western
+Ontario, 519-661-3036 or email at: ethics@uwo.ca.
+</p>
+</div>
+
+<div id = "signature">
+<p><em>I have read the Letter of Information, have had the nature of the study explained to me, and I
+agree to participate. All questions have been answered to my satisfaction.</em></p>
+
+<form action = "" >
+User Id: <input id = "userid" type="text" name ="userid" /><br/>
+Name: <input id = "user" type="text" name="user" /><br />
+</form>
+<button id = "submit">Submit</button>
+</div>
+
+<script type = "text/javascript">
+
+	$(document).ready(function(){
+	
+	$("#submit").click(function() {
+		query = $("form").serialize();
+
+		$.ajax({url:"consent.php?" + query, type:'POST', async:false});
+
+		window.location = "index.html";
+	});
+
+	});
+</script>
+
+</body>
+</html>

@@ -41,21 +41,22 @@ if ($username != "" && $pass != ""){
 		if ($lastLogin == "0000-00-00 00:00:00") {
 			$output = 2;
 		}
+		else {
+			$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
 
-		$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
+			mysql_query($update);
 
-		mysql_query($update);
+			$query = sprintf("SELECT uid FROM users where name = '%s'", $username);
+			$result = mysql_query($query);
+			while ($row = mysql_fetch_assoc($result)) {
+				$uid = $row['uid'];
+			}
 
-		$query = sprintf("SELECT uid FROM users where name = '%s'", $username);
-		$result = mysql_query($query);
-		while ($row = mysql_fetch_assoc($result)) {
-			$uid = $row['uid'];
+			//echo $uid;
+			//Set cookie to track user login
+			setCookie("funkyTrainUser",$username, time() + 3600);
+			setCookie("funkyTrainID", $uid, time() + 3600);
 		}
-
-		//echo $uid;
-		//Set cookie to track user login
-		setCookie("funkyTrainUser",$username, time() + 3600);
-		setCookie("funkyTrainID", $uid, time() + 3600);
 	}
 	
 	//If password given does not match password in database...

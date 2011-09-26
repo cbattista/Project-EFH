@@ -87,6 +87,8 @@
 			var exdate=new Date();
 			exdate.setDate(exdate.getDate() - 1);
 			document.cookie= "funkyTrainUser=" + "; expires="+exdate.toUTCString();
+			document.cookie= "funkyTrainID=" + "; expires="+exdate.toUTCString();
+			document.cookie= "funkyTrainDay=" + "; expires="+exdate.toUTCString();
 			window.location = "login.html";
 		});
 
