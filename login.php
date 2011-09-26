@@ -31,6 +31,19 @@ if ($username != "" && $pass != ""){
 		//set timezone and get time for update to users login information	
 		date_default_timezone_set("Canada/Eastern");
 		$d = getdate();
+
+		$query = sprintf("SELECT lastLogin FROM users WHERE name = '%s'", $username);
+		$result = mysql_query($query);
+		while($row = mysql_fetch_assoc($result)) {
+			$lastLogin = $row['lastLogin'];
+		}
+
+		echo $lastLogin;
+
+		if ($lastLogin == "0000-00-00 00:00:00") {
+			$output.= "CONSENT STUFF";
+		}
+
 		$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
 
 		mysql_query($update);
