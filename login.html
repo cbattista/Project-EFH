@@ -26,8 +26,12 @@ Password: <input type="password" name="password" /><br />
 		if (data == 1){
 			window.location = "index.html";		
 			}
+		else if (data == 2){
+			window.location = "consent.html";
+			}
 		else {
-			alert("Incorrect username or password. Please try again.");
+			
+			alert(data);
 			}
 
 		});

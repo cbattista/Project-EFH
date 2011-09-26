@@ -38,10 +38,8 @@ if ($username != "" && $pass != ""){
 			$lastLogin = $row['lastLogin'];
 		}
 
-		echo $lastLogin;
-
 		if ($lastLogin == "0000-00-00 00:00:00") {
-			$output.= "CONSENT STUFF";
+			$output = 2;
 		}
 
 		$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
