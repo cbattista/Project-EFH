@@ -12,7 +12,11 @@ if ($username != "" && $pass != ""){
 
 	if (!$con){
 		die('Could not connect: ' . mysql_error());
+		$output = 3;
 	}
+	
+	//If the connection was successfull, then continue
+	if ($con){
 
 	mysql_select_db($database);
 
@@ -63,6 +67,7 @@ if ($username != "" && $pass != ""){
 	else {
 		$output = 0;
 	}
+    }
 
 }
 //If either field is left blank, automatically return false

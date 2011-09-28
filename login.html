@@ -29,9 +29,13 @@ Password: <input type="password" name="password" /><br />
 		else if (data == 2){
 			window.location = "consent.html";
 			}
+
+		else if (data == 3){
+			alert("Could not connect to the server. Please try again later");
+		}
 		else {
 			
-			alert(data);
+			alert("Incorrect usename or password. Please try again");
 			}
 
 		});
