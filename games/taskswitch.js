@@ -543,7 +543,7 @@ $(function(){
 		           	 break;
 			 	}
 
-            case 68: //this is right! (d)
+            case 75: //this is right! (k)
 				if (canSort == 1) {
 					sorted = 1;
 					difficulty.newHSpeed = 4;

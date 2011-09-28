@@ -187,7 +187,7 @@ function theBox(id){
 function key_handler(e){
 	//If the game has started monitor key presses. Prevents user from giving us bad data (i.e if the user were to mash keyboard before he started the game)	
 	if( pauseGame == 1){
-		if(e.keyCode == 65 && canHit == 1 && fired == 0){ //If the user presses the right key ('a') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
+		if( (e.keyCode == 32 || e.keyCode == 66 ) && canHit == 1 && fired == 0){ //If the user presses the right key (spacebar or 'b') when the package is inside the binoculars and the user has not tried to fire his weapon previously...
 		
 				fired = 1;//1:= User can not longer fire his weapon
 				exploded = 1;//1:= Box has been hit
