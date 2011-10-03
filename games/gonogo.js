@@ -132,7 +132,7 @@ function setDifficulty(userScore){
 			diffs = data.split(',');
 			difficulty.trials = parseInt(diffs[0]);
 			difficulty.dropSpeed += parseInt(diffs[1]);
-			difficulty.binocSpeed = difficulty.dropSpeed /4;
+			difficulty.binocSpeed = difficulty.dropSpeed/3;
 			difficulty.nogoes = parseInt(diffs[2]) / 100;
 
 		},
