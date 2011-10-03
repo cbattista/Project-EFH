@@ -132,7 +132,7 @@ function setDifficulty(userScore){
 			diffs = data.split(',');
 			difficulty.trials = parseInt(diffs[0]);
 			difficulty.dropSpeed += parseInt(diffs[1]);
-			difficulty.binocSpeed = difficulty.dropSpeed / 2;
+			difficulty.binocSpeed = difficulty.dropSpeed /4;
 			difficulty.nogoes = parseInt(diffs[2]) / 100;
 
 		},
@@ -274,7 +274,7 @@ $(function(){
 			levels = parseInt(data);
 			//alert(levels);
 		},
-		async: false}
+		asynm: false}
 	);
 
 	//Find out what day of the program the user is on
@@ -383,7 +383,7 @@ $(function(){
 	
 			//If the package is outside the range of the binoculars
 			else if(boxPos >= hideTop && boxPos < groundPos && exploded == 0){
-
+				
 				canHit = 0;
 				$("#mysteryBox").setAnimation(box["idle"]);
 			}
