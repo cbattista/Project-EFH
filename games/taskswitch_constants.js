@@ -64,6 +64,9 @@ var	animalList2 = [];
 var	cueList = [];
 var 	maxHealth = 3;
 var 	pauseGame = 1;
+var 	foodHSpeed = 0;
+var	foodVSpeed = 0;
+var	pipeSpeed  = 5;
 
 //Score Variables
 var 	sortedAt = 0;//Where the user make his decision

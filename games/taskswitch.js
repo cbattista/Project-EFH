@@ -107,8 +107,8 @@ function nextTrial() {
 	}
 
 	//Set speed variables
-	difficulty.hSpeed = 0;
-	difficulty.vSpeed = 0;
+	foodHSpeed = 0;
+	foodVSpeed = 0;
 	sorted = 0;
 	canSort = 0;
 	sortedAt = 0;
@@ -172,7 +172,7 @@ function setDifficulty(score){
 			async: false}
 	);
 	
-	scoreMult = revealLeft / difficulty.hSpeed * REFRESH_RATE;
+	scoreMult = revealLeft / foodHSpeed * REFRESH_RATE;
 
 }
 
@@ -210,12 +210,12 @@ function setCue(){
 function setPoints(points){
 	
 	//If the food goes to creature 1, the points appear above creature 1, if the points appear about creature 2...
-	if( difficulty.hSpeed < 0){
+	if( foodHSpeed < 0){
 	
 	$("#points").css("left",CREATURE1_POSX);
 	$("#points").css("top",CREATURE1_POSY - POINTS_OFFSET);}
 
-	if (difficulty.hSpeed > 0){
+	if (foodHSpeed > 0){
 		
 		$("#points").css("left",CREATURE2_POSX);
 		$("#points").css("top",CREATURE2_POSY - POINTS_OFFSET);}
@@ -405,13 +405,13 @@ $(function(){
 
 	//Phase 2: Enough Delay! Now the food moves through the pipe
 	if (delay == 0) {
-		difficulty.hSpeed = 5;
+		foodHSpeed = pipeSpeed;
 		$("#food").toggle();
 	}
 
 		// Get position info of the food objects and add x and y component to change position	
-		newLeft = parseInt($("#food").css("left")) + difficulty.hSpeed;	
-		newTop = parseInt($("#food").css("top")) + difficulty.vSpeed;
+		newLeft = parseInt($("#food").css("left")) + foodHSpeed;	
+		newTop = parseInt($("#food").css("top")) + foodVSpeed;
 	
 	//Phase 3: Move obj down the conveyor belt. Angle is determined by the difference of vertical and horizontal speed(slope)
 	$("#food").css("left", newLeft);
@@ -420,6 +420,7 @@ $(function(){
 	//Phase 4: Food comes out the pipe and moves across the conveyor belt
 	if (newLeft==revealLeft && sorted==0){
 		
+		foodHSpeed = difficulty.hSpeed;
 		//User can use his paddle
 		canSort = 1;
 		
@@ -441,13 +442,13 @@ $(function(){
 		canSort = 0;
 
 		if (sorted == 0) {
-			difficulty.hSpeed = 0;}
+			foodHSpeed = 0;}
 		
 		else {
-			difficulty.hSpeed = difficulty.newHSpeed;}
+			foodHSpeed = difficulty.newHSpeed;}
 		
 		//The food falls off the belt
-		difficulty.vSpeed = 10;
+		foodVSpeed = 10;
 	}
 
 	else if (newTop == maxTop) {
@@ -464,7 +465,7 @@ $(function(){
 		}
 		//If user makes a decision, Judge their decision and change animation to show whether it was correct or not
 		else {
-			if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) != -1){
+			if (foodHSpeed < 0 && $.inArray(c1, rule[food]) != -1){
 				$("#creature1").setAnimation(creature1["happy"]);
 				var c1Health = $("#creature1").data("health");
 				incHealth("#creature1");
@@ -477,13 +478,13 @@ $(function(){
 				else { score = 0;}
 				ACC = 1;
 			}
-			else if (difficulty.hSpeed < 0 && $.inArray(c1, rule[food]) == -1){
+			else if (foodHSpeed < 0 && $.inArray(c1, rule[food]) == -1){
 				$("#creature1").setAnimation(creature1["angry"]);
 				decHealth("#creature1");
 				score = 0;
 				ACC = 0;
 			}
-			else if (difficulty.hSpeed > 0  && $.inArray(c2, rule[food]) != -1){
+			else if (foodHSpeed > 0  && $.inArray(c2, rule[food]) != -1){
 				$("#creature2").setAnimation(creature2["happy"]);
 				var c2Health = $("#creature2").data("health");
 				incHealth("#creature2");
@@ -495,7 +496,7 @@ $(function(){
 				else { score = 0;}
 				ACC = 1;
 			}
-			else if (difficulty.hSpeed > 0 && $.inArray(c2, rule[food]) == -1){
+			else if (foodHSpeed > 0 && $.inArray(c2, rule[food]) == -1){
 				$("#creature2").setAnimation(creature2["angry"]);
 				decHealth("#creature2");
 				score = 0;
