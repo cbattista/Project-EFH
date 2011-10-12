@@ -253,8 +253,9 @@ CREATE TABLE `training` (
   `preGames` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
   `postGames` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
   `trainingGames` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `training` varchar(22) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`tpid`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,9 +264,13 @@ CREATE TABLE `training` (
 
 LOCK TABLES `training` WRITE;
 /*!40000 ALTER TABLE `training` DISABLE KEYS */;
-INSERT INTO `training` VALUES (4,'Task Switch Training',7,1,1,7,'1,2','1,2','2'),(5,'Go/Nogo Training',7,1,1,7,'1,2','1,2','1');
+INSERT INTO `training` VALUES (4,'Task Switch Training',7,1,1,7,'1,2','1,2','2','2,3,4,5,6'),(5,'Go/Nogo Training',7,1,1,7,'1,2','1,2','1','2,3,4,5,6'),(6,'funkyPilot',42,1,1,42,'1,2','1,2','1','8,15,22,29,36');
 /*!40000 ALTER TABLE `training` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
 
 --
 -- Table structure for table `users`
@@ -282,8 +287,9 @@ CREATE TABLE `users` (
   `pastTraining` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `lastLogin` datetime NOT NULL,
   `start` date NOT NULL,
+  `consented` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`uid`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,7 +298,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'test1','test1',0,'','2011-08-23 12:20:06','2011-06-24'),(2,'test2','test2',0,'','2011-08-23 12:28:08','2011-06-24'),(3,'ricky','ricky',4,'','2011-08-23 12:29:09','2011-05-31'),(4,'katie','katie',4,'','2011-08-23 12:28:30','2011-05-31'),(5,'xian','xian',5,'','2011-06-24 14:29:32','2011-06-24'),(6,'bruce','bruce',5,'','2011-10-10 13:07:01','2011-06-22'),(0,'admin','admin',5,'','2011-09-07 16:22:52','2011-08-23'),(8,'keegan','keegan',5,'0','2011-08-23 12:28:16','2011-06-10');
+INSERT INTO `users` VALUES (1,'test1','test1',0,'','0000-00-00 00:00:00','0000-00-00',NULL),(2,'test2','test2',0,'','0000-00-00 00:00:00','0000-00-00',NULL),(3,'ricky','ricky',4,'','0000-00-00 00:00:00','0000-00-00',NULL),(4,'katie','katie',4,'','0000-00-00 00:00:00','0000-00-00',NULL),(5,'xian','xian',5,'','0000-00-00 00:00:00','0000-00-00',NULL),(6,'bruce','bruce',5,'','0000-00-00 00:00:00','0000-00-00',NULL),(0,'admin','admin',5,'','0000-00-00 00:00:00','0000-00-00',NULL),(8,'keegan','keegan',5,'0','0000-00-00 00:00:00','0000-00-00',NULL),(9,'coffee','coffee',4,'0','0000-00-00 00:00:00','0000-00-00',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
