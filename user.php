@@ -52,14 +52,18 @@ if ($login == 1) {
 		setcookie("funkyTrainDay",$day, time() + 3600);
 	
 	//so we know what day it is, let's determine whether we are in pre, training, or post phase
-	$query = sprintf("SELECT pre, post FROM training WHERE tpid = %s", $tpid);
+	$query = sprintf("SELECT pre, post, training FROM training WHERE tpid = %s", $tpid);
 
 	$result = mysql_query($query);
 	
 	while($row = mysql_fetch_assoc($result)){
 		$pre = $row['pre'];
 		$post = $row['post'];
+		$training = $row['training'];
 	}
+
+	//need to chop the value of training into a list
+	$training = explode(',', $training);
 
 	if ($day == $pre) {
 		$phase = "preGames";
@@ -67,7 +71,7 @@ if ($login == 1) {
 	elseif ($day == $post) {
 		$phase = "postGames";
 	}
-	elseif (($day > $pre) && ($day < $post)) {
+	elseif (in_array($day, $training) == True) {
 		$phase = "trainingGames";
 	}
 
