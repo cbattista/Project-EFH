@@ -36,30 +36,31 @@ if ($username != "" && $pass != ""){
 		date_default_timezone_set("Canada/Eastern");
 		$d = getdate();
 
-		$query = sprintf("SELECT lastLogin FROM users WHERE name = '%s'", $username);
+		$query = sprintf("SELECT lastLogin, consented FROM users WHERE name = '%s'", $username);
 		$result = mysql_query($query);
 		while($row = mysql_fetch_assoc($result)) {
 			$lastLogin = $row['lastLogin'];
+			$consented = $row['consented'];
 		}
 
-		if ($lastLogin == "0000-00-00 00:00:00") {
+		//record the user's login...
+		$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
+
+		mysql_query($update);
+
+		$query = sprintf("SELECT uid FROM users where name = '%s'", $username);
+		$result = mysql_query($query);
+		while ($row = mysql_fetch_assoc($result)) {
+			$uid = $row['uid'];
+		}
+
+		//Set cookie to track user login using an hour-long session
+		setCookie("funkyTrainUser",$username, time() + 3600);
+		setCookie("funkyTrainID", $uid, time() + 3600);
+
+		//if this is their first login or they haven't consented...
+		if ($consented == NULL) {
 			$output = 2;
-		}
-		else {
-			$update = sprintf("UPDATE users SET lastLogin = '%s-%s-%s %s:%s:%s' WHERE name = '%s'",$d['year'],$d['mon'],$d['mday'],$d['hours'],$d['minutes'],$d['seconds'],$username); 
-
-			mysql_query($update);
-
-			$query = sprintf("SELECT uid FROM users where name = '%s'", $username);
-			$result = mysql_query($query);
-			while ($row = mysql_fetch_assoc($result)) {
-				$uid = $row['uid'];
-			}
-
-			//echo $uid;
-			//Set cookie to track user login
-			setCookie("funkyTrainUser",$username, time() + 3600);
-			setCookie("funkyTrainID", $uid, time() + 3600);
 		}
 	}
 	

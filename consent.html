@@ -1,6 +1,7 @@
 <html>
 <head>
 <script type = "text/javascript" src = "games/source_code/Jquery.js"></script>
+<script type = "text/javascript" src = "common.js"></script>
 
 </head>
 <body>
@@ -51,16 +52,21 @@ Ontario, 519-661-3036 or email at: ethics@uwo.ca.
 <p><em>I have read the Letter of Information, have had the nature of the study explained to me, and I
 agree to participate. All questions have been answered to my satisfaction.</em></p>
 
+<p>User Id: <span id = "userid"></span></p>
+
+
 <form action = "" >
-User Id: <input id = "userid" type="text" name ="userid" /><br/>
-Name: <input id = "user" type="text" name="user" /><br />
+Name: <input id = "name" type="text" name="name" /><br />
 </form>
-<button id = "submit">Submit</button>
+<button id = "submit">I accept</button>
+<button id = "donotsubmit">I do not accept</button>
 </div>
 
 <script type = "text/javascript">
 
 	$(document).ready(function(){
+		username = getCookie("funkyTrainUser");
+		$("#userid").html(username);
 	
 	$("#submit").click(function() {
 		query = $("form").serialize();
@@ -68,6 +74,14 @@ Name: <input id = "user" type="text" name="user" /><br />
 		$.ajax({url:"consent.php?" + query, type:'POST', async:false});
 
 		window.location = "index.html";
+	});
+
+	$("#donotsubmit").click(function() {
+		query = $("form").serialize();
+
+		//$.ajax({url:"consent.php?" + query, type:'POST', async:false});
+
+		window.location = "decline.html";
 	});
 
 	});
