@@ -66,8 +66,16 @@ Name: <input id = "name" type="text" name="name" /><br />
 
 	$(document).ready(function(){
 		username = getCookie("funkyTrainUser");
-		$("#userid").html(username);
-	
+		$("#userid").html(username)
+		 $('#submit').attr('disabled','disabled');
+
+
+     $('#name').keypress(function(){
+            if($(this).val() != ''){
+               $('#submit').removeAttr('disabled');
+            }
+     });
+
 	$("#submit").click(function() {
 		query = $("form").serialize();
 
