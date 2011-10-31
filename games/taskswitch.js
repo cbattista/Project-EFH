@@ -286,9 +286,6 @@ $(function(){
 		async: false}
 	);
 	
-	totalScore = 0;
-
-
 	//Get Level data. Find which level they start at today 
 	$.ajax({url: "getLevels.php?gid=2",
 		success : function(data) {
