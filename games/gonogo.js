@@ -257,7 +257,6 @@ $(function(){
 	subject = new Subject(sid, 1);	
 	//alert(sid);
 
-	totalScore = 1;
 	// Get the last high score
 	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1", 
 		success : function(data) { 
@@ -266,6 +265,8 @@ $(function(){
 		},
 		async: false}
 	);
+
+	totalScore = 0;
 
 	//Get the level the user should start at
 	$.ajax({url: "getLevels.php?gid=1",
