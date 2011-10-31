@@ -257,6 +257,7 @@ $(function(){
 	subject = new Subject(sid, 1);	
 	//alert(sid);
 
+	totalScore = 1;
 	// Get the last high score
 	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1", 
 		success : function(data) { 
