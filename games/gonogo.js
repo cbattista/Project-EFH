@@ -220,8 +220,12 @@ function key_handler(e){
 					
 					correct += 1;
 					pointsPos = boxPos - POINTS_OFFSET;
-					pointDir = 1;
+					pointDir = 1;	
 
+				}
+
+				else if(stim == "cp") {
+					decHealth("#city");	
 				}
 
 				setPoints(score);
