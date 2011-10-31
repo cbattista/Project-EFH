@@ -92,8 +92,9 @@ function nextTrial() {
 	if ( (health1 == 0) || (health2 == 0) ) {
 		
 		gameOver();
-		setHealth("#creature1", maxHealth);
-		setHealth("#creature2", maxHealth);
+
+		//Reset Health Bars. the dec and inc are used to reset the images. Quick, dirty fix, but it works.
+		setTimeout("setHealth(\"#creature1\", maxHealth);decHealth(\"#creature1\");incHealth(\"#creature1\");setHealth(\"#creature2\", maxHealth);decHealth(\"#creature2\");incHealth(\"#creature2\");",1000);
 	
 	}
 	//reset paddle
@@ -285,6 +286,9 @@ $(function(){
 		async: false}
 	);
 	
+	totalScore = 0;
+
+
 	//Get Level data. Find which level they start at today 
 	$.ajax({url: "getLevels.php?gid=2",
 		success : function(data) {

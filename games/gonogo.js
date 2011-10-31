@@ -68,8 +68,8 @@ function nextTrial(){
 
 		gameOver();
 
-		setHealth("#city",maxHealth);
-		incHealth("#city");
+		//Reset Health of the city. dec and inc seems to do the trick.Settimeout is so the health is resetted after the screen goes black. Looks more authentic.
+		setTimeout("setHealth(\"#city\",maxHealth);decHealth(\"#city\");incHealth(\"#city\");",1000);
 	
 	}
 	//Reset State variables
@@ -131,8 +131,7 @@ function setDifficulty(userScore){
 		success : function(data) { 
 			diffs = data.split(',');
 			difficulty.trials = parseInt(diffs[0]);
-			difficulty.dropSpeed += parseInt(diffs[1]);
-			difficulty.binocSpeed = difficulty.dropSpeed/3;
+			difficulty.binocSpeed = parseInt(diffs[1])/1.5;
 			difficulty.nogoes = parseInt(diffs[2]) / 100;
 
 		},
@@ -258,7 +257,6 @@ $(function(){
 	subject = new Subject(sid, 1);	
 	//alert(sid);
 
-	totalScore = 1;
 	// Get the last high score
 	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1", 
 		success : function(data) { 
@@ -360,7 +358,7 @@ $(function(){
 		}
 
 		if(dropIt == 1){
-			dropSpeed = difficulty.dropSpeed;
+			dropSpeed = 5;
 			
 			$("#mysteryBox").css("top", boxPos);
 
