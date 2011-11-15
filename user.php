@@ -55,7 +55,7 @@ if ($login == 1) {
 
 	}
 
-	echo sprintf("<p>Today is %s.  The time is %s.  You started training on %s.  This is day %s of training</p>", $today, $time, $start, $day);
+	echo sprintf("<span>Today is %s.<br/>The time is %s.<br/>You started training on %s.<br/>This is day %s of training.<br/></span>", $today, $time, $start, $day);
 
 	//Set cookie to track the day
 	setcookie("funkyTrainDay",$day, time() + 7200);
@@ -88,6 +88,8 @@ if ($login == 1) {
 	}
 
 	if ($phase != Null) {
+
+		echo "<p>Here are the games you need to play today:</p>";
 
 		$query = sprintf("SELECT %s FROM training WHERE tpid = %s", $phase, $tpid);
 
@@ -123,7 +125,7 @@ if ($login == 1) {
 		}
 	}
 	else {
-		echo "<p>You don't need to play any games today</p>";
+		echo "<p>You don't need to play any games today.</p>";
 	}
 
 }
