@@ -41,15 +41,24 @@ if ($login == 1) {
 		mysql_query($query);
 	} else {
 		// if we have already started we need to determine the day
-		date_default_timezone_set("America/Toronto");
+		//date_timezone_set("America/Toronto");
 		$start_day = strtotime($start);
-		$today = strtotime(sprintf("%s-%s-%s", $today['year'], $today['mon'], $today['mday']));
-		$day = round($today-$start_day)/60/60/24 + 1;
+		$today = sprintf("%s-%s-%s", $today['year'], $today['mon'], $today['mday']);
+		
+		//calculate day diffs
+		$s = strtotime($start);
+		$end = strtotime($today);
+
+		$day = ceil(abs($end - $s) / 86400);
+
+		$time = gmdate('G:i');
+
 	}
 
+	echo sprintf("<p>Today is %s.  The time is %s.  You started training on %s.  This is day %s of training</p>", $today, $time, $start, $day);
 
 	//Set cookie to track the day
-		setcookie("funkyTrainDay",$day, time() + 3600);
+	setcookie("funkyTrainDay",$day, time() + 7200);
 	
 	//so we know what day it is, let's determine whether we are in pre, training, or post phase
 	$query = sprintf("SELECT pre, post, training FROM training WHERE tpid = %s", $tpid);
