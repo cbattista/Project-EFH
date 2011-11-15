@@ -33,7 +33,7 @@ if ($username != "" && $pass != ""){
 		$output = 1;
 		
 		//set timezone and get time for update to users login information	
-		date_default_timezone_set("Canada/Eastern");
+		date_default_timezone_set("America/Toronto");
 		$d = getdate();
 
 		$query = sprintf("SELECT lastLogin, consented FROM users WHERE name = '%s'", $username);
@@ -55,8 +55,8 @@ if ($username != "" && $pass != ""){
 		}
 
 		//Set cookie to track user login using an hour-long session
-		setCookie("funkyTrainUser",$username, time() + 3600);
-		setCookie("funkyTrainID", $uid, time() + 3600);
+		setCookie("funkyTrainUser",$username, time() + 7200);
+		setCookie("funkyTrainID", $uid, time() + 7200);
 
 		//if this is their first login or they haven't consented...
 		if ($consented == NULL) {
