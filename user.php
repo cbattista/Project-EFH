@@ -49,7 +49,7 @@ if ($login == 1) {
 		$s = strtotime($start);
 		$end = strtotime($today);
 
-		$day = ceil(abs($end - $s) / 86400);
+		$day = ceil(abs($end - $s) / 86400) + 1;
 
 		$time = gmdate('G:i');
 
