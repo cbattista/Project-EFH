@@ -41,7 +41,7 @@ if ($login == 1) {
 		mysql_query($query);
 	} else {
 		// if we have already started we need to determine the day
-		//date_timezone_set("America/Toronto");
+		date_timezone_set("America/Toronto");
 		$start_day = strtotime($start);
 		$today = sprintf("%s-%s-%s", $today['year'], $today['mon'], $today['mday']);
 		
@@ -51,7 +51,7 @@ if ($login == 1) {
 
 		$day = ceil(abs($end - $s) / 86400) + 1;
 
-		$time = gmdate('G:i');
+		$time = date('G:i');
 
 	}
 
