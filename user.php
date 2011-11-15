@@ -41,7 +41,7 @@ if ($login == 1) {
 		mysql_query($query);
 	} else {
 		// if we have already started we need to determine the day
-		date_default_timezone_set("Canada/Eastern");
+		date_default_timezone_set("America/Toronto");
 		$start_day = strtotime($start);
 		$today = strtotime(sprintf("%s-%s-%s", $today['year'], $today['mon'], $today['mday']));
 		$day = round($today-$start_day)/60/60/24 + 1;
@@ -74,37 +74,47 @@ if ($login == 1) {
 	elseif (in_array($day, $training) == True) {
 		$phase = "trainingGames";
 	}
-
-	$query = sprintf("SELECT %s FROM training WHERE tpid = %s", $phase, $tpid);
-
-	$result = mysql_query($query);
-	while($row = mysql_fetch_assoc($result)){
-		$games = $row[$phase];
+	else {
+		$phase = Null;
 	}
 
-	$games = explode(",", $games);
+	if ($phase != Null) {
 
-	$output = "";
+		$query = sprintf("SELECT %s FROM training WHERE tpid = %s", $phase, $tpid);
 
-	foreach ($games as $game) {
-		$query = sprintf("SELECT day FROM completed WHERE gid=%s AND sid=%s", $game, $sid);
+
 		$result = mysql_query($query);
-		$completed = False;
-
-		while($row = mysql_fetch_assoc($result)) {
-			if ($day == $row['day']) {
-				$completed = True;
-			}
+		while($row = mysql_fetch_assoc($result)){
+			$games = $row[$phase];
 		}
 
-		if ($completed != True) {
-			$query = sprintf("SELECT name FROM games WHERE gid = %s", $game);
+		$games = explode(",", $games);
+
+		$output = "";
+
+		foreach ($games as $game) {
+			$query = sprintf("SELECT day FROM completed WHERE gid=%s AND sid=%s", $game, $sid);
 			$result = mysql_query($query);
+			$completed = False;
+
 			while($row = mysql_fetch_assoc($result)) {
-				$name = $row['name'];
-				$output .= sprintf("<a href=\"games/gamePage.html?gid=%s \">%s</a><br/>", $game, $name);
+				if ($day == $row['day']) {
+					$completed = True;
+				}
+			}
+
+			if ($completed != True) {
+				$query = sprintf("SELECT name FROM games WHERE gid = %s", $game);
+				$result = mysql_query($query);
+				while($row = mysql_fetch_assoc($result)) {
+					$name = $row['name'];
+					$output .= sprintf("<a href=\"games/gamePage.html?gid=%s \">%s</a><br/>", $game, $name);
+				}
 			}
 		}
+	}
+	else {
+		echo "<p>You don't need to play any games today</p>";
 	}
 
 }
