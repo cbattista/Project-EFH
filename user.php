@@ -2,6 +2,9 @@
 
 include "db.php";
 
+//date format
+$df = "M d, Y";
+
 if(isset($_COOKIE["funkyTrainUser"])){
 	$login = 1;
 	$username = $_COOKIE["funkyTrainUser"];
@@ -41,7 +44,7 @@ if ($login == 1) {
 		mysql_query($query);
 	} else {
 		// if we have already started we need to determine the day
-		date_timezone_set("America/Toronto");
+		//date_timezone_set("America/Toronto");
 		$start_day = strtotime($start);
 		$today = sprintf("%s-%s-%s", $today['year'], $today['mon'], $today['mday']);
 		
@@ -55,7 +58,7 @@ if ($login == 1) {
 
 	}
 
-	echo sprintf("<span>Today is %s.<br/>The time is %s.<br/>You started training on %s.<br/>This is day %s of training.<br/></span>", $today, $time, $start, $day);
+	echo sprintf("<span>Today is %s.<br/>The time is %s.<br/>You started training on %s.<br/>This is day %s of training.<br/></span>", date($df, $end), $time, date($df, $start_day), $day);
 
 	//Set cookie to track the day
 	setcookie("funkyTrainDay",$day, time() + 7200);
@@ -73,6 +76,23 @@ if ($login == 1) {
 
 	//need to chop the value of training into a list
 	$training = explode(',', $training);
+
+	$one_day = 86400;
+
+	$pre_day = $start_day + ($one_day * ($pre-1));
+	$post_day = $start_day + ($one_day * ($post-1));
+
+	$schedule = "<span><h4>Your training days:</h4>";
+	$schedule .= sprintf("%s<br/>", date($df, $pre_day));
+	foreach ($training as $tday) {
+		$the_day = $start_day + ($one_day * (intval($tday) - 1));
+
+		$schedule .= sprintf("%s<br/>", date($df, $the_day));
+	}
+
+	$schedule .= sprintf("%s<br/></span>", date($df, $post_day));
+
+	echo $schedule;
 
 	if ($day == $pre) {
 		$phase = "preGames";
