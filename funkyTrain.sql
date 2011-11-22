@@ -88,7 +88,13 @@ INSERT INTO `difficulty` (`game`, `level`, `trials`, `fac1`, `fac2`, `fac3`, `mi
 (1, 2, 48, 3, 25, 0, 300, 600),
 (1, 3, 48, 4, 25, 0, 600, 900),
 (1, 4, 48, 5, 25, 0, 900, 1200),
-(1, 5, 48, 6, 25, 0, 1200, 1500);
+(1, 5, 48, 6, 25, 0, 1200, 1500)
+(3, 1, 48, 1, 3, 6, 0, 250),
+(3, 2, 48, 2, 3, 6, 250, 500),
+(3, 3, 48, 3, 3, 6, 500, 750),
+(3, 4, 48, 4, 3, 6, 750, 1000),
+(3, 5, 48, 5, 3, 6, 1250, 1500),
+(3, 6, 48, 6, 3, 6, 1500, 1750);
 /*!40000 ALTER TABLE `difficulty` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +125,8 @@ LOCK TABLES `games` WRITE;
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
 INSERT INTO `games` (`gid`, `name`, `url`, `notes`, `levels`, `controls`, `filename`) VALUES
 (1, 'Satellite Defender', 'games/gonogo.html', '<p>\r\nIn this game you will defend your city from bombs being dropped by invaders.  You can use your city''s satellite defense system to blow up dropping objects, but be careful because some of the objects are actually care packages from your allies.  But, because the invaders are tricky and just plain evil, they''ve disguised their bombs as care packages as well.  The only way to tell the difference is to wait until the package drops into range of your x-ray binoculars so that you can see inside.  You need to destroy all the bombs and keep all the care packages, otherwise your health points will go down.  To increase health, you need to get a care package.</p>\r\n<p>\r\nPress ''b'' to fire your weapon. You can only blow the package up while it''s inside the binoculars before making your decision</p>\r\n<p>The more points you score, the faster the game will go!  You can only score points while you''re at full health.</p>\r\n\r\nYou get points for:<br/>\r\nBlowing up bombs before they reach your city<br/>\r\nAllowing care packages to reach your city<br/>\r\n<br/>\r\nYou lose health for:<br/>\r\nBlowing up care packages before they reach your city<br/>\r\nAllowing bombs to reach your city<br/>', 5, 'Press the spacebar or ''b'' to fire your weapon. Wait until the package is inside the binoculars before making your decision', 'gonogo'),
-(2, 'Alien Zookeeper', 'games/taskswitch.html', '<p>In this game you are a rookie zookeeper at the world''s first Alien Zoo.  You are caring for some Triangeloids and some Circlelidians.  Triangeloids and Circleidians are very fussy about what they eat.  Sometimes they only want to eat food that is the same shape as they are, and other times they only want to eat food that is the same colour as they are.  The cue at the top of their cage (the white letter) will tell you how to sort the food.  If the cue is a ''C'' then sort by colour, if the cue is a ''S'' then sort by shape.</p>\r\n\r\n<p>Press ''a'' to move the paddle left, ''k'' to move the paddle right</p>\r\n\r\n<p>The more points you score, the faster the game will go!  You can only score points while you''re at full health.</p>\r\n\r\nYou get points by:<br/>\r\nCorrectly sorting food<br/>\r\n<br/>\r\nYou lose health for:<br/>\r\nIncorrectly sorting food<br/>\r\nFailing to sort food at all<br/>', 5, 'Press ''a'' to move the paddle left, ''k'' to move the paddle right', 'taskswitch');
+(2, 'Alien Zookeeper 1', 'games/taskswitch.html', '<p>In this game you are a rookie zookeeper at the world''s first Alien Zoo.  You are caring for some Triangeloids and some Circlelidians.  Triangeloids and Circleidians are very fussy about what they eat.  Sometimes they only want to eat food that is the same shape as they are, and other times they only want to eat food that is the same colour as they are.  The cue at the top of their cage (the white letter) will tell you how to sort the food.  If the cue is a ''C'' then sort by colour, if the cue is a ''S'' then sort by shape.</p>\r\n\r\n<p>Press ''a'' to move the paddle left, ''k'' to move the paddle right</p>\r\n\r\n<p>The more points you score, the faster the game will go!  You can only score points while you''re at full health.</p>\r\n\r\nYou get points by:<br/>\r\nCorrectly sorting food<br/>\r\n<br/>\r\nYou lose health for:<br/>\r\nIncorrectly sorting food<br/>\r\nFailing to sort food at all<br/>', 5, 'Press ''a'' to move the paddle left, ''k'' to move the paddle right', 'taskswitch'),
+(3, 'Alien Zookeeper 2', 'games/taskswitch2.html', '<p>In this game you are a rookie zookeeper at the world''s first Alien Zoo.  You are caring for some Big Squareons and some Small Squareons.  Both Big and Small Squareons are very fussy about what they eat.  Sometimes they only want to eat food that is the same size as they are, and other times they only want to eat food that has the same texture as they do.  The cue at the top of their cage (the white letter) will tell you how to sort the food.  If the cue is a ''T'' then sort by texture, if the cue is an ''S'' then sort by size.</p>\r\n\r\n<p>Press ''a'' to move the paddle left, ''k'' to move the paddle right</p>\r\n\r\n<p>The more points you score, the faster the game will go!  You can only score points while you''re at full health.</p>\r\n\r\nYou get points by:<br/>\r\nCorrectly sorting food<br/>\r\n<br/>\r\nYou lose health for:<br/>\r\nIncorrectly sorting food<br/>\r\nFailing to sort food at all<br/>', 5, 'Press ''a'' to move the paddle left, ''k'' to move the paddle right', 'taskswitch2');
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,7 +235,9 @@ CREATE TABLE `training` (
 
 LOCK TABLES `training` WRITE;
 /*!40000 ALTER TABLE `training` DISABLE KEYS */;
-INSERT INTO `training` VALUES (4,'Task Switch Training',7,1,1,7,'1,2','1,2','2','2,3,4,5,6'),(5,'Go/Nogo Training',7,1,1,7,'1,2','1,2','1','2,3,4,5,6'),(6,'funkyPilot',42,1,1,42,'1,2','1,2','1','8,15,22,29,36');
+INSERT INTO `training` VALUES (4,'Task Switch Training',7,1,1,7,'1,2','1,2','2','2,3,4,5,6'),
+(5,'Go/Nogo Training',7,1,1,7,'1,2','1,2','1','2,3,4,5,6'),
+(6,'funkyPilot',21,1,1,21,'1,2','1,2','3','4,7,10,13,16,19');
 /*!40000 ALTER TABLE `training` ENABLE KEYS */;
 UNLOCK TABLES;
 
