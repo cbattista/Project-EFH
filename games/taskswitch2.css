@@ -1,0 +1,9 @@
+#points{
+	color: #FFCC00;
+	font-size: 20px; 
+}
+
+div.center{
+	min-width:700px;
+	min-height:450px;
+}
