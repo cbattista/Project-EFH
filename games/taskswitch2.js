@@ -196,14 +196,14 @@ function setCue(){
 	if (cue == "S"){
 		rule['b_stripe'] =  ['bs'];
 		rule['b_spot'] = ['bs'];
-		rule['l_stripe'] = ['ls'];
-		rule['l_spot'] = ['ls'];
+		rule['s_stripe'] = ['ls'];
+		rule['s_spot'] = ['ls'];
 	}
 	else {
 		rule['b_stripe'] =  ['bs'];
-		rule['l_stripe'] = ['bs'];
+		rule['s_stripe'] = ['bs'];
 		rule['b_spot'] = ['ls'];
-		rule['l_spot'] = ['ls'];
+		rule['s_spot'] = ['ls'];
 	}
 }
 
