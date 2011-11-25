@@ -77,20 +77,33 @@ if ($login == 1) {
 	//need to chop the value of training into a list
 	$training = explode(',', $training);
 
+	array_unshift($training, $pre);
+	$training[] = $post;
+
 	$one_day = 86400;
 
 	$pre_day = $start_day + ($one_day * ($pre-1));
 	$post_day = $start_day + ($one_day * ($post-1));
 
 	$schedule = "<span><h4>Your training days:</h4>";
-	$schedule .= sprintf("%s<br/>", date($df, $pre_day));
+	$schedule .= "<table><tr><th>day</th><th>date</th><th>games completed</th></tr>";
+
 	foreach ($training as $tday) {
 		$the_day = $start_day + ($one_day * (intval($tday) - 1));
 
-		$schedule .= sprintf("%s<br/>", date($df, $the_day));
+		$query = sprintf("SELECT name from games WHERE gid IN (SELECT gid FROM completed WHERE sid = %s AND day = %s);", $sid, $tday);
+		$result = mysql_query($query);
+		$games = "";
+		while($row = mysql_fetch_assoc($result)){
+			$games .= sprintf("%s,", $row['name']);
+		}
+		$games = trim($games, ',');
+	
+		$schedule.= sprintf("<tr><td>%s</td><td>%s</td><td></td></tr>", $tday, date($df, $the_day), $games);
 	}
 
-	$schedule .= sprintf("%s<br/></span>", date($df, $post_day));
+
+	$schedule .= "</table>";
 
 	if ($day == $pre) {
 		$phase = "preGames";
