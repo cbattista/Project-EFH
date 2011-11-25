@@ -11,7 +11,7 @@
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;dif
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
@@ -88,7 +88,7 @@ INSERT INTO `difficulty` (`game`, `level`, `trials`, `fac1`, `fac2`, `fac3`, `mi
 (1, 2, 48, 3, 25, 0, 300, 600),
 (1, 3, 48, 4, 25, 0, 600, 900),
 (1, 4, 48, 5, 25, 0, 900, 1200),
-(1, 5, 48, 6, 25, 0, 1200, 1500)
+(1, 5, 48, 6, 25, 0, 1200, 1500),
 (3, 1, 48, 1, 3, 6, 0, 250),
 (3, 2, 48, 2, 3, 6, 250, 500),
 (3, 3, 48, 3, 3, 6, 500, 750),
@@ -271,7 +271,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'test1','test1',0,'','0000-00-00 00:00:00','0000-00-00',NULL),(2,'test2','test2',0,'','0000-00-00 00:00:00','0000-00-00',NULL),(3,'ricky','ricky',4,'','0000-00-00 00:00:00','0000-00-00',NULL),(4,'katie','katie',4,'','0000-00-00 00:00:00','0000-00-00',NULL),(5,'xian','xian',5,'','0000-00-00 00:00:00','0000-00-00',NULL),(6,'bruce','bruce',5,'','0000-00-00 00:00:00','0000-00-00',NULL),(0,'admin','admin',5,'','0000-00-00 00:00:00','0000-00-00',NULL),(8,'keegan','keegan',5,'0','0000-00-00 00:00:00','0000-00-00',NULL),(9,'coffee','coffee',4,'0','0000-00-00 00:00:00','0000-00-00',NULL);
+INSERT INTO `users` VALUES (1,'test1','test1',6,'','0000-00-00 00:00:00','0000-00-00',NULL),(2,'test2','test2',6,'','0000-00-00 00:00:00','0000-00-00',NULL),(3,'ricky','ricky',6,'','0000-00-00 00:00:00','0000-00-00',NULL),(4,'katie','katie',6,'','0000-00-00 00:00:00','0000-00-00',NULL),(5,'xian','xian',6,'','0000-00-00 00:00:00','0000-00-00',NULL),(6,'bruce','bruce',6,'','0000-00-00 00:00:00','0000-00-00',NULL),(0,'admin','admin',6,'','0000-00-00 00:00:00','0000-00-00',NULL),(8,'keegan','keegan',6,'0','0000-00-00 00:00:00','0000-00-00',NULL),(9,'coffee','coffee',6,'0','0000-00-00 00:00:00','0000-00-00',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
