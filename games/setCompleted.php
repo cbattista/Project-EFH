@@ -9,7 +9,7 @@ $sid = $_GET['sid'];
 mysql_connect(localhost, $uname, $password);
 mysql_select_db($database);
 
-$query = sprintf("INSERT INTO completed VALUES (%s, %s, %s)", $sid, $gid, $day); 
+$query = sprintf("INSERT INTO completed (sid, gid, day) VALUES (%s, %s, %s)", $sid, $gid, $day); 
 
 $result = mysql_query($query);
 
