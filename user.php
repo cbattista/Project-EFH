@@ -58,7 +58,7 @@ if ($login == 1) {
 
 	}
 
-	echo sprintf("<span>Today is %s.<br/>The time is %s.<br/>You started training on %s.<br/>This is day %s of training.<br/></span>", date($df, $end), $time, date($df, $start_day), $day);
+	$datetime = sprintf("<span>Today is %s.<br/>The time is %s.<br/>You started training on %s.<br/>This is day %s of training.<br/></span>", date($df, $end), $time, date($df, $start_day), $day);
 
 	//Set cookie to track the day
 	setcookie("funkyTrainDay",$day, time() + 7200);
@@ -92,8 +92,6 @@ if ($login == 1) {
 
 	$schedule .= sprintf("%s<br/></span>", date($df, $post_day));
 
-	echo $schedule;
-
 	if ($day == $pre) {
 		$phase = "preGames";
 	}
@@ -121,8 +119,6 @@ if ($login == 1) {
 
 		$games = explode(",", $games);
 
-		$output = "";
-
 		foreach ($games as $game) {
 			$query = sprintf("SELECT day FROM completed WHERE gid=%s AND sid=%s", $game, $sid);
 			$result = mysql_query($query);
@@ -145,8 +141,13 @@ if ($login == 1) {
 		}
 	}
 	else {
-		echo "<p>You don't need to play any games today.</p>";
+		$output .= "<p>You don't need to play any games today.</p>";
 	}
+
+	$output .= "<br/>";
+	$output .= $datetime;
+	$output .= $schedule;
+
 
 }
 else {
