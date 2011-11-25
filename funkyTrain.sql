@@ -45,9 +45,12 @@ DROP TABLE IF EXISTS `completed`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `completed` (
+  `cid` int(11) NOT NULL AUTO_INCREMENT,
   `sid` int(11) DEFAULT NULL,
   `gid` int(11) DEFAULT NULL,
-  `day` int(1) DEFAULT NULL
+  `day` int(1) DEFAULT NULL,
+  `servertime` timestamp NOT NULL DEFAULT current_timestamp,
+	PRIMARY KEY (`cid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
