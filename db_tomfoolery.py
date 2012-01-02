@@ -36,7 +36,7 @@ class CheckCompleted:
 				sids.append(sid)
 
 		t = defs.table
-
+		FUCK
 		return t.get_def("list_table").render(data=sids, title="Participants who've completed the study")
 
 #print CheckCompleted.
