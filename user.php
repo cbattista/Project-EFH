@@ -85,21 +85,30 @@ if ($login == 1) {
 	$pre_day = $start_day + ($one_day * ($pre-1));
 	$post_day = $start_day + ($one_day * ($post-1));
 
-	$schedule = "<span><h4>Your training days:</h4>";
+	$schedule = "<span><h4>Your training calendar:</h4>";
 	$schedule .= "<table><tr><th>day</th><th>date</th><th>games completed</th></tr>";
 
 	foreach ($training as $tday) {
 		$the_day = $start_day + ($one_day * (intval($tday) - 1));
 
-		$query = sprintf("SELECT name from games WHERE gid IN (SELECT gid FROM completed WHERE sid = %s AND day = %s);", $sid, $tday);
+		$query = sprintf("SELECT name, gid from games WHERE gid IN (SELECT gid FROM completed WHERE sid = %s AND day = %s);", $sid, $tday);
+		//echo $query;
 		$result = mysql_query($query);
 		$games = "";
+		$gids = "";
 		while($row = mysql_fetch_assoc($result)){
-			$games .= sprintf("%s,", $row['name']);
+			$games .= sprintf("%s, ", $row['name']);
+			$gids .= sprintf("%s,", $row['gid']);
 		}
-		$games = trim($games, ',');
+		$games = trim($games, ', ');
+		$gids = trim($gids, ',');
+
+		//if () {
+
+		//}
 	
-		$schedule.= sprintf("<tr><td>%s</td><td>%s</td><td></td></tr>", $tday, date($df, $the_day), $games);
+		//echo $games;
+		$schedule.= sprintf("<tr><td>%s</td><td>%s</td><td>%s</td></tr>", $tday, date($df, $the_day), $games);
 	}
 
 
@@ -144,11 +153,12 @@ if ($login == 1) {
 			}
 
 			if ($completed != True) {
-				$query = sprintf("SELECT name FROM games WHERE gid = %s", $game);
+				$query = sprintf("SELECT url, name FROM games WHERE gid = %s", $game);
 				$result = mysql_query($query);
 				while($row = mysql_fetch_assoc($result)) {
 					$name = $row['name'];
-					$output .= sprintf("<a href=\"games/gamePage.html?gid=%s \">%s</a><br/>", $game, $name);
+					$url = $row['url'];
+					$output .= sprintf("<a href='%s'>%s</a><br/>", $url, $name);
 				}
 			}
 		}
