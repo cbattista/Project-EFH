@@ -36,9 +36,7 @@ function decHealth(target) {
 }
 
 function gameOver(){
-
 	pauseGame = 0;
-
 	trial = 0;
 
 	$("#pauseScreen").show();
@@ -49,8 +47,29 @@ function gameOver(){
 
 	//Send to the DB the user had a gameOver
 	//subject.inputData(level,"GameOver",1);
-
-
-
-
 }
+
+function toggle_vis(item){
+	vis = $(item).css('visibility');
+	if (vis == "hidden") {
+		$(item).css('visibility', 'visible');
+	}
+	else {
+		$(item).css('visibility', 'hidden');
+	}
+}
+
+$(function (){
+	$("#insButton").click(function(){
+		vis = $("#instructions").css('visibility');
+		if (vis == "hidden") {
+			$("#instructions").css('visibility', 'visible');
+			$("#insButton").html('Hide Instructions');
+		}
+		else {
+			$("#instructions").css('visibility', 'hidden');
+			$("#insButton").html('Show Instructions');
+		}
+	});
+});
+
