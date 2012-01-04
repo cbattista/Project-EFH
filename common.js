@@ -19,7 +19,6 @@ function setCookie(c_name,value,exdays)
 	exdate.setDate(exdate.getDate() + exdays);
 	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
 	c = c_name + "=" + c_value + "; path=/";
-	alert(c);
 	document.cookie=c;
 }
 
