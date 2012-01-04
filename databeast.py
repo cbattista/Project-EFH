@@ -33,6 +33,13 @@ class dataBeast:
 				line.append(item)
 
 			output.append(line)
+		
+		#we grab the output sing the rationale that if a list has length 1, it does not need to be a list
+		if len(output) == 1:
+			output = output[0]
+			if len(output) == 1:
+				output = output[0]
+
 		return output
 
 	def execute(self, sql, query={}):
