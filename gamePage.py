@@ -9,7 +9,7 @@ root = '/var/www/Project-EFH/'
 
 beast = databeast.dataBeast("funkyTrain", "games")
 
-scripts = ['jquery', 'gamePage.css', 'gamequery', 'Subject.js', 'methods/shuffler.js', 'gameFuncs.js', '../common.js', 'sprintf.js', 'makeCueList.js']
+scripts = ['jquery', 'gamequery', 'Subject.js', 'methods/shuffler.js', 'gameFuncs.js', '../common.js', 'sprintf.js', 'makeCueList.js', '../common.css', 'gamePage.css']
 
 for gid in beast.distinct('gid'):
 	#get some game info

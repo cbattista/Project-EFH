@@ -16,8 +16,8 @@ $( function(){
 	}); 
 
 	var sid = getCookie("funkyTrainID");
-	$.get("games/getHighScore.php?sid="+sid, function(data){
-		$("#userScores").html(data);
+	$.get("http://localhost:8080/", function(data){
+		$("#scores").html(data);
 	});
 
 	$.get("games/getHighScore.php", function(data){
