@@ -4,7 +4,6 @@
 from mako_defs import gp_template
 import databeast
 import os
-import js_funcs
 
 root = '/var/www/Project-EFH/'
 
