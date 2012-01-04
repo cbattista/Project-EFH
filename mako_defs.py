@@ -93,7 +93,6 @@ gp_template = Template("""
 				<br />
 				<center>
 		    		<button style="cursor: pointer;" id="startbutton">Play</button>
-					<button style ="cursor: pointer;" id = "instructions">Instructions</button>
 				</center>
     		</div>
 	</div>
@@ -104,7 +103,7 @@ gp_template = Template("""
 <div id = "header">
 	funkyTrain by CDL  ||<span id="u_head">
 	%if user:
-		${user}  |  <a href='logout.html'>Log out</a>
+		${user}  |  <a href='login.html'>Log out</a>
 	%else:
 		Guest  |  <a href='../login.html'>Log in</a>
 	%endif
@@ -114,8 +113,21 @@ gp_template = Template("""
 
 <%def name = "footer()">
 <div id = "footer">
-	<a href="http://www.cdnlwestern.ca/">Cognitive Development and Neuroimaging Laborotory, University of Western Ontario</a>
+	<a href="http://www.cdnlwestern.ca/">Cognitive Development and Neuroimaging Laboratory, University of Western Ontario</a>
 </div>
+</%def>
+
+<%def name="login_box()">
+<div id = "login">
+	<h3>Existing Users</h3>
+	<form action = "" >
+	Username: <input id = "user" type="text" name="user" /><br />
+	Password: <input type="password" name="password" /><br />	
+	</form>
+	<button id = "submit">Login</button>
+	<br/>	
+	<h3>New Users</h3>
+	Need an account? <a id="account_create" href=#>Click here to request one.</a>
 </%def>
 
 """)
