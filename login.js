@@ -4,7 +4,7 @@ $(document).ready(function(){
 		query = $("form").serialize();
 		$.get("login.php?"+query, function(data){
 		if (data == 1){
-			window.location = "index.html";		
+			window.location = "main.html";		
 			}
 		else if (data == 2){
 			window.location = "consent.html";
