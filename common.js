@@ -18,12 +18,23 @@ function setCookie(c_name,value,exdays)
 	var exdate=new Date();
 	exdate.setDate(exdate.getDate() + exdays);
 	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-	document.cookie=c_name + "=" + c_value;
+	c = c_name + "=" + c_value + "; path=/";
+	alert(c);
+	document.cookie=c;
+}
+
+function logout(){
+	setCookie('funkyTrainUser', 'null', -2);
+	setCookie('funkyTrainID', 'null', -2);
+	setCookie('funkyTrainDay', 'null', -2);
 }
 
 $(function () {
 	user = getCookie("funkyTrainUser");
 	if (user) {
-	$('#u_head').html(" " + user + "  | <a href='logout.html'>Log out</a>");
+	$('#u_head').html(" " + user + "  | <a id='logout' href='../login.html'>Log out</a>");
+		$("#logout").click( function () {
+			logout();		
+		});
 	}
 });
