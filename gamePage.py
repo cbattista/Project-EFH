@@ -1,8 +1,6 @@
 #gamePage.py
 
 #generation of static game content
-
-import cherrypy
 from mako_defs import gp_template
 import databeast
 import os
