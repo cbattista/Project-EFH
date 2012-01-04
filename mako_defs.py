@@ -25,6 +25,8 @@ gp_template = Template("""
 <%def name="head(title, scripts, othercrap=[])">
 	<head> 
 	<title>${title}</title>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Black+Ops+One">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Quantico">
 	%for script in scripts:
 		%if script.endswith(".css"):
 			<link href="${script}" rel="stylesheet" type="text/css">
