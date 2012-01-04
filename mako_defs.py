@@ -102,12 +102,13 @@ gp_template = Template("""
 
 <%def name = "header(user)">
 <div id = "header">
-	funkyTrain by CDL  ||   
+	funkyTrain by CDL  ||<span id="u_head">
 	%if user:
 		${user}  |  <a href='logout.html'>Log out</a>
 	%else:
-		Guest  |  <a href='index.html'>Log in</a>
+		Guest  |  <a href='../login.html'>Log in</a>
 	%endif
+	</span>
 </div>
 </%def>
 

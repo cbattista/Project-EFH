@@ -20,3 +20,10 @@ function setCookie(c_name,value,exdays)
 	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
 	document.cookie=c_name + "=" + c_value;
 }
+
+$(function () {
+	user = getCookie("funkyTrainUser");
+	if (user) {
+	$('#u_head').html(" " + user + "  | <a href='logout.html'>Log out</a>");
+	}
+});
