@@ -67,7 +67,7 @@ gp_template = Template("""
 	%endif
 
 	%if data:
-	${data}
+	<span id='${ID}_data'>${data}</span>
 	%endif
 	</div>
 </%def>
@@ -129,6 +129,7 @@ gp_template = Template("""
 	<h3>New Users</h3>
 	Need an account? <a id="account_create" href=#>Click here to request one.</a>
 </%def>
+
 
 """)
 
