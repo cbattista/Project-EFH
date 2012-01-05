@@ -8,4 +8,4 @@ Here's how to get this site running.
 
 3 - Turn on your cherrypy servers, by running high_scores.py and user.py - they'll provide the dynamic content to the static pages generated in 2
 
-That's pretty much it.
+That's pretty much it.  If you are curious regarding how to set up your nginx, check out the file nginx.conf for an example (note that this file to have an effect must be placed in your nginx directory). 
