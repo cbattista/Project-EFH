@@ -1,3 +1,7 @@
+args=("$@")
+
+$p = 
+
 CREATE FUNCTION funkyTrain.makeUser  ( @n varchar(22), @p varchar(22) )
 
 RETURNS INT(11)

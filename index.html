@@ -1,101 +1,48 @@
 <html>
-<head>
+	<head> 
+	<title>all aboard the funkyTrain</title>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Black+Ops+One">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Quantico">
+				<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+			<link href="css/common.css" rel="stylesheet" type="text/css">
+			<script src="js/common.js"></script>
+			<script src="js/login.js"></script>
+
+
+	</head>
+
+	<body>
+	<div id="content">
 	
-<script type = "text/javascript" src = "games/source_code/Jquery.js"></script>
-<link href="mainPages.css" rel="stylesheet" type="text/css" />
-<script type = "text/javascript" src = "common.js"></script>
-
-</head>
-
-
-
-<body>
-
-	<div class = "container">
-
-		<div class = "left">
-
-		</div>
-
-		<div class = "center">
-			<center>
-			<h1 id="welcome"></h1>
-			<div id = "games"></div>
-			<br/><br/>
-
-			<h3><u>Top Scores</u></h3>
-			<div id = "scoreTable"></div>
-
-			</center>
+<div id = "header">
+	funkyTrain by CDL  ||<span id="u_head">
+		Guest  |  <a href='index.html'>Log in</a>
+	</span>
+</div>
 
 
-		</div>
-		
-		<div class = "right">
-			<div id = "links">
-				<center><h3> Links </h3></center>
-				<a id ="logout" href = "login.html">Logout</a>
-			</div>
-		</div>
-	
+		<div>
+
+		<h2>funkyTrain</h2>
+
+	<span id='_data'><p>An investigation into the trainability of executive function being conducted by CDL-UWO</p></span>
+	</div>
+
+<div id = "login">
+	<h3>Existing Users</h3>
+	<form action = "" >
+	Username: <input id = "user" type="text" name="user" /><br />
+	Password: <input type="password" name="password" /><br />	
+	</form>
+	<button id = "submit">Login</button>
+	<br/>	
+	<h3>New Users</h3>
+	Need an account? <a id="account_create" href=#>Click here to request one.</a>
+
+<div id = "footer">
+	<a href="http://www.cdnlwestern.ca/">Cognitive Development and Neuroimaging Laboratory, University of Western Ontario</a>
+</div>
 
 	</div>
-<script type="text/javascript">
-	function getCookie(c_name)
-	{
-	var i,x,y,ARRcookies=document.cookie.split(";");
-	for (i=0;i<ARRcookies.length;i++)
-	{
-	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-	  x=x.replace(/^\s+|\s+$/g,"");
-	  if (x==c_name)
-		{
-		return unescape(y);
-		}
-	  }
-	}
-
-	$(document).ready(function(){
-			var username=getCookie("funkyTrainUser");
-			$("#welcome").html("Welcome, " + username);
-			
-			$.get("user.php", function(data){
-				if (data != "0") {
-					$("#games").html(data);
-									
-				}
-
-				
-				else {
-					window.location = "login.html";	
-				}
-
-			}); 
-
-			var sid = getCookie("funkyTrainID");
-			$.get("games/getHighScore.php?sid="+sid, function(data){
-				$("#userScores").html(data);
-			});
-
-			$.get("games/getHighScore.php", function(data){
-				$("#scoreTable").html(data);		
-			});
-
-		$("#logout").click(function() {
-			var exdate=new Date();
-			exdate.setDate(exdate.getDate() - 1);
-			document.cookie= "funkyTrainUser=" + "; expires="+exdate.toUTCString();
-			document.cookie= "funkyTrainID=" + "; expires="+exdate.toUTCString();
-			document.cookie= "funkyTrainDay=" + "; expires="+exdate.toUTCString();
-			window.location = "login.html";
-		});
-
-
-	});
-</script>
-
-
-</body>
-
+	</body>
 </html>

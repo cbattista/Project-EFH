@@ -74,16 +74,21 @@ gp_template = Template("""
 	</div>
 </%def>
 
-<%def name = "table(data)">
+<%def name = "table(title, data)">
+	<div class="table">
+	%if title:
+		<h3>${title}</h3>
+	%endif
 	<table>
-	<tr>
 	%for row in data:
+		<tr>
 		%for r in row:
-			<td>${item}</td>
+			<td>${r}</td>
 		%endfor
+		</tr>
 	%endfor
-	</tr>
 	</table>
+	</div>
 </%def>
 
 <%def name = "game_window()">
@@ -103,11 +108,11 @@ gp_template = Template("""
 
 <%def name = "header(user)">
 <div id = "header">
-	funkyTrain by CDL  ||<span id="u_head">
+	funkyTrain by CDNL  ||<span id="u_head">
 	%if user:
-		${user}  |  <a href='login.html'>Log out</a>
+		${user}  |  <a href='index.html'>Log out</a>
 	%else:
-		Guest  |  <a href='../login.html'>Log in</a>
+		Guest  |  <a href='index.html'>Log in</a>
 	%endif
 	</span>
 </div>

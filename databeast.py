@@ -23,37 +23,43 @@ class dataBeast:
 
 		return rows
 	
-	def select(self, field, query = {}):
+	def select(self, field, query = {}, sort= "", limit=None):
 		sql = "SELECT %s FROM %s" % (field, self.table)
+		result = self.execute(sql, query, sort, limit)
+		return result
+
+	def update(self, field, value, query={}):
+		sql = "UPDATE %s SET %s = %s" % (self.table, field, value)
 		result = self.execute(sql, query)
-		output = []
-		for row in result:
-			line = []
-			for item in row:
-				line.append(item)
+		return result
 
-			output.append(line)
-		
-		#we grab the output sing the rationale that if a list has length 1, it does not need to be a list
-		if len(output) == 1:
-			output = output[0]
-			if len(output) == 1:
-				output = output[0]
-
-		return output
-
-	def execute(self, sql, query={}):
+	def execute(self, sql, query={}, sort="", limit=None):
 		if query:
 			q = " WHERE " 
 			for k in query.keys():
-				q += "%s = %s AND" % (k, query[k])
+				if type(query[k]) == str:
+					q += "%s = '%s' AND" % (k, query[k])
+				else:
+					q += "%s = %s AND" % (k, str(query[k]))
 
 			q = q.rstrip(" AND")
 			sql += q
 
+		if sort:
+			sql += " ORDER BY %s" % sort
+
+		if limit:
+			sql += " LIMIT %s" % limit
+
 		sql += ";"
 
 		self.cursor.execute(sql)
-		row_set = self.cursor.fetchall()
-		return row_set
+		output = self.cursor.fetchall()
+
+		if len(output) == 1:
+			output = output[0]
+			if len(output) == 1:
+				output = output[0]
+		
+		return output
 

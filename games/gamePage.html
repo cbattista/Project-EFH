@@ -77,17 +77,6 @@
 			<p id = "instruct"></p>
 			<button style="cursor: pointer;" id = "backToGame">Back to the Game</button>
 			
-			<script type = "text/javascript">
-				$("#backToGame").click(function(){
-					$("#instructDiv").hide();
-					$("#playground").show();
-
-					if(pauseGame == 0){
-						$("#pauseScreen").show();
-					}
-					}
-				);
-			</script>
 		</div>
 		</center>
 	</div>
@@ -119,6 +108,17 @@
 	var url = location.href.split('=');
 	var gid = parseInt(url[1]);
 
+	$("#backToGame").click(function(){
+		$("#instructDiv").hide();
+		$("#playground").show();
+
+		if(pauseGame == 0){
+			$("#pauseScreen").show();
+		}
+		}
+	);
+
+
 	//Get game information
 	$.get("getGameInfo.php?gid="+gid,function(data){
 			var gameData = data.split('+');
@@ -143,7 +143,8 @@
 			);		
 
 			//Load constants page, adjust div's, and load game js
-			$.ajax({url: fileName+"_constants.js", async: false});
+			$.ajax({url: fileName+"_constants.js", async: false, dataType : "script"});
+			$.ajax({url:fileName+".js", async: false, dataType : "script"});
 
 			$("#game").width(PLAYGROUND_WIDTH);
 			$("#welcomeScreen").height(PLAYGROUND_HEIGHT);
@@ -151,8 +152,6 @@
 			//I hate to do two screens but its easier this way
 			$("#pauseScreen").width(PLAYGROUND_WIDTH);
 			$("#pauseScreen").height(PLAYGROUND_HEIGHT);
-
-			$.ajax({url:fileName+".js", async: false});
 
 			//Adjust padding of playground to center it
 			var divWidth = $(".center").css("width");

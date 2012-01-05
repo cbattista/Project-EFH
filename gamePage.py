@@ -9,7 +9,7 @@ root = '/var/www/Project-EFH/'
 
 beast = databeast.dataBeast("funkyTrain", "games")
 
-scripts = ['jquery', 'gamequery', 'Subject.js', 'methods/shuffler.js', 'gameFuncs.js', '../common.js', 'sprintf.js', 'makeCueList.js', '../common.css', 'gamePage.css']
+scripts = ['jquery', 'gamequery', 'js/Subject.js', 'js/shuffler.js', 'js/gameFuncs.js', 'js/common.js', 'js/sprintf.js', 'js/makeCueList.js', 'css/common.css', 'css/gamePage.css']
 
 for gid in beast.distinct('gid'):
 	#get some game info
@@ -18,7 +18,7 @@ for gid in beast.distinct('gid'):
 	instructions = beast.select("notes", {'gid':gid})
 
 	#build the header
-	extrascripts = ['%s.css' % filename, '%s_constants.js' % filename, '%s.js' % filename]
+	extrascripts = ['games/%s.css' % filename, 'games/%s_constants.js' % filename, 'games/%s.js' % filename]
 	arg = scripts + extrascripts 
 	output = gp_template.get_def("head").render(title=game, scripts=arg)
 

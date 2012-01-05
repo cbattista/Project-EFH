@@ -10,17 +10,12 @@ $( function(){
 
 		
 		else {
-			window.location = "login.html";	
+			//window.location = "index.html";	
 		}
 
 	}); 
 
-	var sid = getCookie("funkyTrainID");
-	$.get("http://localhost:8080/", function(data){
-		$("#scores").html(data);
-	});
-
-	$.get("games/getHighScore.php", function(data){
-		$("#scoreTable").html(data);		
+	$.get("localhost:8080/scores", function(data){
+		$("#scores").html(data);		
 	});
 });

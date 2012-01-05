@@ -10,7 +10,7 @@ root = '/var/www/Project-EFH/'
 beast = databeast.dataBeast("funkyTrain", "training")
 
 #build the <head>
-scripts = ['jquery', '../common.css', '../common.js', 'login.js']
+scripts = ['jquery', 'css/common.css', 'js/common.js', 'js/login.js']
 output = gp_template.get_def("head").render(title='all aboard the funkyTrain', scripts=scripts)
 
 #header div
@@ -27,7 +27,7 @@ footer = gp_template.get_def("footer").render()
 #add it to the <body>
 output += gp_template.get_def("body").render(data=header + about + loginBox + footer)
 	
-f = open(os.path.join(root, "windex.html"), "w")
+f = open(os.path.join(root, "index.html"), "w")
 f.write("<html>")
 f.write(output)
 f.write("</html>")
