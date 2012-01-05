@@ -1,0 +1,11 @@
+FUNKYTRAIN - README
+
+Here's how to get this site running.
+
+1 - Configure your nginx such that requests to /scores and /user are routed to :8080 and :8282 (which are the cherrypy pages high_scores.py and user.py)
+
+2 - Generate your static pages from the db by running makeStatic.py.  This will create the html pages that make up the static portions of the site.
+
+3 - Turn on your cherrypy servers, by running high_scores.py and user.py - they'll provide the dynamic content to the static pages generated in 2
+
+That's pretty much it.
