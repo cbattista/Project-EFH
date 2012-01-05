@@ -1,0 +1,48 @@
+div#content{
+	margin:0px auto;
+	width:1000px;
+	background:rgb(10, 10, 10);
+}
+
+div#left{
+	padding:6px;
+	float:left;
+	width:300;
+	border-right:solid 3;
+	background:rgb(50, 50, 50);
+	color:white;
+}
+
+div#instructions{
+	visibility:hidden;
+	background:rgb(20, 20, 20);
+	margin:2px;
+	padding:3px;
+}
+
+div#playground{
+	margin-top:20px;
+	margin-left:20px;
+	border: solid 1 rgb(100, 100, 100);
+}
+
+div#game{
+	float:left;
+	border-right: solid 1px rgb(20, 20, 20);
+}
+
+div#pauseScreen{
+	position:absolute;
+	opacity: 0;
+	background-color:black;
+}
+
+div#gameOver{
+	padding-top:50px;	
+}
+
+#gameOverText{
+	color: red;
+
+}
+
