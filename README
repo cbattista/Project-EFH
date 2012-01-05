@@ -4,8 +4,12 @@ Here's how to get this site running.
 
 1 - Configure your nginx such that requests to /scores and /user are routed to :8080 and :8282 (which are the cherrypy pages high_scores.py and user.py)
 
-2 - Generate your static pages from the db by running makeStatic.py.  This will create the html pages that make up the static portions of the site.
+2 - Adjust the settings for your sql stuff (username, database, etc) in dataBeast.py - default is root@localhost, no pw, db funkyTrain
 
-3 - Turn on your cherrypy servers, by running high_scores.py and user.py - they'll provide the dynamic content to the static pages generated in 2
+3 - Generate your static pages from the db by running makeStatic.py.  This will create the html pages that make up the static portions of the site.
+
+4 - Turn on your cherrypy servers, by running high_scores.py and user.py - they'll provide the dynamic content to the static pages generated in 3.  
 
 That's pretty much it.  If you are curious regarding how to set up your nginx, check out the file nginx.conf for an example (note that this file to have an effect must be placed in your nginx directory). 
+
+This system is by no means production ready!   Use at your own risk!
