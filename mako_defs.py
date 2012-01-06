@@ -103,6 +103,8 @@ gp_template = Template("""
 				</center>
     		</div>
 	</div>
+	<br/>
+	<div id = "console"></div>
 </div>
 </%def>
 

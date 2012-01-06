@@ -1,6 +1,6 @@
 <?php
 
-include "../db.php";
+include "db.php";
 
 
 $game = $_GET['game'];

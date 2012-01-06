@@ -54,7 +54,7 @@ function nextLevel() {
 
 		else {
 
-			("#console").html("Game Error - Cue list generation error!");
+			$("#console").html("Game Error - Cue list generation error!");
 			
 		}
 
@@ -160,6 +160,7 @@ function nextTrial() {
 }
 //Function which sends the user's score to the DB, and gathers the difficulty variables for the next trial 
 function setDifficulty(score){
+	//alert(score);
 	gString = "getDifficulty.php?score=" + score + "&game=2";
 
 	$.ajax({url: gString, 
