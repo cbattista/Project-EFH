@@ -39,6 +39,7 @@ class UserApp:
 			if not start:
 				beast.update("start", "'%s'" % today, {'name':username})
 				trainingDay = 1
+				start = now
 			#otherwise figure out which day of training we are on
 			else:
 				trainingDay = (now - start).days + 1
