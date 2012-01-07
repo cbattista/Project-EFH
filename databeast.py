@@ -3,7 +3,7 @@ import MySQLdb
 #so obvious it needs to comments
 
 class dataBeast:
-	def __init__(self, db, table, host="localhost", user="cbattist_funkyT", password = "3x3cut1v3"):
+	def __init__(self, db, table, host="localhost", user="cbattist_funkyT", password = "n4tur3nurtur3"):
 		if password:
 			self.conn = MySQLdb.connect(host=host, user=user, passwd = password, db=db)
 		else:
@@ -31,7 +31,7 @@ class dataBeast:
 
 	def distinct(self, field, query = {}):
 		sql = "SELECT DISTINCT %s FROM %s" % (field, self.table)
-		result = self.execute(sql)
+		result = self.execute(sql, query)
 
 		rows = []
 
@@ -55,9 +55,9 @@ class dataBeast:
 			q = " WHERE " 
 			for k in query.keys():
 				if type(query[k]) == str:
-					q += "%s = '%s' AND" % (k, query[k])
+					q += "%s = '%s' AND " % (k, query[k])
 				else:
-					q += "%s = %s AND" % (k, str(query[k]))
+					q += "%s = %s AND " % (k, str(query[k]))
 
 			q = q.rstrip(" AND")
 			sql += q
@@ -70,6 +70,7 @@ class dataBeast:
 
 		sql += ";"
 
+		print sql
 		self.cursor.execute(sql)
 		output = self.cursor.fetchall()
 
