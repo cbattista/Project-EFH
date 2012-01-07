@@ -1,24 +1,5 @@
 from mako.template import Template
 
-#this is the page that db_tomfoolery uses, gettin' axed eventually
-table_page = Template("""
-<%def name="list_table(data, title)">
-<html>
-	<body>
-	${title}
-	<table>
-	<tr>
-	% for item in data:
-		<td>${item}</td>
-	%endfor
-	</tr>
-	</table>
-	</body>
-</html>
-</%def>
-""")
-
-
 gp_template = Template("""
 
 <%! import constants%>
