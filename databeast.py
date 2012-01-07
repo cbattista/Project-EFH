@@ -1,9 +1,10 @@
 import MySQLdb
+import dbinfo
 
 #so obvious it needs to comments
 
 class dataBeast:
-	def __init__(self, db, table, host="localhost", user="cbattist_funkyT", password = "n4tur3nurtur3"):
+	def __init__(self, db, table, host="localhost", user=dbinfo.name, password = dbinfo.password):
 		if password:
 			self.conn = MySQLdb.connect(host=host, user=user, passwd = password, db=db)
 		else:

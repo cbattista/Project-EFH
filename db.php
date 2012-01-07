@@ -1,5 +1,5 @@
 <?php
 $uname = "cbattist_funkyT";
-$password = "3x3cut1v3";
+$password = "n4tur3nurtur3";
 $database = "funkyTrain"; 
 ?>

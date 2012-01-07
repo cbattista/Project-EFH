@@ -31,7 +31,7 @@ function logout(){
 $(function () {
 	user = getCookie("funkyTrainUser");
 	if (user) {
-	$('#u_head').html(" " + user + "  | <a id='logout' href='http://www.funkytrainstudy.com/Project-EFH/index.html'>Log out</a>");
+	$('#u_head').html(" " + user + "  | <a id='logout' href='http://97.107.137.132/Project-EFH/index.html'>Log out</a>");
 		$("#logout").click( function () {
 			logout();		
 		});
