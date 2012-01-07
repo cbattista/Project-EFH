@@ -37,7 +37,7 @@ class UserApp:
 			#username = "'nikki'"
 			start = beast.select("start", {'name':username})
 			tpid = beast.select("currentTraining", {'name':username})
-
+			sid = beast.select("uid", {'name':username})
 			#if it's the first day the user logged in, kick the training off
 			if not start:
 				beast.update("start", "'%s'" % today, {'name':username})
@@ -80,9 +80,13 @@ class UserApp:
 			if phase:
 				games = beast.select("%sGames" % phase, {'tpid':tpid})
 				games = games.split(',')
+				beast.setTable("completed")
+				completed = beast.distinct("gid", {'day':trainingDay, 'sid':sid})
+				completed = map(lambda x: int(x), completed)
 				for game in games:
-					url, name = beast.execute("SELECT url, name FROM games", {"gid":game}) 
-					output += "<a href='%s'>%s</a><br/>" % (url, name)
+					if int(game) not in completed:
+						url, name = beast.execute("SELECT url, name FROM games", {"gid":game}) 
+						output += "<a href='%s'>%s</a><br/>" % (url, name)
 
 			output += gp_template.get_def("table").render(title="Your training schedule", data=schedule)
 
