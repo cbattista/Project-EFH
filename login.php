@@ -55,8 +55,8 @@ if ($username != "" && $pass != ""){
 		}
 
 		//Set cookie to track user login using an hour-long session
-		setCookie("funkyTrainUser",$username, time() + 7200);
-		setCookie("funkyTrainID", $uid, time() + 7200);
+		setCookie("funkyTrainUser",$username, time() + 7200, "/");
+		setCookie("funkyTrainID", $uid, time() + 7200, "/");
 
 		//if this is their first login or they haven't consented...
 		if ($consented == NULL) {

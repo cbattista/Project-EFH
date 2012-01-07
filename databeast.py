@@ -3,7 +3,7 @@ import MySQLdb
 #so obvious it needs to comments
 
 class dataBeast:
-	def __init__(self, db, table, host="localhost", user="root", password = ""):
+	def __init__(self, db, table, host="localhost", user="cbattist_funkyT", password = "3x3cut1v3"):
 		if password:
 			self.conn = MySQLdb.connect(host=host, user=user, passwd = password, db=db)
 		else:

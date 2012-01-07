@@ -24,4 +24,7 @@ class ScoresApp:
 		return tables
 
 #print CheckCompleted.
+cherrypy.config.update({'server.socket_host':'97.107.137.132'})
+cherrypy.config.update({'server.socket_port':8281,})
 cherrypy.quickstart(ScoresApp())
+

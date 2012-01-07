@@ -51,10 +51,10 @@ function nextLevel(){
 		subject.sendLevelData();
 
 		//Now to write to the DB
-		$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=1&day=" + day, async: false});
+		$.ajax({url: "../setCompleted.php?sid=" + sid + "&gid=1&day=" + day, async: false});
 	
 		alert('You are done Playing this game for today. Press OK to return to the game menu');
-		window.location = "../index.html";
+		window.location = "../main.html";
 	}
 }
 
@@ -127,7 +127,7 @@ function nextTrial(){
 }
 function setDifficulty(userScore){
 	
-	$.ajax({url: "getDifficulty.php?score="+userScore+"&game=1", 
+	$.ajax({url: "../getDifficulty.php?score="+userScore+"&game=1", 
 		success : function(data) { 
 			diffs = data.split(',');
 			difficulty.trials = parseInt(diffs[0]);
@@ -262,7 +262,7 @@ $(function(){
 	//alert(sid);
 
 	// Get the last high score
-	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=1", 
+	$.ajax({url: "../getHighScore.php?sid=" + sid + "&gid=1", 
 		success : function(data) { 
 			totalScore = parseInt(data);
 			//alert(score);
@@ -273,7 +273,7 @@ $(function(){
 	totalScore = 0;
 
 	//Get the level the user should start at
-	$.ajax({url: "getLevels.php?gid=1",
+	$.ajax({url: "../getLevels.php?gid=1",
 		success : function(data) {
 			levels = parseInt(data);
 			//alert(levels);

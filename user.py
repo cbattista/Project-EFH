@@ -16,8 +16,11 @@ class UserApp:
 
 		cookie = cherrypy.request.cookie
 		
+		output = "test"
+		output += str(cookie)
+
 		for name in cookie.keys():
-			print name
+			output+=name
 
 		#output = cherrypy.response.cookie["funkyTrainUser"].value
 		if cookie.has_key('funkyTrainUser'):
@@ -84,11 +87,12 @@ class UserApp:
 			output += gp_template.get_def("table").render(title="Your training schedule", data=schedule)
 
 		else:
-			output = ":("
+			output += ":("
 
 		return output
 
 #print CheckCompleted.
+cherrypy.config.update({'server.socket_host': '97.107.137.132'})
 cherrypy.config.update({'server.socket_port':8282,})
 cherrypy.quickstart(UserApp())
 

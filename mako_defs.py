@@ -112,9 +112,9 @@ gp_template = Template("""
 <div id = "header">
 	funkyTrain by CDNL  ||<span id="u_head">
 	%if user:
-		${user}  |  <a href='index.html'>Log out</a>
+		${user}  |  <a href="${constants.siteURLs['main']}">Your page</a>  ||   <a href="${constants.siteURLs['login']}">Log out</a>
 	%else:
-		Guest  |  <a href='index.html'>Log in</a>
+		Guest  |  <a href="${constants.siteURLs['login']}">Log in</a>
 	%endif
 	</span>
 </div>

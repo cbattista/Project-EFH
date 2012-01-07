@@ -75,10 +75,10 @@ function nextLevel() {
 
 		//Now we need to write to the db, indicating that the level has been completed
 
-		$.ajax({url: "setCompleted.php?sid=" + sid + "&gid=2&day=" + day, async: false});
+		$.ajax({url: "../setCompleted.php?sid=" + sid + "&gid=2&day=" + day, async: false});
 		
 		alert('You are done playing this game for today.  Press OK to return to the game menu');
-		window.location = "../index.html";//Send user back to his/her homepage
+		window.location = "../main.html";//Send user back to his/her homepage
 	}
 	
 }
@@ -161,7 +161,7 @@ function nextTrial() {
 //Function which sends the user's score to the DB, and gathers the difficulty variables for the next trial 
 function setDifficulty(score){
 	//alert(score);
-	gString = "getDifficulty.php?score=" + score + "&game=2";
+	gString = "../getDifficulty.php?score=" + score + "&game=2";
 
 	$.ajax({url: gString, 
 			success : function(data) { 
@@ -280,7 +280,7 @@ $(function(){
 	subject = new Subject(sid, 2);
 
 	// Get the last high score
-	$.ajax({url: "getHighScore.php?sid=" + sid + "&gid=2", 
+	$.ajax({url: "../getHighScore.php?sid=" + sid + "&gid=2", 
 		success : function(data) { 
 			totalScore = parseInt(data);
 		},
@@ -290,7 +290,7 @@ $(function(){
 	totalScore = 0;
 
 	//Get Level data. Find which level they start at today 
-	$.ajax({url: "getLevels.php?gid=2",
+	$.ajax({url: "../getLevels.php?gid=2",
 		success : function(data) {
 			levels = parseInt(data);
 		},
