@@ -4,6 +4,17 @@ body,html{
 	color:white;
 }
 
+a.abutton{
+	margin: 5;
+	padding: 5;
+	font-size: x-large;
+	font-family:Black Ops One;
+	background: rgb(200, 200, 200);
+	color: rgb(50, 30, 30);
+	text-decoration: none;
+	border: outset 2px rgb(110, 50, 50);
+}
+
 .table{
 	float:left;
 	width: 200px;
