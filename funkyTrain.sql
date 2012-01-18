@@ -206,7 +206,8 @@ CREATE TABLE `results` (
   `game` int(11) NOT NULL,
   `trial` int(11) NOT NULL,
   `value` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
-  `score` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL
+  `score` varchar(20) COLLATE utf8_unicodeci DEFAULT NULL,
+  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
