@@ -150,6 +150,9 @@ function nextTrial() {
 
 	if (trial < difficulty.trials) { 
 		stim = stimList[trial];
+		subject.inputData(trial, "speed", difficulty.hSpeed);
+		subject.inputData(trial, "level", level);
+		subject.inputData(trial, "day", day);
 		subject.inputData(trial, "stim", stim);
 		subject.inputData(trial, "stimFile", stimFile[stim]);
 	}

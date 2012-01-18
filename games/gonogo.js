@@ -116,6 +116,9 @@ function nextTrial(){
 	if (trial < difficulty.trials) {
 		//Send trial info to server
 		subject.inputData(trial, "stim", stim);
+		subject.inputData(trial, "speed", difficulty.binocSpeed);
+		subject.inputData(trial, "level", level);
+		subject.inputData(trial, "day", day);
 		subject.sendData();
 	}
 	else {
