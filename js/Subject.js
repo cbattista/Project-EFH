@@ -4,7 +4,7 @@ function Subject(sid, game) {
 	this.leveldata = "";
 	this.sid = sid;
 	this.game = game;
-	this.homebase = "inputData.php";
+	this.homebase = "../inputResults.php";
 	this.trainingDay = 0;	
 
 	this.inputData = function(trial, value, score){
@@ -17,7 +17,7 @@ function Subject(sid, game) {
 		//send the client side data store to the home base and clear the client store (if successful)
 		senddata = {"table": "results", "uid": this.sid, "data": this.data};
 		//alert(this.sid);
-		this.post(senddata);	
+		this.post(senddata, this.homebase);	
 		this.data = "";
 	}
 	
@@ -28,14 +28,14 @@ function Subject(sid, game) {
 	
 	this.sendLevelData = function() {
 		senddata = {"table": "level", "uid": this.sid, "data": this.leveldata};
-		this.post(senddata);
+		this.post(senddata, "../inputData.php");
 	}
 
 	
-	this.post = function(senddata) {
+	this.post = function(senddata, destination) {
 		$.ajax({
 		  type: 'POST',
-		  url: this.homebase,
+		  url: destination,
 		  data: senddata,
 		  success: function(data) { 
 				//alert(data);
