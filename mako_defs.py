@@ -59,7 +59,7 @@ gp_template = Template("""
 <div id = "stats">
 	<h3>Stats</h3>
 	<table>
-	<tr><td>Score :</td><td id="total_score"></td></tr>
+	<tr><td>Score :</td><td id="totalScore"></td></tr>
 	<tr><td>Trial :</td><td id="trial"></td></tr>
 	<tr><td>Level :</td><td id="level"></td></tr>
 	<tr><td>Speed :</td><td id="speed"></td></tr>

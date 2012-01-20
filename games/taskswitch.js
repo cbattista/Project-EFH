@@ -14,6 +14,7 @@ function nextLevel() {
 		trial = 0;
 
 		level += 1;
+		$("#level").html(level + "/" + levels);
 
 		cueList = [];
 		animalList1 = [];
@@ -176,6 +177,9 @@ function setDifficulty(score){
 			},
 			async: false}
 	);
+	
+
+	$("#speed").html(difficulty.hSpeed);
 	
 	scoreMult = revealLeft / foodHSpeed * REFRESH_RATE;
 

@@ -15,7 +15,7 @@ function nextLevel(){
 		trial = 0;
 
 		level += 1;
-
+		$("#level").html(level + "/" + levels);
 		//Reset score variables
 		correct = 0;
 		buttonPress = 0;
@@ -140,6 +140,8 @@ function setDifficulty(userScore){
 		},
 		async: false}
 	);
+
+	$("#speed").html(difficulty.binocSpeed.toFixed(2));
 
 }
 

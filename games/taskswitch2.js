@@ -10,10 +10,11 @@ function nextLevel() {
 		
 		//Set difficulty for next level using scores from completed level
 		setDifficulty(totalScore);
+		level +=1;
+		$('#level').html(level + "/" + levels);
 
 		trial = 0;
 
-		level += 1;
 
 		cueList = [];
 		animalList1 = [];
@@ -175,7 +176,7 @@ function setDifficulty(score){
 			},
 			async: false}
 	);
-	
+	$('#speed').html(difficulty.hSpeed);	
 	scoreMult = revealLeft / foodHSpeed * REFRESH_RATE;
 
 }
