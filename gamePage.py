@@ -34,8 +34,12 @@ for gid in beast.distinct('gid'):
 	#links="<a href='../index.html'>Your Home Page</a><br/>"
 	#info_content.append(['', links])
 
+	info_content.append(['', gp_template.get_def("game_stats").render()])
+	
+
 	#instructions button
 	info_content.append(['', "<br/><button id='insButton' type='button'>Show instructions</button>"])
+
 
 	#instructions
 	info_content.append(['Instructions', instructions])

@@ -55,6 +55,18 @@ gp_template = Template("""
 	</div>
 </%def>
 
+<%def name = "game_stats()">
+<div id = "stats">
+	<h3>Stats</h3>
+	<table>
+	<tr><td>Score :</td><td id="total_score"></td></tr>
+	<tr><td>Trial :</td><td id="trial"></td></tr>
+	<tr><td>Level :</td><td id="level"></td></tr>
+	<tr><td>Speed :</td><td id="speed"></td></tr>
+	</table>
+</div>
+</%def>
+
 <%def name = "table(title, data)">
 	<div class="table">
 	%if title:
