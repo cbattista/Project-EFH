@@ -71,7 +71,6 @@ class dataBeast:
 
 		sql += ";"
 
-		print sql
 		self.cursor.execute(sql)
 		output = self.cursor.fetchall()
 
