@@ -1,6 +1,7 @@
 from databeast import *
 import cherrypy
 from mako_defs import gp_template
+import dbinfo
 
 class ScoresApp:
 	"""
@@ -23,8 +24,10 @@ class ScoresApp:
 		
 		return tables
 
+print dbinfo.host
+
 #print CheckCompleted.
-cherrypy.config.update({'server.socket_host':'97.107.137.132'})
+cherrypy.config.update({'server.socket_host': dbinfo.host})
 cherrypy.config.update({'server.socket_port':8281,})
 cherrypy.quickstart(ScoresApp())
 
