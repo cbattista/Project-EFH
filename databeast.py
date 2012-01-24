@@ -15,29 +15,20 @@ class dataBeast:
 	def setTable(self, table):
 		self.table = table
 
-	def execute(self, sql, query={}):
-		if query:
-			q = " WHERE " 
-			for k in query.keys():
-				q += "%s = %s AND" % (k, query[k])
-
-			q = q.rstrip(" AND")
-			sql += q
-
-		sql += ";"
-
-		self.cursor.execute(sql)
-		row_set = self.cursor.fetchall()
-		return row_set
-
 	def distinct(self, field, query = {}):
 		sql = "SELECT DISTINCT %s FROM %s" % (field, self.table)
-		rows = self.execute(sql, query)
+		result = self.execute(sql, query)
+
+		rows = []
+
+		for row in result:
+			rows.append(row[0])
 
 		return rows
 	
 	def select(self, field, query = {}, sort= "", limit=None):
 		sql = "SELECT %s FROM %s" % (field, self.table)
+		print sql
 		result = self.execute(sql, query, sort, limit)
 		return result
 
@@ -47,6 +38,7 @@ class dataBeast:
 		return result
 
 	def execute(self, sql, query={}, sort="", limit=None):
+	
 		if query:
 			q = " WHERE " 
 			for k in query.keys():
@@ -65,6 +57,8 @@ class dataBeast:
 			sql += " LIMIT %s" % limit
 
 		sql += ";"
+
+		print sql
 
 		self.cursor.execute(sql)
 		output = self.cursor.fetchall()
