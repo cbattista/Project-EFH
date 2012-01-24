@@ -32,12 +32,7 @@ class dataBeast:
 
 	def distinct(self, field, query = {}):
 		sql = "SELECT DISTINCT %s FROM %s" % (field, self.table)
-		result = self.execute(sql, query)
-
-		rows = []
-
-		for row in result:
-			rows.append(row[0])
+		rows = self.execute(sql, query)
 
 		return rows
 	

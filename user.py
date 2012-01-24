@@ -83,6 +83,8 @@ class UserApp:
 				games = games.split(',')
 				beast.setTable("completed")
 				completed = beast.distinct("gid", {'day':trainingDay, 'sid':sid})
+				if type(completed) != list:
+					completed = [completed]
 				completed = map(lambda x: int(x), completed)
 				for game in games:
 					if int(game) not in completed:
