@@ -20,9 +20,11 @@ class dataBeast:
 		result = self.execute(sql, query)
 
 		rows = []
-
-		for row in result:
-			rows.append(row[0])
+		try:
+			for row in result:
+				rows.append(row[0])
+		except:
+			rows = result
 
 		return rows
 	
