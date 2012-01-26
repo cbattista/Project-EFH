@@ -1,20 +1,29 @@
-function nextLevel(){
-
-	//At the end of the each level send level data to server
-	if( (level > 0) && (level < levels) ){
-		subject.inputLevelData(day, totalScore, level);
-		subject.sendLevelData();
-		alert('Level Complete! Press OK to play the next one.');	
+function nextLevel(outcome){
+	if (outcome == 0) {
+		msg = 'Game Over!  Click OK to try again';
+	}
+	else {
+		msg = 'Success!  Click OK to play the next level';
 	}
 	
 	//At the beginning of a new level, reset game variables
 	if( level < levels ){
+		if (level > 0) {
+			subject.inputLevelData(day, totalScore, level);
+			subject.sendLevelData();
+			alert(msg);
+		}	
 		//Set difficulty for next level using scores from completed level
 		setDifficulty(totalScore);
 
 		trial = 0;
 
-		level += 1;
+		if (outcome != 0) {
+			level += 1;
+		}
+		else {
+			trial -= 1;
+		}
 		$("#level").html(level + "/" + levels);
 		//Reset score variables
 		correct = 0;
@@ -66,7 +75,7 @@ function nextTrial(){
 
 	if(cityHealth == 0){
 
-		gameOver();
+		nextLevel(0);
 
 		//Reset Health of the city. dec and inc seems to do the trick.Settimeout is so the health is resetted after the screen goes black. Looks more authentic.
 		setTimeout("setHealth(\"#city\",maxHealth);decHealth(\"#city\");incHealth(\"#city\");",1000);
@@ -87,8 +96,6 @@ function nextTrial(){
 
 	$("#score").html(score);
 
-	trial = trial + 1;
-	$("#trial").html(trial+"/" + difficulty.trials);
 	stim = stimList[trial];//Stim will either be a bomb or carepackage
 	delay = delays[trial];//delay before package drops
 	impactDelay = difficulty.impactDelay;//reset impact delay
@@ -114,12 +121,18 @@ function nextTrial(){
 	$("#mysteryBox").css("top",initTop);
 
 	if (trial < difficulty.trials) {
+		//display trial number
+		tdisp = trial + 1
+		$("#trial").html(tdisp+"/"+difficulty.trials);
+
 		//Send trial info to server
 		subject.inputData(trial, "stim", stim);
 		subject.inputData(trial, "speed", difficulty.binocSpeed);
 		subject.inputData(trial, "level", level);
 		subject.inputData(trial, "day", day);
 		subject.sendData();
+		trial = trial + 1;
+
 	}
 	else {
 		//alert('Level Complete');

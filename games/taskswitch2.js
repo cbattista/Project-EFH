@@ -1,46 +1,50 @@
-function nextLevel() {
-	if ((level > 0) && (level < levels)) {
-		subject.inputLevelData(day,totalScore,level);
-		subject.sendLevelData();
-		alert('Level Complete!  Press OK to play the next one.');
-
+function nextLevel(outcome) {
+	if (outcome == 0) {
+		msg = 'Game Over!  Click OK to try again';
 	}
-
+	else {
+		msg = 'Success!  Click OK to play the next level';
+	}
+ 
 	if (level < levels) {
-		
+		if (level > 0) {
+			subject.inputLevelData(day, totalScore, level);
+			subject.sendLevelData();
+			alert(msg);
+		}	
 		//Set difficulty for next level using scores from completed level
 		setDifficulty(totalScore);
-		level +=1;
-		$('#level').html(level + "/" + levels);
 
 		trial = 0;
 
+		if (outcome != 0) {
+			level += 1;
+		}
+		else {
+			trial -= 1; //something weird going on here, not sure why trial is being incremented
+		}
+		$("#level").html(level + "/" + levels);
 
 		cueList = [];
 		animalList1 = [];
 		animalList2 = [];
 		stimList = [];	
 		delays = [];	
-
-		//Setting of game variables - eventually should be retrieved from the database
-		
+	
 		for (i=0;i<difficulty.trials/4;i++) {
 			stimList = stimList.concat([0, 1, 2, 3]);
 			delays = delays.concat([20, 40, 60, 80]);
 		}
 	
 		stimList.sort(randOrd);
-		
+
+
 		for (i=0;i<difficulty.trials;i++){
 			animalList1 = animalList1.concat([0]);
 			animalList2 = animalList2.concat([1]);
 		}
 		
-		//--------------------------------------------------------
-		//--          The Epic Construction of...               --
-		//--                THE CUE LIST                        --
-		//--------------------------------------------------------
-
+		//construct cue list
 		var numberOfCues = 2;
 
 		if ( (difficulty.trials/numberOfCues)%1 == 1%1){ //Check if the numberOfCues evenly divides the number of trials
@@ -55,13 +59,9 @@ function nextLevel() {
 
 		else {
 
-			("#console").html("Game Error - Cue list generation error!");
+			$("#console").html("Game Error - Cue list generation error!");
 			
 		}
-
-		//Set animations to show by default. Why this is required is a mystery...
-		$("#points").show();
-		$("#food").show();
 
 		setHealth("#creature1", maxHealth);
 		setHealth("#creature2", maxHealth);
@@ -85,17 +85,16 @@ function nextLevel() {
 }
 
 function nextTrial() {
-
 	//Check gameOver status
 	var health1 = $("#creature1").data("health");
 	var health2 = $("#creature2").data("health");
 
+	$("#creature1").setAnimation(creature1["idle"]);
+	$("#creature2").setAnimation(creature2["idle"]);
+
 	if ( (health1 == 0) || (health2 == 0) ) {
 		
-		gameOver();
-
-		//Reset Health Bars. the dec and inc are used to reset the images. Quick, dirty fix, but it works.
-		setTimeout("setHealth(\"#creature1\", maxHealth);decHealth(\"#creature1\");incHealth(\"#creature1\");setHealth(\"#creature2\", maxHealth);decHealth(\"#creature2\");incHealth(\"#creature2\");",1000);
+		nextLevel(0);
 	
 	}
 	//reset paddle
@@ -123,42 +122,35 @@ function nextTrial() {
 	totalACC = 0;
 	totalRT = 0;
 
-	//Increment trial number each time this function is called
-	trial = trial + 1;
-	$("#trial").html(trial+"/"+difficulty.trials);
+	//display trial number
+	tdisp = trial + 1
+	$("#trial").html(tdisp+"/"+difficulty.trials);
 	
 	stim = stimList[trial];
 	food = stimFile[stim];
-	delay = delays[trial];
-
-	
-	creature1 = makeCreature(animalFile[animalList1[trial]]);
-   	creature2 = makeCreature(animalFile[animalList2[trial]]);
-	
-	c1 = animalFile[animalList1[trial]];
-	c2 = animalFile[animalList2[trial]];
-
-	$("#creature1").setAnimation(creature1["idle"]);
-	$("#creature2").setAnimation(creature2["idle"]);
+	delay = delays[trial];	
 
 	$("#food").setAnimation(new $.gameQuery.Animation({imageURL: "images/Animal_Feeder/pipebulge.png"}));
 
 	$("#food").css("left", initLeft);
 	$("#food").css("top", initTop);
-	$("#food").toggle();
 
 	$("#points").hide();
 
 	if (trial < difficulty.trials) { 
-		stim = stimList[trial];
+		//display trial number
+		tdisp = trial + 1
+		$("#trial").html(tdisp+"/"+difficulty.trials);
+
 		subject.inputData(trial, "speed", difficulty.hSpeed);
 		subject.inputData(trial, "level", level);
 		subject.inputData(trial, "day", day);
 		subject.inputData(trial, "stim", stim);
 		subject.inputData(trial, "stimFile", stimFile[stim]);
+		trial += 1;
 	}
 	else {
-		nextLevel();
+		nextLevel(1);
 	}
 
 }
@@ -276,6 +268,13 @@ function makeCreature(id){
 // --                      the main declaration:                     --
 // --------------------------------------------------------------------
 $(function(){
+	//draw the creatures
+	creature1 = makeCreature("ls");
+   	creature2 = makeCreature("bs");
+	
+	c1 = "ls";
+	c2 = "bs";
+
 
 	//get the subject ID
 	
@@ -413,7 +412,6 @@ $(function(){
 	//Phase 2: Enough Delay! Now the food moves through the pipe
 	if (delay == 0) {
 		foodHSpeed = pipeSpeed;
-		$("#food").toggle();
 	}
 
 		// Get position info of the food objects and add x and y component to change position	
@@ -436,7 +434,7 @@ $(function(){
 		t1 = t.getTime();
 		
 		//When the food comes out the pipe, set its animation (could be done before)
-		myURL = "images/Animal_Feeder/" + stimFile[stimList[trial]] + ".png";
+		myURL = "images/Animal_Feeder/" + stimFile[stim] + ".png";
 		theFood = new $.gameQuery.Animation({imageURL: myURL});
 		$("#food").setAnimation(theFood)
 
