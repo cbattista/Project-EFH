@@ -260,6 +260,7 @@ CREATE TABLE `users` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(44) COLLATE utf8_unicode_ci NOT NULL,
   `currentTraining` int(11) NOT NULL,
   `pastTraining` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `lastLogin` datetime NOT NULL,
