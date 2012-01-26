@@ -67,6 +67,18 @@ gp_template = Template("""
 </div>
 </%def>
 
+<%def name= "account_create()">
+<div id = "accountCreate">
+	<h3>Create Account</h3>
+	<form method='POST' action='submit'>
+	Name: <input type="text" name="name" /><br />
+	Password: <input type="text" name="pw" /><br />
+	Email : <input type="text" name="email" /><br />
+	<input type='submit' value='Create' />
+	</form>
+</div>
+</%def>
+
 <%def name = "table(title, data)">
 	<div class="table">
 	%if title:
@@ -87,6 +99,7 @@ gp_template = Template("""
 <%def name = "game_window()">
 <div id = "game">
 	<div id="playground" style = "background-color:black;">
+
     		<div id="welcomeScreen" style= "position: absolute; z-index: 100;">
 				<div id="loadingBar" style="position: relative; left: 100px; height: 15px; width: 0px; background: red;">
 				</div>
@@ -95,6 +108,20 @@ gp_template = Template("""
 		    		<button style="cursor: pointer;" id="startbutton">Play</button>
 				</center>
     		</div>
+
+			<div id = "pauseScreen">
+				<div>
+					<button style = "cursor:pointer;" id = "resumeButton">Resume Play </button>
+					<button style = "cursor:pointer;" id = "instructButton">Instructions </button>
+				</div>
+				
+				<div id = "gameOver">
+					<h1 id = "gameOverText"> GAME OVER </h1>
+				</div>	
+
+			</div>
+
+
 	</div>
 	<br/>
 	<div id = "console"></div>
