@@ -79,6 +79,16 @@ gp_template = Template("""
 </div>
 </%def>
 
+<%def name="account_reset()">
+<div id="accountReset">
+<h3>Reset Account</h3>
+<form method='POST' action='reset'>
+Name: <input type="text" name="name" /><br />
+<input type='submit' value='Reset' />
+</form>
+</div>
+</%def>
+
 <%def name = "table(title, data)">
 	<div class="table">
 	%if title:

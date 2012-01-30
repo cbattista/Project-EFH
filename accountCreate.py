@@ -16,7 +16,9 @@ class userAdmin:
 	@cherrypy.expose 
 	def index(self):
 		self.beast = databeast.dataBeast("funkyTrain", "users")
-		return gp_template.get_def("account_create").render()
+		create = gp_template.get_def("account_create").render()
+		reset = gp_template.get_def("account_reset").render()
+		return create + reset
 
 	@cherrypy.expose
 	def submit(self, name, pw, email):
@@ -40,7 +42,17 @@ class userAdmin:
 		else:
 			return "Sorry, %s has already been taken, please pick again." % (name)
 
-
+	@cherrypy.expose
+	def reset(self, name):
+		beast = self.beast
+		name = str(name)
+		uid = beast.select("uid", {'name':name})
+		if uid:
+			beast.execute("""UPDATE users SET start = NULL WHERE uid = %s""" % uid)
+			beast.execute("""DELETE FROM completed WHERE sid = %s""" % uid)
+			return "Account reset, uid = %s" % (uid)
+		else:
+			return "Sorry, couldn't find an user called %s" % name
 
 #createAccount(name, pw)
 
