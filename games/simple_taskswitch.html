@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<title>Taskswitch</title>
+
+		<script src="Taskswitch_Game.js"
+			type="text/javascript"></script>
+
+		<script src="Sprites.js" 
+			type="text/javascript"></script>
+
+		<script src="Taskswitch_Trials.js"
+			type="text/javascript"></script>
+
+		<script src="jquery.js"
+			type="text/javascript"></script>
+
+		<script src="Make_TS_Lists.js"
+			type="text/javascript"></script>
+
+		<script src="Usefull_Functions.js"
+			type="text/javascript"></script>
+		<script src="Subject.js"
+			type="text/javascript"></script>
+	</head>
+
+	<body>
+		<center>
+			<canvas id="canvas" width="500" height="500">
+			Sorry your browser does not support canvas
+			</canvas>
+		</center>
+
+		<script type="text/javascript">
+
+		_Canvas = document.getElementById('canvas');
+		_CanvasContext = _Canvas.getContext('2d');
+		_CanvasBuffer = document.createElement('canvas');
+		_CanvasBuffer.width = _Canvas.width;
+		_CanvasBuffer.height = _Canvas.height;
+		_CanvasBufferContext = _CanvasBuffer.getContext('2d');
+		
+		taskswitch = new Taskswitch_Game();
+		taskswitch.Run();
+		
+		</script>
+	</body>
+</html>
+
