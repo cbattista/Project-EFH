@@ -23,8 +23,10 @@ function Taskswitch_Game() {
 							   	Difficulty.responseDelay,
 								Difficulty.numberOfTrials);
 	}
+
+	sid = getCookie("funkyTrainID");
 	
-	this.Subject = new Subject(666,'taskswitch');
+	this.Subject = new Subject(sid,4);
 
 	this.Run = function() {
 		Initialize() 
