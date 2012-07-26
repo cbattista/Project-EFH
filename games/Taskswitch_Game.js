@@ -56,7 +56,7 @@ function Difficulty(levelNumber) {
 	this.responseDelay = 2000;
 	this.cueBlockMin = 3;
 	this.cueBlockMax = 6;
-	this.numberOfTrials = 40;
+	this.numberOfTrials = 48;
 }
 
 //Generate Difficulty Variables for the Level

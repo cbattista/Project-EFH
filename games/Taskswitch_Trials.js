@@ -27,6 +27,13 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		    };
 
+		taskswitch.Subject.inputData(tn, 'cue', o['cue'].imageShape);
+		taskswitch.Subject.inputData(tn, 'stim', o['stim'].imageShape);
+		taskswitch.Subject.inputData(tn, 'sprite0', o['sprite0'].imageShape);
+		taskswitch.Subject.inputData(tn, 'sprite1', o['sprite1'].imageShape);
+
+
+
 		return o;
 	}
 
@@ -93,6 +100,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 			$(document).off('keydown');
 			self.Update();
 		},responseDelay);
+
 	 }
 
 	this.KeyCheck = function(event) {
@@ -113,7 +121,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 		}
 
 		//Analysis
-		reactonTime = timeStamp2 - timeStamp1;
+		reactionTime = timeStamp2 - timeStamp1;
 		taskswitch.Subject.inputData(trialNumber,'RT',reactionTime);
 		taskswitch.Subject.inputData(trialNumber,'key',KeyId);
 
@@ -139,6 +147,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Otherwise, start the next trial
 		else {
+			taskswitch.Subject.sendData();
 			trialArray = GenerateTrialArray(trialNumber);
 			userInput = undefined;
 			this.Run();

@@ -16,7 +16,7 @@ function Subject(sid, game) {
 	this.sendData = function()  {
 		//send the client side data store to the home base and clear the client store (if successful)
 		senddata = {"table": "results", "uid": this.sid, "data": this.data};
-		//alert(this.sid);
+		//alert(this.data);
 		this.post(senddata, this.homebase);	
 		this.data = "";
 	}
