@@ -10,6 +10,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 	//Tracker Variables
 	var reactionTime,
 		correct,
+		timeStamp0,
 		timeStamp1,
 		timeStamp2;
 	
@@ -67,7 +68,8 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 		trialArray['stim'].Draw(_CanvasBufferContext);
 		trialArray['sprite0'].Draw(_CanvasBufferContext);
 		trialArray['sprite1'].Draw(_CanvasBufferContext);
-
+		timeStamp0 = getTime();
+		taskswitch.Subject.inputData(trialNumber,'StageOne',timeStamp0);
 		var self = this;
 
 		setTimeout(function() {
@@ -84,7 +86,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 		//Wait for his key press and Timestamp it
 		$(document).on('keydown', this.KeyCheck );
 		timeStamp1 = getTime();
-
+		taskswitch.Subject.inputData(trialNumber,'StageTwo',timeStamp1);
 		var self = this;
 
 		setTimeout(function() {
@@ -102,7 +104,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 			case 65: //A
 				userInput = 'sprite0';
 				break; 
-			case 68: //D
+			case 75: //K
 				userInput = 'sprite1';
 				break;
 			default: 
@@ -112,18 +114,16 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Analysis
 		reactonTime = timeStamp2 - timeStamp1;
-		//taskswitch.Subject.inputData(trialNumber,'RT',reactionTime);
-		//taskswitch.Subject.inputData(trialNumber,'key',KeyId);
+		taskswitch.Subject.inputData(trialNumber,'RT',reactionTime);
+		taskswitch.Subject.inputData(trialNumber,'key',KeyId);
 
 		//If input is correct
 		if ( CheckInput(userInput) === CheckInput('stim') ) {
-			alert('correct');
-			//taskswitch.Subject.inputData(trialNumber, 'outcome', 'correct');
+			taskswitch.Subject.inputData(trialNumber, 'ACC', 1);
 		}
 
 		else {
-			alert('incorrect');
-			//taskswitch.Subject.inputData(trialNumber,'outcome','incorrect');
+			taskswitch.Subject.inputData(trialNumber,'ACC',0);
 		}
 	}
 
