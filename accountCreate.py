@@ -18,7 +18,8 @@ class userAdmin:
 		self.beast = databeast.dataBeast("funkyTrain", "users")
 		create = gp_template.get_def("account_create").render()
 		reset = gp_template.get_def("account_reset").render()
-		return create + reset
+		adjust = gp_template.get_def("account_adjust").render()
+		return create + reset + adjust
 
 	@cherrypy.expose
 	def submit(self, name, pw, email):
@@ -52,10 +53,22 @@ class userAdmin:
 			beast.execute("""DELETE FROM completed WHERE sid = %s""" % uid)
 			return "Account reset, uid = %s" % (uid)
 		else:
-			return "Sorry, couldn't find an user called %s" % name
+			return "Sorry, couldn't find a user called %s" % name
+	@cherrypy.expose
+	def adjust(self, name, start):
+		beast = self.beast
+		name = str(name)
+		start = str(start)
+		uid = beast.select("uid", {'name':name})
+		if uid:
+			beast.execute("""UPDATE users SET start = '%s' WHERE uid = %s """ % (start, uid))
+			return "Changed start date of %s to %s" % (name, start)
+		else:
+			return "Sorry, couldn't find a user called %s" % name 
+
 
 #createAccount(name, pw)
 
 cherrypy.config.update({'server.socket_host': dbinfo.host})
-cherrypy.config.update({'server.socket_port':8484,})
+cherrypy.config.update({'server.socket_port':8585,})
 cherrypy.quickstart(userAdmin())

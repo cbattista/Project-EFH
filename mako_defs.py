@@ -89,6 +89,17 @@ Name: <input type="text" name="name" /><br />
 </div>
 </%def>
 
+<%def name="account_adjust()">
+<div id="accountAdjust">
+<h3>Adjust Training</h3>
+<form method='POST' action='adjust'>
+Name: <input type="text" name="name"/><br/>
+New Start: <input type="text" name="start"/><br/>
+<input type='submit' value='Adjust' />
+</form>
+</div>
+</%def>
+
 <%def name = "table(title, data)">
 	<div class="table">
 	%if title:
