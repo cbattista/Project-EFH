@@ -70,17 +70,19 @@ function Taskswitch_Trials(spriteArray, cdelay, numOfTrials) {
 		_CanvasContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
 		//_CanvasBufferContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
 
+		setTimeout(function () {
 		trialArray['cue'].Draw(_CanvasContext);
 		trialArray['sprite0'].Draw(_CanvasContext);
 		trialArray['sprite1'].Draw(_CanvasContext);
-
+		},100);
+	
 		//Draw sprites for stage two onto buffer
-				timeStamp0 = getTime();
+		timeStamp0 = getTime();
 		taskswitch.Subject.inputData(trialNumber,'StageOne',timeStamp0);
 
 		setTimeout(function() {
 			self.StageTwo();
-		},cueDelay);
+		},cueDelay+100);
 
 	}
 
@@ -90,6 +92,7 @@ function Taskswitch_Trials(spriteArray, cdelay, numOfTrials) {
 
 		_CanvasContext.clearRect(cue.posx, cue.posy, cue.width, cue.height);
 		trialArray['stim'].Draw(_CanvasContext);
+
 		//_CanvasContext.drawImage(_CanvasBuffer, 0, 0);
 
 		//Wait for his key press and Timestamp it
