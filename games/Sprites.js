@@ -103,32 +103,32 @@ function DrawableElement() {
 //Create Drawable Objects that i will use
 function Cue() {
 	this.imageKey = 'cue';
-	this.posx = _Canvas.width*.50;
-	this.posy = _Canvas.height*.25;	
+	this.posx = positionOnCanvas(_Canvas.width, this.width, .5); 
+	this.posy = positionOnCanvas(_Canvas.height, this.height, .25);
 }
 
 function Stim() {
 	this.height=100;
 	this.width=100;
 	this.imageKey = 'stim';
-	this.posx = _Canvas.width*.50;
-    this.posy = _Canvas.height*.25;
+	this.posx = positionOnCanvas(_Canvas.width, this.width, .5); 
+    this.posy = positionOnCanvas(_Canvas.height, this.height, .25); 
 }
 
 function SpriteOne() {
 	this.height = 100;
 	this.width = 100;
 	this.imageKey = 'sprite';
-	this.posx = _Canvas.width*.25;
-    this.posy = _Canvas.height*.75;
+	this.posx = positionOnCanvas(_Canvas.width, this.width, .25); 
+    this.posy = positionOnCanvas(_Canvas.height, this.height, .75); 
 }
 
 function SpriteTwo() {
 	this.height = 100;
 	this.width = 100;
 	this.imageKey = 'sprite';
-	this.posx = _Canvas.width*.75;
-    this.posy = _Canvas.height*.75;
+	this.posx = positionOnCanvas(_Canvas.width, this.width, .75); 
+    this.posy = positionOnCanvas(_Canvas.height, this.height, .75); 
 }
 
 Cue.prototype = new DrawableElement();
