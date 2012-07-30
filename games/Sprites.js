@@ -108,18 +108,24 @@ function Cue() {
 }
 
 function Stim() {
+	this.height=100;
+	this.width=100;
 	this.imageKey = 'stim';
 	this.posx = _Canvas.width*.50;
     this.posy = _Canvas.height*.25;
 }
 
 function SpriteOne() {
+	this.height = 100;
+	this.width = 100;
 	this.imageKey = 'sprite';
 	this.posx = _Canvas.width*.25;
     this.posy = _Canvas.height*.75;
 }
 
 function SpriteTwo() {
+	this.height = 100;
+	this.width = 100;
 	this.imageKey = 'sprite';
 	this.posx = _Canvas.width*.75;
     this.posy = _Canvas.height*.75;
