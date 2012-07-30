@@ -27,10 +27,10 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		    };
 
-		taskswitch.Subject.inputData(tn, 'cue', o['cue'].imageShape);
-		taskswitch.Subject.inputData(tn, 'stim', o['stim'].imageShape);
-		taskswitch.Subject.inputData(tn, 'sprite0', o['sprite0'].imageShape);
-		taskswitch.Subject.inputData(tn, 'sprite1', o['sprite1'].imageShape);
+		//taskswitch.Subject.inputData(tn, 'cue', o['cue'].imageShape);
+		//taskswitch.Subject.inputData(tn, 'stim', o['stim'].imageShape);
+		//taskswitch.Subject.inputData(tn, 'sprite0', o['sprite0'].imageShape);
+		//taskswitch.Subject.inputData(tn, 'sprite1', o['sprite1'].imageShape);
 
 
 
@@ -67,16 +67,15 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Clear canvas and buffer and draw the cue onto main canvas
 		_CanvasContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-		_CanvasBufferContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
+		//_CanvasBufferContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
 
 		trialArray['cue'].Draw(_CanvasContext);
-		
+		trialArray['sprite0'].Draw(_CanvasContext);
+		trialArray['sprite1'].Draw(_CanvasContext);
+
 		//Draw sprites for stage two onto buffer
-		trialArray['stim'].Draw(_CanvasBufferContext);
-		trialArray['sprite0'].Draw(_CanvasBufferContext);
-		trialArray['sprite1'].Draw(_CanvasBufferContext);
-		timeStamp0 = getTime();
-		taskswitch.Subject.inputData(trialNumber,'StageOne',timeStamp0);
+				timeStamp0 = getTime();
+		//taskswitch.Subject.inputData(trialNumber,'StageOne',timeStamp0);
 		var self = this;
 
 		setTimeout(function() {
@@ -87,13 +86,16 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 	 this.StageTwo = function() {
 		
-		_CanvasContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-		_CanvasContext.drawImage(_CanvasBuffer, 0, 0);
+		 var cue = trialArray['cue'];
+
+		_CanvasContext.clearRect(cue.posx, cue.posy, cue.width, cue.height);
+		trialArray['stim'].Draw(_CanvasContext);
+		//_CanvasContext.drawImage(_CanvasBuffer, 0, 0);
 
 		//Wait for his key press and Timestamp it
 		$(document).on('keydown', this.KeyCheck );
 		timeStamp1 = getTime();
-		taskswitch.Subject.inputData(trialNumber,'StageTwo',timeStamp1);
+		//taskswitch.Subject.inputData(trialNumber,'StageTwo',timeStamp1);
 		var self = this;
 
 		setTimeout(function() {
@@ -122,16 +124,18 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Analysis
 		reactionTime = timeStamp2 - timeStamp1;
-		taskswitch.Subject.inputData(trialNumber,'RT',reactionTime);
-		taskswitch.Subject.inputData(trialNumber,'key',KeyId);
+		//taskswitch.Subject.inputData(trialNumber,'RT',reactionTime);
+		//taskswitch.Subject.inputData(trialNumber,'key',KeyId);
 
 		//If input is correct
 		if ( CheckInput(userInput) === CheckInput('stim') ) {
-			taskswitch.Subject.inputData(trialNumber, 'ACC', 1);
+			//taskswitch.Subject.inputData(trialNumber, 'ACC', 1);
+			alert("correct");
 		}
 
 		else {
-			taskswitch.Subject.inputData(trialNumber,'ACC',0);
+			//taskswitch.Subject.inputData(trialNumber,'ACC',0);
+			alert("incorrect");
 		}
 	}
 
@@ -147,7 +151,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Otherwise, start the next trial
 		else {
-			taskswitch.Subject.sendData();
+			//taskswitch.Subject.sendData();
 			trialArray = GenerateTrialArray(trialNumber);
 			userInput = undefined;
 			this.Run();
