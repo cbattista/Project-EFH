@@ -1,10 +1,11 @@
 /* Constructor for a taskswitch trial. Holds the logic of the game.*/
-function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
+function Taskswitch_Trials(spriteArray, cdelay, numOfTrials) {
+
+	var self = this;
 
 	//Trial Variables
 	var trialNumber = 0,
 		cueDelay = cdelay,
-		responseDelay = rdelay,	
 		numberOfTrials = numOfTrials;
 	
 	//Tracker Variables
@@ -67,17 +68,15 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Clear canvas and buffer and draw the cue onto main canvas
 		_CanvasContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-		_CanvasBufferContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
+		//_CanvasBufferContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
 
 		trialArray['cue'].Draw(_CanvasContext);
-		
+		trialArray['sprite0'].Draw(_CanvasContext);
+		trialArray['sprite1'].Draw(_CanvasContext);
+
 		//Draw sprites for stage two onto buffer
-		trialArray['stim'].Draw(_CanvasBufferContext);
-		trialArray['sprite0'].Draw(_CanvasBufferContext);
-		trialArray['sprite1'].Draw(_CanvasBufferContext);
-		timeStamp0 = getTime();
+				timeStamp0 = getTime();
 		taskswitch.Subject.inputData(trialNumber,'StageOne',timeStamp0);
-		var self = this;
 
 		setTimeout(function() {
 			self.StageTwo();
@@ -87,19 +86,16 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 	 this.StageTwo = function() {
 		
-		_CanvasContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-		_CanvasContext.drawImage(_CanvasBuffer, 0, 0);
+		 var cue = trialArray['cue'];
+
+		_CanvasContext.clearRect(cue.posx, cue.posy, cue.width, cue.height);
+		trialArray['stim'].Draw(_CanvasContext);
+		//_CanvasContext.drawImage(_CanvasBuffer, 0, 0);
 
 		//Wait for his key press and Timestamp it
 		$(document).on('keydown', this.KeyCheck );
 		timeStamp1 = getTime();
 		taskswitch.Subject.inputData(trialNumber,'StageTwo',timeStamp1);
-		var self = this;
-
-		setTimeout(function() {
-			$(document).off('keydown');
-			self.Update();
-		},responseDelay);
 
 	 }
 
@@ -128,11 +124,16 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 		//If input is correct
 		if ( CheckInput(userInput) === CheckInput('stim') ) {
 			taskswitch.Subject.inputData(trialNumber, 'ACC', 1);
+			//alert("correct");
 		}
 
 		else {
 			taskswitch.Subject.inputData(trialNumber,'ACC',0);
+			//alert("incorrect");
 		}
+
+		//Run the next stage
+		self.Update();
 	}
 
 	this.Update = function() {

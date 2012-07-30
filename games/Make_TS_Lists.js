@@ -174,7 +174,7 @@ function StimList() {
 
 //Generate a SpriteList. Create a Array of arrays of sprite objects
 //Make sure we have a sprite of each color and each shape displayed 
-function SpriteList() {
+function SpriteList_Random() {
 
 	this.Construct = function() {
 
@@ -201,9 +201,34 @@ function SpriteList() {
 	}
 }
 
+//Generate a spriteList where sprites are fixed.
+function SpriteList_Constant() {
+	
+	this.Construct = function() {
+	
+		var spriteArray = [],
+			i;
+
+		for(i = 0; i < this.numberOfTrials; i++) {
+			spriteArray[i] = [new SpriteOne(), new SpriteTwo()];
+	
+			spriteArray[i][0].imageShape = 'square';
+			spriteArray[i][1].imageShape = 'triangle';
+
+			spriteArray[i][0].imageColor = 'red';
+			spriteArray[i][1].imageColor = 'blue';
+
+		}
+
+		return spriteArray;
+	}
+}
+
 CueList.prototype = new TS_Level_List();
 StimList.prototype = new TS_Level_List();
-SpriteList.prototype = new TS_Level_List();
+SpriteList_Random.prototype = new TS_Level_List();
+SpriteList_Constant.prototype = new TS_Level_List();
+
 
 function GenerateLevelLists(cmin,cmax, trials) {
 	var list = {};
@@ -216,7 +241,7 @@ function GenerateLevelLists(cmin,cmax, trials) {
 	list = {
 			'cueList'    : new CueList().Construct(cmin, cmax),
 			'stimList'   : new StimList().Construct(),
-			'spriteList' : new SpriteList().Construct()
+			'spriteList' : new SpriteList_Constant().Construct()
 		   };
 
 	return list;
