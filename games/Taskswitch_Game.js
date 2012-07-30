@@ -20,7 +20,6 @@ function Taskswitch_Game() {
 
 		Trials = GenerateTrials(LevelList,
 							    Difficulty.cueDelay,
-							   	Difficulty.responseDelay,
 								Difficulty.numberOfTrials);
 	}
 
@@ -53,7 +52,6 @@ function Taskswitch_Game() {
 
 function Difficulty(levelNumber) {
 	this.cueDelay = 2000;
-	this.responseDelay = 2000;
 	this.cueBlockMin = 3;
 	this.cueBlockMax = 6;
 	this.numberOfTrials = 48;

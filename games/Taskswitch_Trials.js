@@ -1,10 +1,11 @@
 /* Constructor for a taskswitch trial. Holds the logic of the game.*/
-function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
+function Taskswitch_Trials(spriteArray, cdelay, numOfTrials) {
+
+	var self = this;
 
 	//Trial Variables
 	var trialNumber = 0,
 		cueDelay = cdelay,
-		responseDelay = rdelay,	
 		numberOfTrials = numOfTrials;
 	
 	//Tracker Variables
@@ -27,10 +28,10 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		    };
 
-		//taskswitch.Subject.inputData(tn, 'cue', o['cue'].imageShape);
-		//taskswitch.Subject.inputData(tn, 'stim', o['stim'].imageShape);
-		//taskswitch.Subject.inputData(tn, 'sprite0', o['sprite0'].imageShape);
-		//taskswitch.Subject.inputData(tn, 'sprite1', o['sprite1'].imageShape);
+		taskswitch.Subject.inputData(tn, 'cue', o['cue'].imageShape);
+		taskswitch.Subject.inputData(tn, 'stim', o['stim'].imageShape);
+		taskswitch.Subject.inputData(tn, 'sprite0', o['sprite0'].imageShape);
+		taskswitch.Subject.inputData(tn, 'sprite1', o['sprite1'].imageShape);
 
 
 
@@ -75,8 +76,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Draw sprites for stage two onto buffer
 				timeStamp0 = getTime();
-		//taskswitch.Subject.inputData(trialNumber,'StageOne',timeStamp0);
-		var self = this;
+		taskswitch.Subject.inputData(trialNumber,'StageOne',timeStamp0);
 
 		setTimeout(function() {
 			self.StageTwo();
@@ -95,13 +95,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 		//Wait for his key press and Timestamp it
 		$(document).on('keydown', this.KeyCheck );
 		timeStamp1 = getTime();
-		//taskswitch.Subject.inputData(trialNumber,'StageTwo',timeStamp1);
-		var self = this;
-
-		setTimeout(function() {
-			$(document).off('keydown');
-			self.Update();
-		},responseDelay);
+		taskswitch.Subject.inputData(trialNumber,'StageTwo',timeStamp1);
 
 	 }
 
@@ -124,19 +118,22 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Analysis
 		reactionTime = timeStamp2 - timeStamp1;
-		//taskswitch.Subject.inputData(trialNumber,'RT',reactionTime);
-		//taskswitch.Subject.inputData(trialNumber,'key',KeyId);
+		taskswitch.Subject.inputData(trialNumber,'RT',reactionTime);
+		taskswitch.Subject.inputData(trialNumber,'key',KeyId);
 
 		//If input is correct
 		if ( CheckInput(userInput) === CheckInput('stim') ) {
-			//taskswitch.Subject.inputData(trialNumber, 'ACC', 1);
-			alert("correct");
+			taskswitch.Subject.inputData(trialNumber, 'ACC', 1);
+			//alert("correct");
 		}
 
 		else {
-			//taskswitch.Subject.inputData(trialNumber,'ACC',0);
-			alert("incorrect");
+			taskswitch.Subject.inputData(trialNumber,'ACC',0);
+			//alert("incorrect");
 		}
+
+		//Run the next stage
+		self.Update();
 	}
 
 	this.Update = function() {
@@ -151,7 +148,7 @@ function Taskswitch_Trials(spriteArray, cdelay, rdelay, numOfTrials) {
 
 		//Otherwise, start the next trial
 		else {
-			//taskswitch.Subject.sendData();
+			taskswitch.Subject.sendData();
 			trialArray = GenerateTrialArray(trialNumber);
 			userInput = undefined;
 			this.Run();
