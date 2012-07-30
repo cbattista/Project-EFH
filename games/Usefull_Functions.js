@@ -56,6 +56,13 @@ function getTime() {
 	return t;
 }
 
+//Since the html5 function drawImage begins drawing at the top
+//left part of the image, we need a way to make sure it gets drawn
+//where we want.
+function positionOnCanvas(canvasD, imageD,percent) {
+	return Math.floor( (canvasD*percent) - (imageD*.5) );
+}
+
 //TESTING TESTING TESTING
 /*
 print(randomInt(1,8));
