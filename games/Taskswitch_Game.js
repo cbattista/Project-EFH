@@ -51,7 +51,7 @@ function Taskswitch_Game() {
 }	
 
 function Difficulty(levelNumber) {
-	this.cueDelay = 20;
+	this.cueDelay = 2000;
 	this.cueBlockMin = 3;
 	this.cueBlockMax = 6;
 	this.numberOfTrials = 48;
