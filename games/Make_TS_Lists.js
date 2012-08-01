@@ -2,7 +2,7 @@
 function TS_Level_List() {
 	this.shapeKey = ['square','triangle'];
 	this.colorKey = ['blue','red'];
-	this.numberOfTrials = 40;
+	this.numberOfTrials = 48;
 	this.Construct = null;
 }
 
